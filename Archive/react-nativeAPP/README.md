@@ -25,5 +25,5 @@ The QR code will be created in the terminal after running any of the following c
 - $ expo start 
 
 ## for virtual machines
-### $ npm start --tunnel
-### $ expo start --tunnel 
+- $ npm start --tunnel
+- $ expo start --tunnel 

@@ -9,7 +9,7 @@
 
 # UI MockUp
 ## https://xd.adobe.com/view/8598f030-f1dc-443b-9c68-6ad7c87a752e-d0cb/ 
-Design we are going to implement into the app.
+Design that the app is based upon.
 
 # Dependencies
 Yarn nust be installed: npm install --global yarn

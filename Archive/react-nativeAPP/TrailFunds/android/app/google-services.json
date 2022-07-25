@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "801918564364",
+    "project_id": "trailfunds",
+    "storage_bucket": "trailfunds.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801918564364:android:6df804b57f7ce0006f1629",
+        "android_client_info": {
+          "package_name": "com.TrailFundsCo.TrailFunds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801918564364-fjrvqdulhuk737i1aa7tr9ur0cl8sj4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.TrailFundsCo.TrailFunds",
+            "certificate_hash": "11c71e4d47b82765b0f55a120c00c7316c48c7e7"
+          }
+        },
+        {
+          "client_id": "801918564364-5l0nrrptjrn7hn8ohgn1gqa4vrnc11cq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDulV8SkMhmVjoOpRiOrjYBxy26OqAE0TY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801918564364-5l0nrrptjrn7hn8ohgn1gqa4vrnc11cq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

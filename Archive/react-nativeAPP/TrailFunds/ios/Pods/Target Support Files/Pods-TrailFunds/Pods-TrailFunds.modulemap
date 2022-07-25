@@ -1,0 +1,6 @@
+module Pods_TrailFunds {
+  umbrella header "Pods-TrailFunds-umbrella.h"
+
+  export *
+  module * { export * }
+}

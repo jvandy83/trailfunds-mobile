@@ -1,7 +1,7 @@
 # TrailFunds Demo
 
 ## Description
-This is the repository that holds the code for developing the demo of the applicaiton. The demo serves the purpose of being a minimum viable product (MVP) that will demonstrate the desgin and base abilities of the app.
+This is the repository that holds the code for developing the demo of the applicaiton. The demo serves the purpose of being a mockup that will demonstrate the desgin and base abilities of the app.
 
 ## Visuals
 UI design that the app/website is working towards having: https://xd.adobe.com/view/8598f030-f1dc-443b-9c68-6ad7c87a752e-d0cb/screen/a6f2744d-e1ad-4c08-b20a-9b2f03477867/ 

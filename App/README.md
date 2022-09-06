@@ -46,6 +46,8 @@ Peyton Grattino
 Bryan Wachs
 Lauren Lewis
 Nathan Daniel
+Maeve Hungerford
+Joseph Edwards
 
 ## Project status
 

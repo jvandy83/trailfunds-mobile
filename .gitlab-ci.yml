@@ -5,8 +5,35 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+
 stages:
+- scan
+- lint
 - test
+- deploy
+
+lint:app:frontend:
+  stage: lint
+  image: node:14-alpine
+  script:
+    - cd app/frontend
+    - npm install --silent
+    - npm run lint
+  rules:
+    - changes:
+      - app/frontend/**/*
+
+lint:app:backend:
+  stage: lint
+  script:
+    - docker info
+    - cd webapp/backend/
+    - docker build -t trailfunds-app-lint -f Dockerfile.app.prod --target lint .
+    - docker run trailfunds-app-lint
+  rules:
+    - changes:
+      - app/backend/**/*
+
 sast:
   stage: test
 include:

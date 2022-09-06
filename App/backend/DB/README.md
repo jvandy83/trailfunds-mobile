@@ -18,10 +18,13 @@ WIP
 
 Blake Kohlbrecher
 Jacob Hansen
+Caiden Plummer
+Peyton Grattino
+Bryan Wachs
+Lauren Lewis
 Nathan Daniel
 Maeve Hungerford
 Joseph Edwards
-Peyton Grattino
 
 ## Project status
 

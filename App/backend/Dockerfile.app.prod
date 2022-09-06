@@ -1,0 +1,52 @@
+###########
+# BUILDER #
+###########
+
+# pull official base image
+FROM python:3.9.5-slim-buster as builder
+
+# set work directory
+WORKDIR /usr/src/trailfunds
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc
+
+COPY ./requirements.txt /usr/src/trailfunds/requirements.txt
+COPY ./requirements_dev.txt /usr/src/trailfunds/requirements_dev.txt
+RUN pip install --upgrade pip
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/trailfunds/wheels -r requirements.txt
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/trailfunds/wheels_dev -r requirements_dev.txt
+
+#########
+# LINT #
+#########
+
+FROM builder as lint
+WORKDIR /usr/src/trailfunds
+RUN pip install flake8==3.9.1
+# COPY ./src/app /usr/src/trailfunds/app
+# COPY ./src/manage.py /usr/src/trailfunds/manage.py
+CMD ["flake8", "--ignore=E501,F401", "."]
+
+#########
+# TEST #
+#########
+
+FROM builder as test
+
+WORKDIR /usr/src/trailfunds
+# COPY ./tests /usr/src/trailfunds/tests
+# COPY ./src/app /usr/src/trailfunds/app
+# COPY ./src/manage.py /usr/src/trailfunds/manage.py
+
+COPY --from=builder /usr/src/trailfunds/wheels /wheels
+COPY --from=builder /usr/src/trailfunds/wheels_dev /wheels
+RUN pip install --no-cache /wheels/*
+
+ENV PYTHONPATH=$PYTHONPATH:./src
+CMD ["pytest", "--cov=app", "tests/"]

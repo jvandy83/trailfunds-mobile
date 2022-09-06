@@ -32,12 +32,15 @@ If you have ideas for releases in the future, it is a good idea to list them in 
 
 Blake Kohlbrecher
 Jacob Hansen
+Caiden Plummer
+Peyton Grattino
+Bryan Wachs
+Lauren Lewis
 Nathan Daniel
 Maeve Hungerford
 Joseph Edwards
-Peyton Grattino
 
-### Past Contributers 
+### Past Contributers
 
 ## Project status
 

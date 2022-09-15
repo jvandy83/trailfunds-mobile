@@ -1,20 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+//For the love of all that is holy do not put anything above this first import!
+import "react-native-gesture-handler";
+//Put imports below this. Please and thank you.
+
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native"; //Allows for navigation in the app
+import { StackHome } from "./routes/stack"; //Importing the main stack of pages for the app
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <StackHome />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

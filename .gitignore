@@ -4,3 +4,6 @@
 venv/
 .venv/*
 .archive
+
+# Node Modules
+node_modules/

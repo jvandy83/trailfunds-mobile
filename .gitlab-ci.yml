@@ -33,7 +33,7 @@ lint:app:backend:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker info
-    - cd webapp/backend/
+    - cd app/backend/
     - docker build -t trailfunds-app-lint -f Dockerfile.app.prod --target lint .
     - docker run trailfunds-app-lint
   rules:

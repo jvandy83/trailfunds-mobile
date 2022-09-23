@@ -6,13 +6,7 @@ Repo for developing the DB that will store trail data, maintainer data, and user
 
 ## Installation
 
-WIP
-
-## Roadmap
-
-WIP
-
-## Authors and acknowledgment
+`docker-compose build --no-cache apps && docker-compose up apps`
 
 ### Current Contributers
 
@@ -28,4 +22,4 @@ Joseph Edwards
 
 ## Project status
 
-Developement is currently ongoing, this project is intended to give college students experience while in college, so most developement will be done during US college semesters. 
+Developement is currently ongoing, this project is intended to give college students experience while in college, so most developement will be done during US college semesters.

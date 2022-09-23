@@ -37,16 +37,60 @@ CMD ["flake8", "--ignore=E501,F401", "."]
 # TEST #
 #########
 
-FROM builder as test
+# FROM builder as test
 
-WORKDIR /usr/src/trailfunds
-# COPY ./tests /usr/src/trailfunds/tests
-# COPY ./src/app /usr/src/trailfunds/app
-# COPY ./src/manage.py /usr/src/trailfunds/manage.py
+# WORKDIR /usr/src/trailfunds
+# # COPY ./tests /usr/src/trailfunds/tests
+# # COPY ./src/app /usr/src/trailfunds/app
+# # COPY ./src/manage.py /usr/src/trailfunds/manage.py
 
+# COPY --from=builder /usr/src/trailfunds/wheels /wheels
+# COPY --from=builder /usr/src/trailfunds/wheels_dev /wheels
+# RUN pip install --no-cache /wheels/*
+
+# ENV PYTHONPATH=$PYTHONPATH:./src
+# CMD ["pytest", "--cov=app", "tests/"]
+
+#########
+# FINAL #
+#########
+
+# pull official base image
+FROM python:3.9.5-slim-buster
+
+# create directory for the app user
+RUN mkdir -p /home/app
+
+# create the app user
+RUN addgroup --system app && adduser --system --group app
+
+# create the appropriate directories
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/backend
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+# install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends netcat
 COPY --from=builder /usr/src/trailfunds/wheels /wheels
-COPY --from=builder /usr/src/trailfunds/wheels_dev /wheels
+COPY --from=builder /usr/src/trailfunds/requirements.txt .
+RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
-ENV PYTHONPATH=$PYTHONPATH:./src
-CMD ["pytest", "--cov=app", "tests/"]
+# copy entrypoint-prod.sh
+COPY ./entrypoint.prod.sh $APP_HOME
+RUN chmod +x entrypoint.prod.sh
+# copy project
+# COPY ./src/app $APP_HOME
+# COPY ./src/manage.py $APP_HOME/manage.py
+# COPY ./src/log.yaml $APP_HOME/log.yaml
+
+# chown all the files to the app user
+RUN chown -R app:app $APP_HOME
+
+# change to the app user
+USER app
+
+RUN ./entrypoint.prod.sh
+# ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
+# CMD ["gunicorn", "--access-logfile", "'-'", "--bind", "0.0.0.0:7878", "--log-level=info", "manage:create_app()"]

@@ -18,6 +18,10 @@ export default function DashboardPage({ navigation }) {
         text="Wallet"
         onPress={() => navigation.navigate("Wallet Page")}
       />
+      <PrimaryButton
+        text="Testing Style Page"
+        onPress={() => navigation.navigate("Style Page")}
+      />
       <StatusBar style="auto" />
     </View>
   );

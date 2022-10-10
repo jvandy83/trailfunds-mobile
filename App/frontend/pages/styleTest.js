@@ -1,17 +1,17 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
-import defaultSty from "../style/defaultSty";
-import SecondaryButton from "../style/secondButt";
+import { StyleSheet, Text, View } from "react-native";
+import { SecondaryButton, PrimaryButton, defaults } from "../styles/frontendStyles";
 
 export default function StyleTest({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={[defaultSty.greenTextHead]}>Trail Funds</Text>
+      <Text style={[defaults.greenTextHead]}>Trail Funds</Text>
       {/* This is the main header for our app. This is also how you call the text
       styles */}
-      <SecondaryButton text={"Test"} />
+      <SecondaryButton text={"test1"} />
+      <PrimaryButton text={"test2"} />
       {/* This is the secondary button. Its not on the style sheet so look at the
       include statements to see how to get it on the page. */}
     </View>

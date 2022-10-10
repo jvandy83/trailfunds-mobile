@@ -1,7 +1,7 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import PrimaryButton from "../style/primeButt";
+import { PrimaryButton } from "../styles/frontendStyles";
 
 export default function DashboardPage({ navigation }) {
   return (

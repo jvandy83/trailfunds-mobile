@@ -6,9 +6,11 @@ This is the repository that holds the current version of the TrailFunds app. It 
 
 ## Visuals
 
-UI design that the app/website is working off of: https://xd.adobe.com/view/8598f030-f1dc-443b-9c68-6ad7c87a752e-d0cb/screen/a6f2744d-e1ad-4c08-b20a-9b2f03477867/ 
+UI design that the app/website is working off of: <https://xd.adobe.com/view/8598f030-f1dc-443b-9c68-6ad7c87a752e-d0cb/screen/a6f2744d-e1ad-4c08-b20a-9b2f03477867/>
 
 ## Installation
+
+TODO: <https://www.rockyourcode.com/how-to-run-react-native-expo-web-in-a-docker-container/>
 
 ### React Native
 
@@ -16,7 +18,7 @@ This app will be developed in a React Native environment. The first step to be d
 npm list
 node -v
 If the console returns an error for those commands, install Node.js with the link below:
-https://nodejs.org/en/download/
+<https://nodejs.org/en/download/>
 
 Next is to install the Expo CLI. The only command required to install is the following:
 npm install -g expo-cli

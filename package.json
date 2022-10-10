@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "expo-cli": "^6.0.5"
+    "expo-cli": "^6.0.5",
+    "react-native": "^0.70.2"
   }
 }

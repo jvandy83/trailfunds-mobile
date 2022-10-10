@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 function AboutPage({ navigation }) {
   navigateToScreen = () => {
@@ -12,6 +12,9 @@ function AboutPage({ navigation }) {
         This page will contain the information to contact TrailFunds and general
         information about the organization.
       </Text>
+      <Button style=".primaryButton">
+        Test
+      </Button>
       <StatusBar style="auto" />
     </View>
   );

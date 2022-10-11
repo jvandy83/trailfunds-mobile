@@ -1,8 +1,18 @@
 version: '3.8'
 services:
+  devcontainer:
+    build:
+      dockerfile: Dockerfile
+      context: ..
+      args: [ VARIANT=3.10-bullseye, NODE_VERSION=lts/* ]
+    depends_on:
+    - expo
+    - apps
+    - database_pg
+    
   expo:
     build:
-      context: ./App/frontend
+      context: ../App/frontend
       args:
         - NODE_ENV=development
     environment:
@@ -21,19 +31,19 @@ services:
       - '19001'
       - '19000'
     volumes:
-      - ./App:/opt/App:delegated
-      - ./App/frontend/package.json:/opt/App/frontend/package.json
-      - ./App/frontend/package-lock.json:/opt/App/frontend/package-lock.json
+      - ../App:/opt/App:delegated
+      - ../App/frontend/package.json:/opt/App/frontend/package.json
+      - ../App/frontend/package-lock.json:/opt/App/frontend/package-lock.json
       - notused:/opt/App/frontend/node_modules
     healthcheck:
       disable: true
   
   apps:
     build:
-      context: ./App/backend
+      context: ../App/backend
       dockerfile: Dockerfile.app.prod
     volumes:
-      - ./App/backend/src:/home/App/backend
+      - ../App/backend/src:/home/App/backend
     depends_on:
       - database_pg
       - expo

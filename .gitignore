@@ -5,5 +5,10 @@ venv/
 .venv/*
 .archive
 
+# Expo
+.expo/
+*/.expo
+.expo/*
+
 # Node Modules
 node_modules/

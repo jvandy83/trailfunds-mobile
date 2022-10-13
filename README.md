@@ -10,7 +10,7 @@ UI design that the app/website is working towards having: https://xd.adobe.com/v
 
 ## Installation
 
-https://reactnative.dev/docs/environment-setup 
+This project runs in a dockerized VSCode devcontainer. You **MUST** edit the value of REACT_NATIVE_PACKAGER_HOSTNAME in ./devcontainer/docker-compose.yml to your public ip! You can find your public IP by typing "What's my ip" in google.
 
 ## Roadmap
 

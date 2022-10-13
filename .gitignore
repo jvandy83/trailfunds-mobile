@@ -4,6 +4,15 @@
 venv/
 .venv/*
 .archive
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
 
 # Expo
 .expo/
@@ -12,3 +21,6 @@ venv/
 
 # Node Modules
 node_modules/
+
+# macOS
+.DS_Store

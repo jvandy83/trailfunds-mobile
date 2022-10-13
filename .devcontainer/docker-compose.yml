@@ -1,15 +1,5 @@
 version: '3.8'
-services:
-  devcontainer:
-    build:
-      dockerfile: Dockerfile
-      context: ..
-      args: [ VARIANT=3.10-bullseye, NODE_VERSION=lts/* ]
-    depends_on:
-    - expo
-    - apps
-    - database_pg
-    
+services:      
   expo:
     build:
       context: ../App/frontend
@@ -18,7 +8,7 @@ services:
     environment:
       - NODE_ENV=development
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0 
-      - REACT_NATIVE_PACKAGER_HOSTNAME=138.86.246.242
+      - REACT_NATIVE_PACKAGER_HOSTNAME=<YOUR IP>
     tty: true
     ports:
       - '19006:19006'

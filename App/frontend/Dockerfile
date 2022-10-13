@@ -27,6 +27,8 @@ USER root
 COPY ./package.json ./package-lock.json ./
 RUN npm install
 
+# ENV REACT_NATIVE_PACKAGER_HOSTNAME dig +short myip.opendns.com @resolver1.opendns.com
+
 # copy in our source code last, as it changes the most
 WORKDIR /opt/App/frontend
 # for development, we bind mount volumes; comment out for production

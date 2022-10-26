@@ -12,18 +12,18 @@ stages:
 - test
 - deploy
 
-lint:app:frontend:
+lint:App:frontend:
   stage: lint
   image: node:14-alpine
   script:
-    - cd app/frontend
+    - cd App/frontend
     - npm install --silent
     - npm run lint
   rules:
     - changes:
-      - app/frontend/**/*
+      - App/frontend/**/*
 
-lint:app:backend:
+lint:App:backend:
   stage: lint
   image: docker:latest
   services:
@@ -33,12 +33,12 @@ lint:app:backend:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker info
-    - cd app/backend/
+    - cd App/backend/
     - docker build -t trailfunds-app-lint -f Dockerfile.app.prod --target lint .
     - docker run trailfunds-app-lint
   rules:
     - changes:
-      - app/backend/**/*
+      - App/backend/**/*
 
 sast:
   stage: test

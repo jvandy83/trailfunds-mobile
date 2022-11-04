@@ -2,9 +2,9 @@ from flask import Flask, jsonify, request
 from http import HTTPStatus
 import main
 import users
-from config import Config
+import config
 app = Flask(__name__)
-db=config.DB_TEST_NAME
+db=config.DB_TEST_Trailfunds 
 members = []
 # recipes = []
 ####-=-=-=-=-=NOTE=-=-=-=-=-####
@@ -14,9 +14,9 @@ members = []
 #### int and find LENGTH ####
 
 i = 1
-length =  .fetch_row_length(db) 
+length =  users.fetch_row_length(db) 
 for i in range(1, length + 1):
-    members.append(content.select_content_by_id(i,db))
+    members.append(users.select_user_by_id(i,db))
 
 #### Basic GET ####
 @app.route('/recipes', methods=['GET'])

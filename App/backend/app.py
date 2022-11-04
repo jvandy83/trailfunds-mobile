@@ -79,11 +79,10 @@ def get_Page(PageID):
 
     return jsonify({'message': 'recipe not found'}), HTTPStatus.NOT_FOUND
 
-@app.route('/users', methods=['POST'])
-
-def create_user():
+@app.route('/members', methods=['POST'])
+def create_member():
     data = request.get_json()
-    First_Name = data.get("First_Name")
+    First_Name = data.get('First_Name')
     Last_Name = data.get('Last_Name')
     Middle_Initial = data.get('Middle_Initial')
     Address = data.get("Address")
@@ -95,7 +94,7 @@ def create_user():
     Email = data.get("Email")
     SignUpDate = data.get("SignUpDate")
 
-    recipe = {
+    member = {
         'User_ID': len(members) + 1,
         'First_Name':  First_Name,
         'Last_Name': Last_Name,
@@ -110,11 +109,11 @@ def create_user():
         'SignUpDate': SignUpDate
 
     }
-    print(recipe)
+    print(member)
 
-    recipes.append(recipe)
-    content.insert_content(recipe, db)
-    return jsonify(recipe), HTTPStatus.CREATED
+    members.append(member)
+    users.insert_User(member, db)
+    return jsonify(member), HTTPStatus.CREATED
 
 @app.route('/recipes/<int:recipe_id>', methods=['PUT'])
 def update_recipe(recipe_id):

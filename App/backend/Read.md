@@ -1,6 +1,4 @@
 # Runing the API on local Host #
-___Notes for jacob___
-> add how this will run on server please! right here :)
 
 __TO START :__
     Python PopulateTestDB.py

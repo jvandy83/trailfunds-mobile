@@ -43,7 +43,7 @@
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [3000, 19000, 19001, 19002, 19006],
+	"forwardPorts": [3000, 19000, 19001, 19002, 19006]
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "export REACT_NATIVE_PACKAGER_HOSTNAME=$(dig +short myip.opendns.com @resolver1.opendns.com)"

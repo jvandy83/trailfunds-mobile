@@ -2,13 +2,13 @@
 
 import react from "react";
 import { StyleSheet, TouchableOpacity, Text, View} from "react-native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+
+
 
 export const defaults = StyleSheet.create({
     container: {
       //This is the style that is added to every page
-      flex: 1,
-      backgroundColor: "#fff",
+      flex: "1",
       alignItems: "center",
       justifyContent: "center",
     },
@@ -21,6 +21,12 @@ export const defaults = StyleSheet.create({
       color: "Black",
       fontSize: 40,
     },
+    background: {
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+    }
   });
 
 export function PrimaryButton({ text, onPress }){

@@ -1,9 +1,9 @@
 //Here you will find the style for the primary button that we use for 'DONATE'
 
-import react from "react";
+import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View} from "react-native";
 
-
+import { AntDesign } from '@expo/vector-icons'; 
 
 export const defaults = StyleSheet.create({
     container: {
@@ -21,12 +21,55 @@ export const defaults = StyleSheet.create({
       color: "Black",
       fontSize: 40,
     },
+    white_text: {
+        color: "white",
+        marginTop: 5,
+    },
     background: {
         width: "100%",
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-    }
+    },
+    primary_bubble: {
+        width: 66,
+        height: 66,
+        borderRadius: 33,
+        borderWidth: 2,
+        top: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#59C092",
+    },
+    secondary_bubble: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        borderWidth: 2,
+        top: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#1C2126",
+    },
+    column_container: {
+        flexDirection: "row",
+        borderWidth: 2,
+        borderBottomRightRadius: 50,
+        borderBottomLeftRadius: 50,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+    },
+    column: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        paddingTop: 5,
+        paddingBottom: 10,
+        //borderWidth: 1,
+    },
   });
 
 export function PrimaryButton({ text, onPress }){
@@ -80,17 +123,34 @@ export function SecondaryButton({ text, onPress }){
 
 export function CirclePicture({ }){
     return (
-      <View style={StyleSheet.create({
+        <View style={StyleSheet.create({
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'white',
             height: 200,
             })}>
-            <Image source={require('../assets/icon.png')} style={StyleSheet.create({
+            <Image source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}} style={StyleSheet.create({
                 width: 200,
                 height: 200,
                 borderRadius: 200 / 2,
             })}/>
-      </View>
+        </View>
     );
-  };
+};
+
+export function IconComponent({ onPress }) {
+    return (
+        <TouchableOpacity onPress={onPress}>
+            <View style={StyleSheet.create({
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 43,
+                width: 45,
+                marginLeft: 10,
+                marginRight: 5,
+                })}>
+                    <AntDesign name="menuunfold" size={24} color="black" />
+            </View>
+        </TouchableOpacity>
+    )
+}

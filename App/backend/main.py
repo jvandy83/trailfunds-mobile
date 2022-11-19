@@ -143,7 +143,7 @@ def filterDonationsByUser_Name(First_Name,db = config.DB_TEST_Trailfunds):
 
 
 db=config.DB_TEST_Trailfunds
-#Test_DB()
+Test_DB()
 getdonationwithname(1, db)
 donations.print_Donations_table()
 filterDonationsByUser_Name('Hamish',db)

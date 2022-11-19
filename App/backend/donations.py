@@ -80,6 +80,21 @@ def select_Donations_by_id(id,db=config.DB_TEST_Trailfunds):
     else:
         return None
 
+def fetch_row_length(db):
+    connection = sqlite3.connect(db)
+    cursor = connection.cursor()
+    sql = f"""
+    SELECT COUNT({COL_USER_ID}) FROM {TABLE_NAME}
+      """
+    cursor.execute(sql)
+    response=cursor.fetchone()
+    connection.commit()
+    connection.close()
+    if response != None:
+        return response[0]
+    else:
+        return None
+        
 def test_Donations():
     db=config.DB_TEST_Trailfunds
     drop_Donations_table(db)

@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text, View, Animated} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import { AntDesign, Octicons } from '@expo/vector-icons'; 
-import { defaults } from "./frontendStyles"
+import { defaults } from "./frontendStyles";
+import Collapsible from 'react-native-collapsible';
+
+// TODO: Map GeoFence Polygons + Search Function (on-click polygons opens info drawer)
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 export const mapStyles = StyleSheet.create({
     map: {
@@ -11,7 +17,6 @@ export const mapStyles = StyleSheet.create({
         height: "100%",
     },
     mapContainer: {
-        paddingTop: 50,
         width: "100%",
         height: "100%",
         backgroundColor: "#59C0922C",
@@ -19,7 +24,7 @@ export const mapStyles = StyleSheet.create({
         justifyContent: "center",
     },
     map_column_container: {
-        top: "80%",
+        top: "84%",
         position: "absolute",
         flexDirection: "row",
     },
@@ -44,14 +49,35 @@ export const mapStyles = StyleSheet.create({
         borderColor: "#8b355b",
     },
     like_menu: {
-        position: "absolute",
-        width: "90%",
-        height: "25%",
-        backgroundColor: "pink",
-        // top: 0,
-        // bottom: 0,
-        // left: 0,
-        // right: 0,
+        alignSelf: 'stretch',
+        left: "25%",
+        bottom: "105%",
+        width: "250%",
+        height: 300,
+        flexDirection: 'column',
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: "black",
+        borderTopRightRadius: 75,
+        borderTopLeftRadius: 10,
+    },
+    like_list_header: {
+        paddingBottom: 20,
+        paddingTop: 20,
+        paddingLeft: 20,
+        borderWidth: 1,
+        borderColor: "transparent",
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 100,
+        backgroundColor: "#90566F",
+    },
+    like_list_content: {
+        backgroundColor: "#90566F",
+        overflow: 'hidden',
+        paddingTop:10,
+        paddingBottom: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
     },
     search: {
         width: 80,
@@ -84,201 +110,54 @@ export const mapStyles = StyleSheet.create({
         borderColor: "#3a358a",
     },
     near_menu: {
-
+        alignSelf: 'stretch',
+        right: "175%",
+        bottom: "105%",
+        width: "250%",
+        height: 300,
+        flexDirection: 'column',
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: "black",
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 75,
+    },
+    near_list_header: {
+        paddingBottom: 20,
+        paddingTop: 20,
+        paddingRight: 20,
+        borderWidth: 1,
+        borderColor: "transparent",
+        borderTopLeftRadius: 100,
+        borderTopRightRadius: 10,
+        backgroundColor: "#585591",
+    },
+    near_list_content: {
+        backgroundColor: "#585591",
+        overflow: 'hidden',
+        paddingTop: 10,
+        paddingBottom: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    list_title: {
+        color: "white",
+        fontSize: 25,
+    },
+    list_spacer: {
+        height: 2,
+        backgroundColor: "black",
+    },
+    list_box: {
+        borderBottomWidth: 1,
+        borderRadius: 50,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    list_text: {
+        fontSize: 18,
+        paddingTop: 8,
+        paddingBottom: 4,
+        color: "white",
     },
   });
-
-export function MapContainer({ }) {
-    const [location, setLocation] = useState(null);
-    const mapRef = useRef(null);
-    let myLat = 37.0902, myLong = 95.7129, myLatDelta = 1, myLongDelta = 1;
-  
-    useEffect(() => {
-      (async () => {
-        
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') return;
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-      })();
-    }, []);
-  
-    if (location) {
-      const userRegion = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      }
-      mapRef.current.animateToRegion(userRegion);
-    }
-
-    const [isLiked, setLiked] = useState(false);
-    const [isSearch, setSearch] = useState(false);
-    const [isNear, setNear] = useState(false);
-    const scaleSize = 12;
-    const animationDuration = 400;
-  
-    const toggleLiked = () => {
-      setSearch(false);
-      setNear(false);
-      setLiked(isLiked => !isLiked);
-    };
-  
-    const toggleSearch = () => {
-      setLiked(false);
-      setNear(false);
-      setSearch(isSearch => !isSearch);
-    };
-  
-    const toggleNear = () => {
-      setLiked(false);
-      setSearch(false);
-      setNear(isNear => !isNear);
-    };
-  
-    const likeScale = useRef(new Animated.Value(0)).current;
-    const searchScale = useRef(new Animated.Value(0)).current;
-    const nearScale = useRef(new Animated.Value(0)).current;
-
-        useEffect(() => {
-            Animated.timing (
-                likeScale,
-                {
-                toValue: isLiked ? scaleSize : 0,
-                duration: animationDuration,
-                delay: animationDuration / 4,
-                useNativeDriver: false
-                },
-            ).start()
-        }, [likeScale, isLiked]);
-
-        useEffect(() => {
-            Animated.timing (
-                searchScale,
-                {
-                toValue: isSearch ? scaleSize : 0,
-                duration: animationDuration,
-                delay: animationDuration / 4,
-                useNativeDriver: false
-                },
-            ).start()
-        }, [searchScale, isSearch]);
-
-        useEffect(() => {
-            Animated.timing (
-                nearScale,
-                {
-                toValue: isNear ? scaleSize : 0,
-                duration: animationDuration,
-                delay: animationDuration / 4,
-                useNativeDriver: false
-                },
-            ).start()
-        }, [nearScale, isNear]);
-  
-    const LikeBackground = () => {
-      return (
-        <Animated.View
-          style={{
-            width: 75,
-            height: 75,
-            borderRadius: "100%",
-            backgroundColor: '#a97089',
-            opacity: 0.9,
-            transform: [{ scale: likeScale }],
-          }}/>
-      );
-    };
-
-    const LikeMenu = (props) => {
-        return (
-            Animated.View
-
-        )
-
-    }
-  
-    const SearchBackground  = () => {
-      return (
-        <Animated.View
-          style={{
-            width: 75,
-            height: 75,
-            borderRadius: "100%",
-            backgroundColor: '#71a890',
-            opacity: 0.9,
-            transform: [{ scale: searchScale }],
-          }}/>
-      );
-    };
-  
-    const NearBackground  = () => {
-      return (
-        <Animated.View
-          style={{
-            width: 75,
-            height: 75,
-            borderRadius: "100%",
-            backgroundColor: '#726faa',
-            opacity: 0.9,
-            transform: [{ scale: nearScale }],
-          }}/>
-      );
-    };
-
-
-    return (
-        <View style={StyleSheet.create({    
-            width: "100%",
-            height: "100%",
-            borderColor: "#80998e",
-            borderTopWidth: 2,
-            })}>
-            <MapView
-                ref={mapRef}
-                style={mapStyles.map}
-                showsUserLocation={true}
-                initialRegion={{
-                latitude: myLat,
-                longitude: myLong,
-                latitudeDelta: myLatDelta,
-                longitudeDelta: myLongDelta,
-                }}/>
-            <View style={mapStyles.map_column_container}>
-                <View style={mapStyles.map_column}>
-                    <LikeBackground/>
-                </View>
-                <View style={mapStyles.map_column}>
-                    <SearchBackground/>
-                </View>
-                <View style={mapStyles.map_column}>
-                    <NearBackground/>
-                </View>
-            </View>
-            <View style={mapStyles.map_column_container}>
-                <View style={mapStyles.map_column}>
-                    <TouchableOpacity onPress={toggleLiked}>
-                        <View style={mapStyles.like}>
-                            <AntDesign name="hearto" size={36} color="white" /><Text style={defaults.white_text}>LIKED</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={mapStyles.map_column}>
-                    <TouchableOpacity onPress={toggleSearch}>
-                        <View style={mapStyles.search}>
-                            <AntDesign name="search1" size={36} color="white" /><Text style={defaults.white_text}>SEARCH</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={mapStyles.map_column}>
-                    <TouchableOpacity onPress={toggleNear}>
-                        <View style={mapStyles.near}>
-                            <Octicons name="location" size={36} color="white" /><Text style={defaults.white_text}>NEAR</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
-    )
-}

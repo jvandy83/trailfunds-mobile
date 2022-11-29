@@ -2,7 +2,7 @@
 
 ## Description
 
-This is the repository that holds the current version of the TrailFunds app. It is currently being developed in React-Native for the frontend of the apps, and most of the backend will be done on native stacks, like Android Studio and Swift. 
+This is the repository that holds the current version of the TrailFunds app. It is currently being developed in React-Native for the frontend of the apps, and most of the backend will be done on native stacks, like Android Studio and Swift.
 
 ## Visuals
 
@@ -53,4 +53,12 @@ Joseph Edwards
 
 ## Project status
 
-Developement is currently ongoing, this project is intended to give college students experience while in college, so most developement will be done during US college semesters. 
+Developement is currently ongoing, this project is intended to give college students experience while in college, so most developement will be done during US college semesters.
+
+## Known Bugs
+
+BUG - 1:
+Loading the app on Simulator or mobile phone returns the error: "Error: Requiring module "node_modules/react-native-reanimated/src/Animated.js", which threw an exception: Error: Reanimated 2 failed to create a worklet, maybe you forgot to add Reanimated's babel plugin?"
+
+SOLUTION - 1:
+Re-run the expo start command with the "--clear" flag appended.

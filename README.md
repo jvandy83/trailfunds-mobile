@@ -36,3 +36,7 @@ Jose Cervantes
 ## Project status
 
 Developement is currently ongoing, this project is intended to give college students experience while in college, so most developement will be done during US college semesters. 
+
+## Contract
+
+https://gitlab.com/trailfunds/trailfunds/-/wikis/uploads/b62bf15b892802e18b8c55f74076700a/TrailFunds_Contract_2022.pdf

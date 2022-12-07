@@ -16,7 +16,7 @@ export default profile = StyleSheet.create({
   },
   subText: {
     fontSize: 18,
-    color: "#AE5BC",
+    // color: "#AE5BC",
     textTransform: "uppercase",
     fontWeight:"500"
   },
@@ -127,6 +127,7 @@ export default profile = StyleSheet.create({
     fontSize: 12,
   },
     background: {
+    paddingTop: 50,
     width: "100%",
     height: "100%",
   },

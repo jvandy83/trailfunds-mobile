@@ -3,12 +3,7 @@ import { Text, View, Image, ScrollView, TouchableOpacity, Button, Alert, } from 
 import profile from '../styles/profileStyles'
 import {Ionicons, MaterialIcons} from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-
-// You can import from local files
-import AssetExample from './components/AssetExample';
-
-// or any pure javascript modules available in npm
-import { Card } from 'react-native-paper';
+import ProfilePic from '../assets/images/profile-pic.jpeg'
 
 export default function App() {
   return (
@@ -24,7 +19,7 @@ export default function App() {
 
         <View style={{alignSelf: "center"}}>
             <View style={profile.profileImage}>
-              <Image source={require("./assets/profile-pic.jpg")} style={profile.image} resize="center">
+              <Image source={ProfilePic} style={profile.image} resize="center">
               </Image>
             </View>
             

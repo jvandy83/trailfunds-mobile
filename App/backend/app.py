@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, request
 from http import HTTPStatus
+from flask_cors import CORS
+
+
 import main
 import users
 import trails
@@ -8,6 +11,8 @@ import donations
 import config
 
 app = Flask(__name__)
+CORS(app)
+
 db=config.DB_TEST_Trailfunds
 members = []
 trails_A = []
@@ -72,9 +77,27 @@ def get_member(member_id):
 
     return jsonify({'message': 'User not found'}), HTTPStatus.NOT_FOUND
 
+@app.route('/members/<string:username>/<string:password>', methods=['GET'])
+def get_memberbyusername(username,password):
+
+    ### for member in members.all():
+    member = next((member for member in members if member['Username'] == username), None)
+    if member and password == member['Password']:
+        return jsonify(member['User_ID'])
+
+    return jsonify({'message': 'User not found'}), HTTPStatus.NOT_FOUND
+
+@app.route('/trails/<int:trails_id>', methods=['GET'])
+def get_trailbyID(trails_id):
+
+    ### for member in members.all():
+    trail = next((trail for trail in trails_A if trail['Trail_ID'] == trails_id), None)
+    if trail:
+        return jsonify(trail)
+
+    return jsonify({'message': 'User not found'}), HTTPStatus.NOT_FOUND
+
 @app.route('/trails/Maintainers/<int:Maintainer_ID>', methods=['GET'])
-
-
 def get_trailsByMaintainer(Maintainer_ID):
     traillist = []
     for trail in trails_A:
@@ -85,16 +108,17 @@ def get_trailsByMaintainer(Maintainer_ID):
 
     return jsonify({'message': 'trails not found'}), HTTPStatus.NOT_FOUND
 
-@app.route('/recipes/Page/<int:PageID>', methods=['GET'])
-def get_Page(PageID):
-    recipelist = []
-    for recipe in recipes:
-        if recipe['PageID'] == PageID:
-            recipelist.append(recipe)
-    if recipe:
-        return jsonify(recipelist)
+@app.route('/donations/<int:member_id>', methods=['GET'])
+def get_donations_by_member(member_id):
+    memberdonations = []
+    for donation in donationlist:
+        if donation['User_ID'] == member_id:
+            memberdonations.append(donation)
+    if  memberdonations != None:
+        return jsonify( memberdonations)
 
-    return jsonify({'message': 'recipe not found'}), HTTPStatus.NOT_FOUND
+    return jsonify({'message': 'User not found'}), HTTPStatus.NOT_FOUND
+
 
 @app.route('/members', methods=['POST'])
 def create_member():

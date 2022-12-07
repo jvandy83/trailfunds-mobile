@@ -9,6 +9,7 @@ import ProfilePage from "../pages/Profile";
 import WalletPage from "../pages/Wallet";
 import TransactionPage from "../pages/Transactions";
 import StyleTest from "../pages/styleTest";
+import WalletRefills from "../pages/WalletRefill";
 import { DrawerMenu } from "./drawer";
 
 //creating the navigator
@@ -25,6 +26,7 @@ const StackHome = () => {
       <Stack.Screen name="Profile" component={ProfilePage} />
       <Stack.Screen name="Wallet Page" component={WalletPage} />
       <Stack.Screen name="Transaction Page" component={TransactionPage} />
+      <Stack.Screen name="Wallet Refill" component={WalletRefills} />
       <Stack.Screen name="Style Page" component={StyleTest} />
     </Stack.Navigator>
   );

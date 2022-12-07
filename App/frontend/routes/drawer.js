@@ -5,6 +5,7 @@ import AboutPage from "../pages/AboutUs";
 import MapPage from "../pages/Map";
 import ProfilePage from "../pages/Profile";
 import WalletPage from "../pages/Wallet";
+import WalletRefills from "../pages/WalletRefill";
 
 const Drawer = createDrawerNavigator();
 
@@ -16,6 +17,7 @@ const DrawerMenu = () => {
       <Drawer.Screen name="Map" component={MapPage} />
       <Drawer.Screen name="Profile" component={ProfilePage} />
       <Drawer.Screen name="Wallet Page" component={WalletPage} />
+      <Drawer.Screen name="Wallet Refill" component={WalletRefills} />
     </Drawer.Navigator>
   );
 };

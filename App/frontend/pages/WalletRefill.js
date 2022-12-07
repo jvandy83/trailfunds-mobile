@@ -14,13 +14,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let STORAGE_KEY = '@user_input';
 
-const Map = ({navigation}) => {
+const WalletRefills = ({navigation}) => {
     const [input, setInput] = useState();
+    const [isLoaded, setIsLoaded] = useState(false);
+    let value = 0;
+
     useEffect(() => {
-        alert('aHSHBVCABKC');
-      readData();
-    }, []);
+      readData();      
+      },[]);
     
+  
     const saveData = async (value) => {
       try {
         let temp = value.toString();
@@ -31,31 +34,27 @@ const Map = ({navigation}) => {
       }
     }
   
-    const  readData = async () => {
-      try {
-        const values = await AsyncStorage.getItem(STORAGE_KEY)
-        if(values !== null) {
-          values = parseInt(values);
-          alert(input);
-          alert(values);
-          setInput(values);
-          // value previously stored
+    const readData = async () => {
+      await AsyncStorage.getItem(STORAGE_KEY).then(value => {
+        if(value !== null) {
+          value = parseInt(value)
+          setInput(value);   
         }
-      } catch(e) {
-        // error reading value
-      }
+      })
     }
+
     const addFunds = async (value) => {
-        readData();
       let temp = parseInt(input) + value
       saveData(temp)
       setInput(temp);
-      alert(temp);
     };
     // ...
     return (
       <View style={styles.container}>
         <View style={styles.panel}>
+        <Text style={styles.title}>
+       {input}
+      </Text>
           <Text style={styles.text}>Add to your wallet</Text>
   
           <Pressable onPress={() =>  
@@ -71,9 +70,14 @@ const Map = ({navigation}) => {
          }style={styles.button}>
             <Text style={styles.buttonText}>$5</Text>
           </Pressable>
-          <Pressable onPress={() =>  addFunds(10)} style={styles.button}>
+          <Pressable onPress={() => { addFunds(10)
+            navigation.navigate("Wallet Page");}
+          } style={styles.button}>
             <Text style={styles.buttonText}>$10</Text>
           </Pressable>
+          <Pressable onPress={readData} style={styles.button}>
+          <Text style={styles.buttonText}>Show</Text>
+        </Pressable>
         </View>
       </View>
     );
@@ -141,4 +145,4 @@ const Map = ({navigation}) => {
     },
   });
   
-export default Map;
+export default WalletRefills;

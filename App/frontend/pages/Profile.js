@@ -1,25 +1,84 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { defaults } from "../styles/frontendStyles";
-import { LinearGradient } from 'expo-linear-gradient';
+import * as React from 'react';
+import { Text, View, Image, ScrollView, TouchableOpacity, Button, Alert, } from 'react-native';
+import profile from '../styles/profileStyles'
+import {Ionicons, MaterialIcons} from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
 
-export default function ProfilePage({ navigation }) {
+// You can import from local files
+import AssetExample from './components/AssetExample';
+
+// or any pure javascript modules available in npm
+import { Card } from 'react-native-paper';
+
+export default function App() {
   return (
-    <View>
-      <LinearGradient colors={['#59C0922C', '#FAFDFCF9', '#FFFFFF']} style={[defaults.background]}>
-        <Text>Settings/information about the user.</Text>
-        <StatusBar style="auto" />
-      </LinearGradient>
-    </View>
+    <LinearGradient colors={['#59C0922C', '#FAFDFCF9', '#FFFFFF']} style={profile.background}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+
+      <View>
+        <View style={profile.titleBar}>
+          <Ionicons none="ios-arrow-back" size={24} color="#52575D"></Ionicons>
+          <Ionicons none="md-more" size={24} color="#52575D"></Ionicons>
+      
+        </View>
+
+        <View style={{alignSelf: "center"}}>
+            <View style={profile.profileImage}>
+              <Image source={require("./assets/profile-pic.jpg")} style={profile.image} resize="center">
+              </Image>
+            </View>
+            
+            <View style={profile.dm}>
+              <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
+              </View>
+              
+
+              <View style={profile.active}></View>
+
+              
+              <View style={profile.add}>
+                <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{marginTop: 6, marginLeft: 2}}></Ionicons>
+              </View>
+              
+        </View>
+
+        <View style={profile.infoContainer}>
+            <Text style={[profile.text, {fontWeight: "300", fontSize:36}]}>Welcome Back</Text>
+        </View>
+
+        <View style={profile.infoContainer}>
+            <Text style={[profile.text, {fontWeight: "200", fontSize:36}]}>Maeve Hungerford</Text>
+        </View>
+        </View>
+
+
+            <View style={profile.statsContainer}>
+                <View style={[profile.statsBox, {borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1}]}>
+                <Text style={[profile.text, {fontSize:30}]}>12</Text>
+                <Text style={[profile.text, profile.subText]}>Donations Made</Text>
+        </View>
+        </View>
+
+        <TouchableOpacity >
+        <View style={profile.paymentButton}>
+            <Button style={profile.textUse} title="Payment Info" color= "black" onPress={() => Alert.alert('This button takes you to payment information')}/>
+        </View>
+        </TouchableOpacity>
+        
+        <TouchableOpacity>
+        <View style={profile.profileButton}>
+            <Button title="Edit Profile" color= "black" onPress={() => Alert.alert('This button takes you to edit your profile')}/>
+        </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+        <View style={profile.learnButton}>
+            <Button title="Learn More" color= "black" onPress={() => Alert.alert('This button takes you to learn more about our app')}/>
+        </View>
+        </TouchableOpacity>
+
+     </ScrollView>
+     </LinearGradient>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

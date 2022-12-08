@@ -1,7 +1,7 @@
 # Runing the API on local Host #
 
 __TO START :__
-    Python App.py
+    python3 App.py
 
 > Outline of the DB and API on local Host:
 > all APIS are on app.py

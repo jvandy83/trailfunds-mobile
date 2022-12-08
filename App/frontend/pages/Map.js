@@ -11,13 +11,9 @@ import { AntDesign, Octicons, MaterialIcons } from '@expo/vector-icons';
 // TODO: Search Function 
 
 export default function MapPage({ }) {
-  // Static Demo Variables --- Replace with live data from backend:
-  // const likedTrails = React.useMemo(() => ([{name: "A Liked Trail", id: 0}, {name: "Some Liked Trail", id: 1}, {name: "Some Other Really Really Long-Named Liked Trail", id: 2}, {name: "A Third Liked Trail", id: 3}, {name: "Another Liked Trail", id: 4}, {name: "Yet Another Liked Trail", id: 5}, {name: "Yet Another Liked Trail", id: 6}, {name: "Yet Another Liked Trail", id: 7}, {name: "Yet Another Liked Trail", id: 8}, {name: "Yet Another Liked Trail", id: 9}, {name: "Yet Another Liked Trail", id: 10}, {name: "Yet Another Liked Trail", id: 11}, {name: "Yet Another Liked Trail", id: 12}, {name: "Yet Another Liked Trail", id: 13}, {name: "Yet Another Liked Trail", id: 14}, {name: "Yet Another Liked Trail", id: 15}]), []);
-  // const nearTrails = React.useMemo(() => ([{name: "A Liked Trail", id: 0}, {name: "Some Liked Trail", id: 1}, {name: "Some Other Really Really Long-Named Liked Trail", id: 2}, {name: "A Third Liked Trail", id: 3}, {name: "Another Liked Trail", id: 4}, {name: "Yet Another Liked Trail", id: 5}, {name: "Yet Another Liked Trail", id: 6}, {name: "Yet Another Liked Trail", id: 7}, {name: "Yet Another Liked Trail", id: 8}, {name: "Yet Another Liked Trail", id: 9}, {name: "Yet Another Liked Trail", id: 10}, {name: "Yet Another Liked Trail", id: 11}, {name: "Yet Another Liked Trail", id: 12}, {name: "Yet Another Liked Trail", id: 13}, {name: "Yet Another Liked Trail", id: 14}, {name: "Yet Another Liked Trail", id: 15}]), []);
-
     const [location, setLocation] = useState(null);
     const mapRef = useRef(null);
-    let myLat = 39.081311, myLong = -108.55511, myLatDelta = 1, myLongDelta = 1;
+    let myLat = 39.081311, myLong = -108.55511, myLatDelta = 0.1, myLongDelta = 0.1;
   
     useEffect(() => {
       (async () => {
@@ -33,20 +29,9 @@ export default function MapPage({ }) {
           longitudeDelta: 0.1,
         }
         mapRef.current.animateToRegion(userRegion);
-        console.log("Set Location!")
+        console.log("--- Location Set ---")
       })();
     }, []);
-  
-    // if (location) {
-    //   const userRegion = {
-    //     latitude: location.coords.latitude,
-    //     longitude: location.coords.longitude,
-    //     latitudeDelta: 0.1,
-    //     longitudeDelta: 0.1,
-    //   }
-    //   mapRef.current.animateToRegion(userRegion);
-    //   console.log("Animated to Region!")
-    // }
 
     const [isLiked, setLiked] = useState(false);
     const [isLikeMenu, setLikeMenu] = useState(false);
@@ -57,18 +42,8 @@ export default function MapPage({ }) {
     const scaleSize = 12;
     const animationDuration = 400;
 
-    const AnimationHandler = useCallback(() => {
-      const [isLiked, setLiked] = useState(false);
-      const [isLikeMenu, setLikeMenu] = useState(false);
-      const [isSearch, setSearch] = useState(false);
-      const [isSearchMenu, setSearchMenu] = useState(false);
-      const [isNear, setNear] = useState(false);
-      const [isNearMenu, setNearMenu] = useState(false);
-      
-    })
-
     const likeAnimationHandler = () => {
-      console.log("Like Handler!")
+      console.log("\nEntered Like Handler")
         if (isLiked) {
             setSearch(false);
             setSearchMenu(false);
@@ -88,7 +63,7 @@ export default function MapPage({ }) {
 
 
     const searchAnimationHandler = () => {
-      console.log("Search Handler!")
+      console.log("\nEntered Search Handler")
         if (isSearch) {
             setLiked(false);
             setLikeMenu(false);
@@ -108,7 +83,7 @@ export default function MapPage({ }) {
 
 
     const nearAnimationHandler = () => {
-      console.log("Near Handler!")
+      console.log("\nEntered Near Handler")
         if (isNear) {
             setLiked(false);
             setLikeMenu(false);
@@ -139,7 +114,7 @@ export default function MapPage({ }) {
             delay: animationDuration / 4,
             useNativeDriver: false
             },
-        ).start(console.log("Like Animation"));
+        ).start(console.log("Finished Like Animation"));
     }, [likeScale, isLiked]);
 
     useEffect(() => {
@@ -167,7 +142,7 @@ export default function MapPage({ }) {
     }, [nearScale, isNear]);
   
     const LikeBackground = () => {
-      console.log("Like Background!")
+      console.log("Rendering Like Menu Background")
       return (
         <Animated.View
           style={{
@@ -221,8 +196,9 @@ export default function MapPage({ }) {
     let MarkerKey = 0;
     let raw = Object.entries(TrailData);
     let parsed = raw[3][1];
+
     const RenderMap = React.memo(() => {
-      console.log("Rendered Map!")
+      console.log("Rendering Map")
       return (
         <MapView
           provider={"google"}
@@ -260,7 +236,7 @@ export default function MapPage({ }) {
 
     const RenderLike = React.memo(() => {
       const likedTrails = React.useMemo(() => ([{name: "A Liked Trail", id: 0}, {name: "Some Liked Trail", id: 1}, {name: "Some Other Really Really Long-Named Liked Trail", id: 2}, {name: "A Third Liked Trail", id: 3}, {name: "Another Liked Trail", id: 4}, {name: "Yet Another Liked Trail", id: 5}, {name: "Yet Another Liked Trail", id: 6}, {name: "Yet Another Liked Trail", id: 7}, {name: "Yet Another Liked Trail", id: 8}, {name: "Yet Another Liked Trail", id: 9}, {name: "Yet Another Liked Trail", id: 10}, {name: "Yet Another Liked Trail", id: 11}, {name: "Yet Another Liked Trail", id: 12}, {name: "Yet Another Liked Trail", id: 13}, {name: "Yet Another Liked Trail", id: 14}, {name: "Yet Another Liked Trail", id: 15}]), []);
-      console.log("Render Like!")
+      console.log("Rendering Like Menu")
       return (
         <View style={mapStyles.map_column}>
           <LikeBackground/>
@@ -280,6 +256,7 @@ export default function MapPage({ }) {
     })
 
     const RenderLikeButton = React.memo(() => {
+      console.log("Rendering Like Button")
       return (
       <View style={mapStyles.map_column}>
         <TouchableOpacity onPress={likeAnimationHandler}>
@@ -352,6 +329,7 @@ export default function MapPage({ }) {
     )})
 
     const RenderMapPage = React.memo(() => {
+      console.log("Rendering Root Component")
       return (
       <View style={mapStyles.mapContainer}>
         <View style={StyleSheet.create({    
@@ -375,7 +353,7 @@ export default function MapPage({ }) {
       </View>
     )})
 
-  return (
-    <RenderMapPage/>
-  )
+    return (
+      <RenderMapPage/>
+    )
 }

@@ -1,23 +1,15 @@
 
-import { StatusBar } from "expo-status-bar";
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Pressable
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 let STORAGE_KEY = '@user_input';
 
 const WalletRefills = ({navigation}) => {
     const [input, setInput] = useState();
-    const [isLoaded, setIsLoaded] = useState(false);
-    let value = 0;
 
     useEffect(() => {
       readData();      
@@ -48,54 +40,43 @@ const WalletRefills = ({navigation}) => {
       saveData(temp)
       setInput(temp);
     };
-    // ...
+    
     return (
-      <View style={styles.container}>
-        <View style={styles.panel}>
-        <Text style={styles.title}>
-       {input}
-      </Text>
-          <Text style={styles.text}>Add to your wallet</Text>
-  
-          <Pressable onPress={() =>  
-          { addFunds(3);
-            navigation.navigate("Wallet Page");
-            }} style={styles.button}>
-            <Text style={styles.buttonText}>$3</Text>
-          </Pressable>
-          <Pressable onPress={() => { 
-              addFunds(5);
-        navigation.navigate("Wallet Page");
-            }
-         }style={styles.button}>
-            <Text style={styles.buttonText}>$5</Text>
-          </Pressable>
-          <Pressable onPress={() => { addFunds(10)
-            navigation.navigate("Wallet Page");}
-          } style={styles.button}>
-            <Text style={styles.buttonText}>$10</Text>
-          </Pressable>
-          <Pressable onPress={readData} style={styles.button}>
-          <Text style={styles.buttonText}>Show</Text>
-        </Pressable>
+      <LinearGradient colors={['#59C0922C', '#FAFDFCF9', '#FFFFFF']} style={profile.background}>
+        <View style={refill.container}>
+          <View style={refill.panel}>
+          <Text style={refill.title}>{input}</Text>
+          <Text style={refill.text}>Add to your wallet</Text>
+          <TouchableOpacity onPress={() => {
+            addFunds(3);
+            navigation.navigate("My Wallet");
+            }} style={refill.button}>
+            <Text style={refill.buttonText}>$3</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { 
+            addFunds(5);
+            navigation.navigate("My Wallet");
+            }} style={refill.button}>
+            <Text style={refill.buttonText}>$5</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { addFunds(10)
+            navigation.navigate("My Wallet");
+            }} style={refill.button}>
+            <Text style={refill.buttonText}>$10</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={readData} style={refill.button}>
+            <Text style={refill.buttonText}>Show</Text>
+          </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </LinearGradient>
     );
   
   };
-  /*
-  <TextInput
-  style={styles.inputField}
-  value={other}
-  placeholder="Other"
-  onChangeText={onChangeText}
-  onSubmitEditing={onSubmitEditing}
-  />
-  */
   
-  
-  const styles = StyleSheet.create({
+  const refill = StyleSheet.create({
     container: {
+      paddingTop: "25%",
       flex: 1,
     },
     header: {
@@ -110,6 +91,7 @@ const WalletRefills = ({navigation}) => {
       fontSize: 22,
       color: '#333',
       fontWeight: 'bold',
+      alignSelf: 'center',
     },
     panel: {
       paddingTop: 10,
@@ -119,8 +101,10 @@ const WalletRefills = ({navigation}) => {
       fontSize: 20,
     },
     text: {
+      alignSelf: 'center',
       fontSize: 24,
-      paddingTop: 10,
+      paddingTop: 50,
+      paddingBottom: 10,
     },
     inputField: {
       backgroundColor: '#fff',

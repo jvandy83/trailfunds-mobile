@@ -2,16 +2,17 @@ import React, { useState,useEffect}from "react";
 import { StyleSheet, Text, View,  Pressable } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PrimaryButton } from "../styles/frontendStyles";
+import { LinearGradient } from 'expo-linear-gradient'
 let STORAGE_KEY = '@user_input';
 
 const WalletPage = ({ navigation }) => {
   const [input, setInput] = useState(0);
   const[isEmpty, setIsEmpty] = useState(true);
-  const name = 'John Doe';
+  const name = 'Bryan Wachs';
 
   useEffect(() => {
     if (input == 0) {
-      alert(input + 'weee');
+      alert(input);
     } else {alert((input))};
   }, [input]);
 
@@ -20,9 +21,9 @@ const WalletPage = ({ navigation }) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, temp)
       alert(temp);
-      //alert('Data successfully saved')
+      // alert('Data successfully saved')
     } catch (e) {
-      alert('Failed to save the data to the storage')
+      alert('Something went Wrong!\nFailed to save the data to the storage')
     }
   }
 
@@ -35,17 +36,6 @@ const WalletPage = ({ navigation }) => {
       }
     })
   }
-  /*
-  const setFunds = async (value) => {
-    componentDidUpdate(input);
-      if (value !== input) {
-        alert(value);
-        setInput(value);
-        saveData(value);
-      }
-    } 
-  
-  */
   const setFunds = async (value) => {
     setInput(value);
     saveData(value);
@@ -55,39 +45,42 @@ const WalletPage = ({ navigation }) => {
   
   
   return (
-    
-    <View style={styles.container}>
-      <Text style={styles.label}>
-        {name}'s Wallet
-      </Text>
-      <Text style={styles.title}>
-       {isEmpty ? "$" +  input : "Uh Oh, your Out!"}
-      </Text>
-      <PrimaryButton
-        text = {isEmpty ? "Donate" : "All Out!"}
-        onPress={() => {
-          
-          setInput(0);
-          setFunds(0);
-        }}
-      />
-      <PrimaryButton
-        text={isEmpty ? "Add Funds" : "Refill"}
-        onPress={
-          () => {
-          navigation.navigate("Wallet Refill");
-        }}
-      />
-     
-      <Pressable onPress={readData} style={styles.button}>
-          <Text style={styles.buttonText}>Show</Text>
-        </Pressable>
-    </View>
+    <LinearGradient colors={['#59C0922C', '#FAFDFCF9', '#FFFFFF']} style={profile.background}>
+      <View style={wallet.container}>
+        <Text style={wallet.label}>
+          {name}' Wallet
+        </Text>
+        <Text style={wallet.title}>
+        {isEmpty ? "$" +  input : "Oops, You're Out of Trail Bucks!"}
+        </Text>
+        <PrimaryButton
+          text = {isEmpty ? "Donate" : "All Out!"}
+          onPress={() => {
+            
+            setInput(0);
+            setFunds(0);
+          }}
+        />
+        <PrimaryButton
+          text={isEmpty ? "Add Funds" : "Refill"}
+          onPress={
+            () => {
+            navigation.navigate("Refill Wallet");
+          }}
+        />
+      
+        <Pressable onPress={readData} style={wallet.secondaryButton}>
+            <Text style={[wallet.buttonText, {color: "white"}]}>Show</Text>
+          </Pressable>
+      </View>
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
+const wallet = StyleSheet.create({
   container: {
+    paddingTop: "30%",
+    justifyContent: "top",
     flex: 1,
     alignItems: 'center'
   },
@@ -103,12 +96,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#333',
     fontWeight: 'bold',
+    paddingBottom: 50,
   },
   panel: {
     paddingTop: 10,
     paddingHorizontal: 10,
   },
   label: {
+    paddingBottom: 10,
     fontSize: 20,
   },
   text: {
@@ -134,6 +129,20 @@ const styles = StyleSheet.create({
     height: 48,
     padding: 10,
     backgroundColor: '#59C092',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+  },
+  secondaryButton: {
+    borderRadius: 100,
+    paddingVertical: 14,
+    top:0.5,
+    bottom:0.5,
+    margin: 10,
+    width: 223,
+    height: 48,
+    padding: 10,
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,

@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import DashboardPage from "../pages/Dashboard";
-import AboutPage from "../pages/AboutUs";
+// import AboutPage from "../pages/AboutUs";
 import MapPage from "../pages/Map";
 import ProfilePage from "../pages/Profile";
 import WalletPage from "../pages/Wallet";
@@ -26,7 +26,7 @@ const DrawerMenu = () => {
       />,
     })}>
       <Drawer.Screen name="Home" component={DashboardPage} />
-      <Drawer.Screen name="About Us" component={AboutPage} />
+      {/* <Drawer.Screen name="About Us" component={AboutPage} /> */}
       <Drawer.Screen name="Trail Map" component={MapPage} />
       <Drawer.Screen name="My Profile" component={ProfilePage} />
       <Drawer.Screen name="My Wallet" component={WalletPage} />

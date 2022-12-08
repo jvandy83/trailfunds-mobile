@@ -38,7 +38,7 @@ export default function App() {
         </View>
 
         <View style={profile.infoContainer}>
-            <Text style={[profile.text, {fontWeight: "300", fontSize:36}]}>Welcome Back</Text>
+            <Text style={[profile.text, {fontWeight: "300", fontSize:36}]}>Hello</Text>
         </View>
 
         <View style={profile.infoContainer}>
@@ -68,7 +68,7 @@ export default function App() {
 
         <TouchableOpacity>
         <View style={profile.learnButton}>
-            <Button title="Learn More" color= "black" onPress={() => Alert.alert('This button takes you to learn more about our app')}/>
+            <Button title="Learn More" color= "white" onPress={() => Alert.alert('This button takes you to learn more about our app')}/>
         </View>
         </TouchableOpacity>
 

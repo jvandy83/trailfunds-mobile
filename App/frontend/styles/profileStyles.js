@@ -112,9 +112,9 @@ export default profile = StyleSheet.create({
      top:0.5,
      bottom:0.5,
      margin: 10,
-     width: 223,
+     width: 170,
      height: 48,
-     backgroundColor: '#59C092',
+     backgroundColor: 'black',
      alignSelf: "center",
      justifyContent: "center",
   },
@@ -131,5 +131,4 @@ export default profile = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-
 });

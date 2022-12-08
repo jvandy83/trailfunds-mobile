@@ -27,9 +27,9 @@ const DrawerMenu = () => {
     })}>
       <Drawer.Screen name="Home" component={DashboardPage} />
       <Drawer.Screen name="About Us" component={AboutPage} />
-      <Drawer.Screen name="Map" component={MapPage} />
-      <Drawer.Screen name="Profile" component={ProfilePage} />
-      <Drawer.Screen name="Wallet Page" component={WalletPage} />
+      <Drawer.Screen name="Trail Map" component={MapPage} />
+      <Drawer.Screen name="My Profile" component={ProfilePage} />
+      <Drawer.Screen name="My Wallet" component={WalletPage} />
     </Drawer.Navigator>
     </SafeAreaProvider>
   );

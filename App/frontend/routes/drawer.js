@@ -7,7 +7,7 @@ import ProfilePage from "../pages/Profile";
 import WalletPage from "../pages/Wallet";
 import { IconComponent } from "../styles/frontendStyles"
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
+import WalletRefills from "../pages/WalletRefill";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,6 +30,7 @@ const DrawerMenu = () => {
       <Drawer.Screen name="Trail Map" component={MapPage} />
       <Drawer.Screen name="My Profile" component={ProfilePage} />
       <Drawer.Screen name="My Wallet" component={WalletPage} />
+      <Drawer.Screen name="Refill Wallet" component={WalletRefills} />
     </Drawer.Navigator>
     </SafeAreaProvider>
   );

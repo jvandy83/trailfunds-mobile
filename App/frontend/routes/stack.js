@@ -9,7 +9,11 @@ import ProfilePage from "../pages/Profile";
 import WalletPage from "../pages/Wallet";
 import TransactionPage from "../pages/Transactions";
 import StyleTest from "../pages/styleTest";
+<<<<<<< HEAD
 import Map from "../pages/Map";
+=======
+import WalletRefills from "../pages/WalletRefill";
+>>>>>>> nate-BE
 import { DrawerMenu } from "./drawer";
 
 //creating the navigator
@@ -26,6 +30,7 @@ const StackHome = () => {
       <Stack.Screen name="Profile" component={ProfilePage} />
       <Stack.Screen name="Wallet Page" component={WalletPage} />
       <Stack.Screen name="Transaction Page" component={TransactionPage} />
+      <Stack.Screen name="Wallet Refill" component={WalletRefills} />
       <Stack.Screen name="Style Page" component={StyleTest} />
       <Stack.Screen name="Trail Map" component={Map} />
     </Stack.Navigator>

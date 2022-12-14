@@ -40,3 +40,28 @@ Developement is currently ongoing, this project is intended to give college stud
 ## Contract
 
 https://gitlab.com/trailfunds/trailfunds/-/wikis/uploads/b62bf15b892802e18b8c55f74076700a/TrailFunds_Contract_2022.pdf
+
+## Individual Contributions (Fall 2022)
+
+Jacob Hansen - Infrastructure
+- Stack design and setup
+- React Navigation (drawer/stack menus)
+- Expo setup and integration
+- Docker Devcontainer setup 
+- Map.js frontend page
+- GitLab setup and maintenance (CI/CD, Merge Requests, Issues, Wiki, etc.)
+- Team/Client coordination and planning (Scrum master)
+
+Maeve Hungerford - Frontend
+- Content for all frontend pages
+- React-native troubleshooting
+- Expo GO troubleshooting
+- Profile.js frontend page
+- Stylesheet refactoring (individual stylesheets for each page under /App/frontend/styles/)
+- Design consistency across pages
+
+Joseph Edwards - Full Stack
+- Awaiting Response
+
+Nathan Daniel - Backend
+- Awaiting Response

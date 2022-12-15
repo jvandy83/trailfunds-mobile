@@ -61,7 +61,13 @@ Maeve Hungerford - Frontend
 - Design consistency across pages
 
 Joseph Edwards - Full Stack
-- Awaiting Response
+- Designed some Backend API calls
+- Helped structure the SQLite Database
+- Helped construct Database queries and protections
+- Worked on integrating the backend through Expo GO
+- Lead full stack troubleshooting
 
 Nathan Daniel - Backend
-- Awaiting Response
+- Could Not Contact
+
+Last Edited: Thursday, December 15th @ 12:15 PM

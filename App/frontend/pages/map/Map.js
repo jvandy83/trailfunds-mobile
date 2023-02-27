@@ -20,6 +20,42 @@ const SCALE_SIZE = 12;
 const ANIMATION_DURATION = 400;
 
 const MapPage = () => {
+	// const reducer = (state, action) => {
+	//   switch(action.type) {
+	//     case 'isLiked':
+	//       return {
+	//         ...state,
+	//         isSearch: false,
+	//         isSearchMenu: false,
+	//         isNear: false,
+	//         isNearMenu: false,
+	//         likeMenu: !state.likeMenu,
+	//         isLiked: !state.isLiked
+	//       };
+	//     case 'isSearch':
+	//       return {
+	// 				...state,
+	// 				isNear: false,
+	// 				isNearMenu: false,
+	// 				likeMenu: false,
+	// 				isLiked: false,
+	// 				isSearch: !state.isSearch,
+	// 				isSearchMenu: !isSearchMenu,
+	// 			};
+	//     case 'isNear':
+	//       return {
+	// 				...state,
+	// 				isSearch: false,
+	// 				isSearchMenu: false,
+	// 				likeMenu: false,
+	// 				isLiked: false,
+	// 				isNear: !state.isNear,
+	// 				isNearMenu: !state.isNearMenu,
+	// 			};
+	//     default:
+	//       return null;
+	//   }
+	// }
 	// local state
 	const [isLiked, setLiked] = useState(false);
 	const [isLikeMenu, setLikeMenu] = useState(false);
@@ -34,29 +70,7 @@ const MapPage = () => {
 	const mapRef = useRef(null);
 
 	// event handlers
-	const likeAnimationHandler = () => {
-		console.log('\nEntered Like Handler');
-		if (isLiked) {
-			setSearch(false);
-			setSearchMenu(false);
-			setNear(false);
-			setNearMenu(false);
-			setLikeMenu((isLikeMenu) => !isLikeMenu);
-			setLiked((isLiked) => !isLiked);
-		} else {
-			setSearch(false);
-			setSearchMenu(false);
-			setNear(false);
-			setNearMenu(false);
-			setLiked((isLiked) => !isLiked);
-			setTimeout(() => {
-				setLikeMenu((isLikeMenu) => !isLikeMenu);
-			}, ANIMATION_DURATION + 200);
-		}
-	};
-
-	const searchAnimationHandler = () => {
-		console.log('\nEntered Search Handler');
+	const handleToggleSearchMenu = () => {
 		if (isSearch) {
 			setLiked(false);
 			setLikeMenu(false);
@@ -76,8 +90,27 @@ const MapPage = () => {
 		}
 	};
 
-	const nearAnimationHandler = () => {
-		console.log('\nEntered Near Handler');
+	const handleToggleLikeMenu = () => {
+		if (isLiked) {
+			setSearch(false);
+			setSearchMenu(false);
+			setNear(false);
+			setNearMenu(false);
+			setLikeMenu((isLikeMenu) => !isLikeMenu);
+			setLiked((isLiked) => !isLiked);
+		} else {
+			setSearch(false);
+			setSearchMenu(false);
+			setNear(false);
+			setNearMenu(false);
+			setLiked((isLiked) => !isLiked);
+			setTimeout(() => {
+				setLikeMenu((isLikeMenu) => !isLikeMenu);
+			}, ANIMATION_DURATION + 200);
+		}
+	};
+
+	const handleToggleNearMenu = () => {
 		if (isNear) {
 			setLiked(false);
 			setLikeMenu(false);
@@ -282,17 +315,17 @@ const MapPage = () => {
 				</View>
 				<View style={mapStyles.map_column_container}>
 					<LikeButton
-						likeAnimationHandler={likeAnimationHandler}
+						likeAnimationHandler={handleToggleLikeMenu}
 						defaults={defaults}
 						mapStyles={mapStyles}
 					/>
 					<SearchButton
 						defaults={defaults}
 						mapStyles={mapStyles}
-						searchAnimationHandler={searchAnimationHandler}
+						searchAnimationHandler={handleToggleSearchMenu}
 					/>
 					<NearButton
-						nearAnimationHandler={nearAnimationHandler}
+						nearAnimationHandler={handleToggleNearMenu}
 						mapStyles={mapStyles}
 						defaults={defaults}
 					/>

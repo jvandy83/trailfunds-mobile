@@ -132,7 +132,7 @@ const MapPage = () => {
 				<View
 					style={{
 						...mapStyles.like_menu,
-						display: isLiked ? 'flex' : 'none',
+						display: isLikeMenu ? 'flex' : 'none',
 					}}
 				>
 					<View style={mapStyles.like_list_header}>
@@ -157,7 +157,7 @@ const MapPage = () => {
 				<View
 					style={{
 						...mapStyles.search_menu,
-						display: isSearch ? 'flex' : 'none',
+						display: isSearchMenu ? 'flex' : 'none',
 					}}
 				>
 					<View style={mapStyles.search_header}>
@@ -200,7 +200,7 @@ const MapPage = () => {
 				<View
 					style={{
 						...mapStyles.near_menu,
-						display: isNear ? 'flex' : 'none',
+						display: isNearMenu ? 'flex' : 'none',
 					}}
 				>
 					<View style={mapStyles.near_list_header}>

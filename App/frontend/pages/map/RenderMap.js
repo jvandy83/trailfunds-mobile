@@ -21,7 +21,7 @@ const RenderMap = ({ children }) => {
 	let MarkerKey = 0;
 	let raw = Object.entries(TrailData);
 	let parsed = raw[3][1];
-	console.log('Rendering Map');
+	console.log('Rendering parent map component');
 	return (
 		<View style={mapStyles.mapContainer}>
 			<View
@@ -67,4 +67,4 @@ const RenderMap = ({ children }) => {
 	);
 };
 
-export default React.memo(RenderMap);
+export default RenderMap;

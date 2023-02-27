@@ -7,7 +7,7 @@ export const Background = ({ backgroundColor, scale }) => {
 				width: 75,
 				height: 75,
 				borderRadius: '100%',
-				backgroundColor: backgroundColor,
+				backgroundColor,
 				opacity: 0.9,
 				transform: [{ scale }],
 			}}

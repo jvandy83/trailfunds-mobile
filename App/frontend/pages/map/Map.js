@@ -283,7 +283,6 @@ const MapPage = () => {
 	}, [nearScale, isNear]);
 
 	const renderMapPage = () => {
-		console.log('rendering root component');
 		return (
 			<RenderMap>
 				<View style={mapStyles.map_column_container}>

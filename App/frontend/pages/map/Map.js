@@ -132,6 +132,7 @@ const MapPage = () => {
 				<View
 					style={{
 						...mapStyles.like_menu,
+						display: isLiked ? 'flex' : 'none',
 					}}
 				>
 					<View style={mapStyles.like_list_header}>
@@ -156,6 +157,7 @@ const MapPage = () => {
 				<View
 					style={{
 						...mapStyles.search_menu,
+						display: isSearch ? 'flex' : 'none',
 					}}
 				>
 					<View style={mapStyles.search_header}>
@@ -198,6 +200,7 @@ const MapPage = () => {
 				<View
 					style={{
 						...mapStyles.near_menu,
+						display: isNear ? 'flex' : 'none',
 					}}
 				>
 					<View style={mapStyles.near_list_header}>
@@ -243,22 +246,9 @@ const MapPage = () => {
 		})();
 	}, []);
 
-	// useEffect(() => {
-	// 	const scale =
-	// 		(isLiked && likeScale) ||
-	// 		(isSearch && searchScale) ||
-	// 		(isNear && nearScale);
-	// 	Animated.timing(scale, {
-	// 		toValue: isLiked ? SCALE_SIZE : 0,
-	// 		duration: ANIMATION_DURATION,
-	// 		delay: ANIMATION_DURATION / 4,
-	// 		useNativeDriver: false,
-	// 	}).start(console.log('Finished Like Animation'));
-	// }, [likeScale, isLiked, searchScale, isSearch, nearScale, isNear]);
-
 	useEffect(() => {
 		Animated.timing(likeScale, {
-			toValue: isSearch ? SCALE_SIZE : 0,
+			toValue: isLiked ? SCALE_SIZE : 0,
 			duration: ANIMATION_DURATION,
 			delay: ANIMATION_DURATION / 4,
 			useNativeDriver: false,
@@ -286,9 +276,9 @@ const MapPage = () => {
 		return (
 			<RenderMap>
 				<View style={mapStyles.map_column_container}>
-					{isLikeMenu && <RenderLike />}
-					{isSearchMenu && <RenderSearch />}
-					{isNearMenu && <RenderNear />}
+					<RenderLike />
+					<RenderSearch />
+					<RenderNear />
 				</View>
 				<View style={mapStyles.map_column_container}>
 					<LikeButton

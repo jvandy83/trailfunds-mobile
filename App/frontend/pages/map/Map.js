@@ -20,42 +20,6 @@ const SCALE_SIZE = 12;
 const ANIMATION_DURATION = 400;
 
 const MapPage = () => {
-	// const reducer = (state, action) => {
-	//   switch(action.type) {
-	//     case 'isLiked':
-	//       return {
-	//         ...state,
-	//         isSearch: false,
-	//         isSearchMenu: false,
-	//         isNear: false,
-	//         isNearMenu: false,
-	//         likeMenu: !state.likeMenu,
-	//         isLiked: !state.isLiked
-	//       };
-	//     case 'isSearch':
-	//       return {
-	// 				...state,
-	// 				isNear: false,
-	// 				isNearMenu: false,
-	// 				likeMenu: false,
-	// 				isLiked: false,
-	// 				isSearch: !state.isSearch,
-	// 				isSearchMenu: !isSearchMenu,
-	// 			};
-	//     case 'isNear':
-	//       return {
-	// 				...state,
-	// 				isSearch: false,
-	// 				isSearchMenu: false,
-	// 				likeMenu: false,
-	// 				isLiked: false,
-	// 				isNear: !state.isNear,
-	// 				isNearMenu: !state.isNearMenu,
-	// 			};
-	//     default:
-	//       return null;
-	//   }
-	// }
 	// local state
 	const [isLiked, setLiked] = useState(false);
 	const [isLikeMenu, setLikeMenu] = useState(false);

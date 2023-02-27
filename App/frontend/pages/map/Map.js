@@ -93,7 +93,7 @@ const MapPage = () => {
 			}, ANIMATION_DURATION + 200);
 		}
 	};
-
+	//// end of event handlers ////
 	const Item = ({ item }) => (
 		<TouchableOpacity style={mapStyles.list_box}>
 			<Text style={mapStyles.list_text} numberOfLines={1}>

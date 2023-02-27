@@ -7,8 +7,8 @@ services:
         - NODE_ENV=development
     environment:
       - NODE_ENV=development
-      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0 
-      - REACT_NATIVE_PACKAGER_HOSTNAME=47.44.124.193
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - REACT_NATIVE_PACKAGER_HOSTNAME=73.229.198.67
     tty: true
     ports:
       - '19006:19006'
@@ -27,7 +27,7 @@ services:
       - notused:/opt/App/frontend/node_modules
     healthcheck:
       disable: true
-  
+
   apps:
     build:
       context: ./App/backend

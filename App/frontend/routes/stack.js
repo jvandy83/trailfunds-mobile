@@ -7,6 +7,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'; //S
 //pages
 import ProfilePage from '../pages/Profile';
 import WalletPage from '../pages/Wallet';
+import DashboardPage from '../pages/Dashboard';
+import TemplatePage from '../pages/Template';
+import AboutPage from '../pages/AboutUs';
 //import TransactionPage from "../pages/Transactions";
 import Map from '../pages/map/Map';
 import WalletRefills from '../pages/WalletRefill';
@@ -23,10 +26,13 @@ const StackHome = () => {
 				component={DrawerMenu} //Calling the drawer
 				options={{ headerShown: false }} //Hiding the header when there are other pages on top of it
 			/>
-			<Stack.Screen name='My Profile' component={ProfilePage} />
-			<Stack.Screen name='My Wallet' component={WalletPage} />
+			<Stack.Screen name='Help' component={TemplatePage} />
+			<Stack.Screen name='Home' component={DashboardPage} />
+			<Stack.Screen name='Profile' component={ProfilePage} />
+			<Stack.Screen name='Wallet' component={WalletPage} />
+			<Stack.Screen name='About' component={AboutPage} />
 			{/* <Stack.Screen name="Donate" component={TransactionPage} /> */}
-			<Stack.Screen name='Refill Wallet' component={WalletRefills} />
+			<Stack.Screen name='Wallet Refill' component={WalletRefills} />
 			<Stack.Screen name='Trail Map' component={Map} />
 		</Stack.Navigator>
 	);

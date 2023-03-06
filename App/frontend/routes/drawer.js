@@ -1,13 +1,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import DashboardPage from '../pages/Dashboard';
-// import AboutPage from "../pages/AboutUs";
+import AboutPage from '../pages/AboutUs';
 import MapPage from '../pages/map/Map';
-import ProfilePage from '../pages/Profile';
 import WalletPage from '../pages/Wallet';
+import TemplatePage from '../pages/Template';
 import { IconComponent } from '../styles/frontendStyles';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import WalletRefills from '../pages/WalletRefill';
+import { CustomDrawerContent } from '../components';
 
 const Drawer = createDrawerNavigator();
 
@@ -15,6 +15,7 @@ const DrawerMenu = () => {
 	return (
 		<SafeAreaProvider forceInset={{ bottom: 'never' }}>
 			<Drawer.Navigator
+				drawerContent={(props) => <CustomDrawerContent {...props} />}
 				screenOptions={({ navigation }) => ({
 					drawerStyle: {
 						backgroundColor: '#59C0922C',
@@ -28,11 +29,11 @@ const DrawerMenu = () => {
 				})}
 			>
 				<Drawer.Screen name='Home' component={DashboardPage} />
-				{/* <Drawer.Screen name="About Us" component={AboutPage} /> */}
-				<Drawer.Screen name='Trail Map' component={MapPage} />
-				<Drawer.Screen name='My Profile' component={ProfilePage} />
-				<Drawer.Screen name='My Wallet' component={WalletPage} />
-				<Drawer.Screen name='Refill Wallet' component={WalletRefills} />
+				<Drawer.Screen name='Wallet' component={WalletPage} />
+				<Drawer.Screen name='Map' component={MapPage} />
+				<Drawer.Screen name='About' component={AboutPage} />
+				<Drawer.Screen name='Help' component={TemplatePage} />
+				{/* <Drawer.Screen name='Profile' component={ProfilePage} /> */}
 			</Drawer.Navigator>
 		</SafeAreaProvider>
 	);

@@ -14,12 +14,15 @@ export const CustomDrawerContent = ({ navigation }) => {
 	return (
 		<View style={styles.customContentContainer}>
 			<View style={styles.header}>
-				<ImageBackground
-					resizeMode='cover'
-					borderRadius={100}
-					style={styles.headerImage}
-					source={profilePic}
-				/>
+				<View>
+					<ImageBackground
+						resizeMode='cover'
+						borderRadius={100}
+						style={styles.headerImage}
+						source={profilePic}
+					/>
+					<Text style={styles.headerText}>Maeve</Text>
+				</View>
 			</View>
 			<View style={styles.navigation}>
 				<Pressable
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	header: {
-		height: '40%',
+		paddingVertical: 50,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#59C092',
@@ -88,9 +91,13 @@ const styles = StyleSheet.create({
 	headerImage: {
 		width: 110,
 		height: 110,
-		justifyContent: 'center',
 	},
-	navigation: {},
+	headerText: {
+		textAlign: 'center',
+		fontSize: 20,
+		fontWeight: 'bold',
+		paddingTop: 24,
+	},
 	contentItem: {
 		//...
 		width: '100%',

@@ -2,13 +2,17 @@ from flask import Flask, jsonify, request
 from http import HTTPStatus
 from flask_cors import CORS
 
-
 import main
 import users
 import trails
 import maintainers
 import donations
 import config
+
+import stripe
+
+
+stripe.api_key='sk_test_D4pNByx08dJpJShCHbDp79Y70007pq01Qn'
 
 app = Flask(__name__)
 CORS(app)
@@ -211,6 +215,28 @@ def Delete_ByID(ContentID):
         return jsonify({'message': 'recipe not found'}), HTTPStatus.NOT_FOUND
     recipes.remove(recipe)
     return jsonify(recipes)
+
+### Strip payments ###
+@app.route('/payment_intents', methods=['POST'])
+def make_payment_intent():
+
+    print(request.json)
+    
+    amount = request.json['amount']
+
+    try:
+        response = stripe.PaymentIntent.create(
+            amount = int(amount) * 100,
+            currency = 'USD',
+            payment_method_types = ['card']
+        )
+        print('***payment_intent***: ', response)
+        client_secret = response['client_secret']
+        return jsonify({ 'message': 'Payment initiated!', 'payment_intent': client_secret, 'data': response })
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'Error'})
 
 if __name__ == '__main__':
     app.run()

@@ -2,4 +2,12 @@ import { Background } from './layout/Background';
 
 import { LikeButton, NearButton, SearchButton } from './buttons';
 
-export { Background, LikeButton, NearButton, SearchButton };
+import { CustomDrawerContent } from './drawer/DrawerContent';
+
+export {
+	Background,
+	LikeButton,
+	NearButton,
+	SearchButton,
+	CustomDrawerContent,
+};

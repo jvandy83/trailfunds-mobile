@@ -1,25 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TouchableOpacity, Text, View, Animated, FlatList } from 'react-native';
-import RenderMap from './RenderMap';
-import { mapStyles } from '../../styles/mapStyles';
-import { defaults } from '../../styles/frontendStyles';
+
+import {RenderMapPage} from './RenderMapPage';
 
 import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
+
 // components
-import {
-	NearButton,
-	SearchButton,
-	LikeButton,
-	Background,
-} from '../../components';
+import {NearButton} from '../../components/buttons/NearButton'
+import {SearchButton} from '../../components/buttons/SearchButton';
+import {LikeButton} from '../../components/buttons/LikeButton';
+import {AnimatedButtonBackground} from '../../components/layout/AnimatedButtonBackground'
+
+import { mapStyles } from '../../styles/mapStyles';
+import { defaults } from '../../styles/frontendStyles';
 
 // TODO: Search Function
 
 const SCALE_SIZE = 12;
 const ANIMATION_DURATION = 400;
 
-const MapPage = () => {
+export const Map = () => {
 	// local state
 	const [isLiked, setLiked] = useState(false);
 	const [isLikeMenu, setLikeMenu] = useState(false);
@@ -94,6 +95,7 @@ const MapPage = () => {
 		}
 	};
 	//// end of event handlers ////
+
 	const Item = ({ item }) => (
 		<TouchableOpacity style={mapStyles.list_box}>
 			<Text style={mapStyles.list_text} numberOfLines={1}>
@@ -125,7 +127,7 @@ const MapPage = () => {
 		console.log('Rendering Like Menu');
 		return (
 			<View style={mapStyles.map_column}>
-				<Background backgroundColor='#a97089' scale={likeScale} />
+				<AnimatedButtonBackground backgroundColor='#a97089' scale={likeScale} />
 				<View
 					style={{
 						...mapStyles.like_menu,
@@ -150,7 +152,7 @@ const MapPage = () => {
 		console.log('render search menu');
 		return (
 			<View style={mapStyles.map_column}>
-				<Background backgroundColor='#71a890' scale={searchScale} />
+				<AnimatedButtonBackground backgroundColor='#71a890' scale={searchScale} />
 				<View
 					style={{
 						...mapStyles.search_menu,
@@ -193,7 +195,7 @@ const MapPage = () => {
 		console.log('render near menu');
 		return (
 			<View style={mapStyles.map_column}>
-				<Background backgroundColor='#726faa' scale={nearScale} />
+				<AnimatedButtonBackground backgroundColor='#726faa' scale={nearScale} />
 				<View
 					style={{
 						...mapStyles.near_menu,
@@ -269,36 +271,31 @@ const MapPage = () => {
 		}).start();
 	}, [nearScale, isNear]);
 
-	const renderMapPage = () => {
-		return (
-			<RenderMap>
-				<View style={mapStyles.map_column_container}>
-					<RenderLike />
-					<RenderSearch />
-					<RenderNear />
-				</View>
-				<View style={mapStyles.map_column_container}>
-					<LikeButton
-						likeAnimationHandler={handleToggleLikeMenu}
-						defaults={defaults}
-						mapStyles={mapStyles}
-					/>
-					<SearchButton
-						defaults={defaults}
-						mapStyles={mapStyles}
-						searchAnimationHandler={handleToggleSearchMenu}
-					/>
-					<NearButton
-						nearAnimationHandler={handleToggleNearMenu}
-						mapStyles={mapStyles}
-						defaults={defaults}
-					/>
-				</View>
-			</RenderMap>
-		);
-	};
-
-	return renderMapPage();
+	return (
+		<RenderMapPage>
+			<View style={mapStyles.map_column_container}>
+				<RenderLike />
+				<RenderSearch />
+				<RenderNear />
+			</View>
+			<View style={mapStyles.map_column_container}>
+				<LikeButton
+					likeAnimationHandler={handleToggleLikeMenu}
+					defaults={defaults}
+					mapStyles={mapStyles}
+				/>
+				<SearchButton
+					defaults={defaults}
+					mapStyles={mapStyles}
+					searchAnimationHandler={handleToggleSearchMenu}
+				/>
+				<NearButton
+					nearAnimationHandler={handleToggleNearMenu}
+					mapStyles={mapStyles}
+					defaults={defaults}
+				/>
+			</View>
+		</RenderMapPage>
+	);
 };
 
-export default MapPage;

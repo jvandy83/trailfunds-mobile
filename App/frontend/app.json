@@ -1,49 +1,48 @@
 {
-  "expo": {
-    "name": "TrailFundsApp",
-    "slug": "TrailFundsApp",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.vanthedev.TrailFundsApp"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.vanthedev.TrailFundsApp"
-    },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "acct_1GKoRSLlNRWolhfP",
-          "enableGooglePay": true
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "08397746-9845-4f6a-8f8b-575a44ae3772"
-      }
-    }
-  }
+	"expo": {
+		"name": "TrailFundsApp",
+		"slug": "TrailFundsApp",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/images/icon.png",
+		"userInterfaceStyle": "light",
+
+		"splash": {
+			"image": "./assets/images/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.vanthedev.TrailFundsApp"
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/images/adaptive-icon.png",
+				"backgroundColor": "#FFFFFF"
+			},
+			"package": "com.vanthedev.TrailFundsApp"
+		},
+		"web": {
+			"favicon": "./assets/images/favicon.png"
+		},
+		"plugins": [
+			[
+				"@stripe/stripe-react-native",
+				{
+					"merchantIdentifier": "merchant.com.trailfunds",
+					"enableGooglePay": true
+				}
+			]
+		],
+		"extra": {
+			"eas": {
+				"projectId": "08397746-9845-4f6a-8f8b-575a44ae3772"
+			}
+		}
+	}
 }

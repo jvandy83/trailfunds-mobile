@@ -16,7 +16,7 @@ const INITIAL_REGION = {
 	longitudeDelta: 0.1,
 };
 
-const RenderMap = ({ children }) => {
+export const RenderMapPage = ({ children }) => {
 	const mapRef = useRef(null);
 	let MarkerKey = 0;
 	let raw = Object.entries(TrailData);
@@ -67,4 +67,3 @@ const RenderMap = ({ children }) => {
 	);
 };
 
-export default RenderMap;

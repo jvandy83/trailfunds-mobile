@@ -8,7 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 export const defaults = StyleSheet.create({
 	container: {
 		//This is the style that is added to every page
-		flex: '1',
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -72,10 +72,10 @@ export const defaults = StyleSheet.create({
 	},
 });
 
-export function PrimaryButton({ text, onPress, color }) {
+export function PrimaryButton({ text, onPress, color, disabled }) {
 	const textColor = color || 'black';
 	return (
-		<TouchableOpacity onPress={onPress}>
+		<TouchableOpacity disabled={disabled || false} onPress={onPress}>
 			<View
 				style={StyleSheet.create({
 					borderRadius: 100,
@@ -86,6 +86,7 @@ export function PrimaryButton({ text, onPress, color }) {
 					width: 271,
 					height: 48,
 					backgroundColor: '#59C092',
+					opacity: disabled ? 0.6 : 1,
 				})}
 			>
 				<Text
@@ -152,7 +153,7 @@ export function CirclePicture({}) {
 				style={StyleSheet.create({
 					width: 200,
 					height: 200,
-					borderRadius: 200 / 2,
+					borderRadius: 100,
 				})}
 			/>
 		</View>

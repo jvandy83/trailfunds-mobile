@@ -2,6 +2,8 @@
 import 'react-native-gesture-handler';
 //Put imports below this. Please and thank you.
 
+import 'expo-dev-client';
+
 import { StripeProvider } from '@stripe/stripe-react-native';
 
 import React from 'react';
@@ -11,8 +13,8 @@ import { StackHome } from './routes/stack'; //Importing the main stack of pages 
 export default function App() {
 	return (
 		<StripeProvider
+			merchantIdentifier='merchant.com.trailfunds'
 			publishableKey='pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi'
-			merchantIdentifier=''
 		>
 			<NavigationContainer>
 				<StackHome />

@@ -46,7 +46,7 @@ export const Donate = () => {
 
 	useEffect(() => {
 		if (textInputRef.current) {
-			textInputRef.current.value = amount.customAmount;
+			textInputRef.current.value = amount.customAmount || 0;
 		}
 	}, [amount.customAmount]);
 
@@ -58,8 +58,6 @@ export const Donate = () => {
 						Please select an amount
 					</Text>
 					<Picker
-						// enabled for Android only
-						enabled={amount.customAmount === 0}
 						style={styles.picker}
 						selectedValue={amount.customAmount <= 0 ? amount.selectAmount : 0}
 						onValueChange={(value, itemIndex) => {
@@ -83,7 +81,7 @@ export const Donate = () => {
 					</Picker>
 					<View
 						style={{ alignItems: 'center' }}
-						pointerEvents={amount.selectAmount > 0 && 'none'}
+						pointerEvents={amount.selectAmount > 0 ? 'none' : 'auto'}
 					>
 						<Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 30 }}>
 							Enter a custom amount
@@ -113,7 +111,9 @@ export const Donate = () => {
 			) : (
 				<Payment
 					{...screenProps}
-					amount={amount.selectAmount || amount.customAmount}
+					amount={
+						amount.selectAmount > 0 ? amount.selectAmount : amount.customAmount
+					}
 				/>
 			)}
 		</View>

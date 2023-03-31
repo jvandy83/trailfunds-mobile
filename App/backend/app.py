@@ -19,6 +19,7 @@ stripe.ApplePayDomain.create(
   domain_name="trailfunds.ngrok.io"
 )
 
+
 app = Flask(__name__)
 CORS(app)
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform, Alert } from 'react-native';
 
 import { PrimaryButton } from '../styles/frontendStyles';
 
@@ -16,7 +16,6 @@ export const Payment = ({
 	ephemeralKey,
 	donationAmount,
 }) => {
-	console.log(typeof donationAmount);
 	const { presentPaymentSheet, initPaymentSheet } = useStripe();
 
 	const { isPlatformPaySupported, confirmPlatformPayPayment } =
@@ -26,6 +25,7 @@ export const Payment = ({
 	const [ready, setReady] = useState(true);
 
 	const buyWithApplePay = async () => {
+		setReady(false);
 		const response = await confirmPlatformPayPayment(paymentIntent, {
 			applePay: {
 				cartItems: [
@@ -34,37 +34,60 @@ export const Payment = ({
 						paymentType: PlatformPay.PaymentType.Immediate,
 					},
 				],
+				testEnv: true,
 				merchantCountryCode: 'US',
 				currencyCode: 'USD',
 			},
 		});
 
-		console.log(response);
-
 		if (response.error) {
 			setReady(true);
 			alert(`Error: ${response.error.message}`);
-		} else {
-			setReady(false);
+			return;
 		}
 	};
 
+	const buyWithGooglePay = async () => {
+		setReady(false);
+		const { error } = await confirmPlatformPayPayment(paymentIntent, {
+			googlePay: {
+				testEnv: true,
+				merchantCountryCode: 'US',
+				currencyCode: 'USD',
+				billingAddressConfig: {
+					format: PlatformPay.BillingAddressFormat.Full,
+					isPhoneNumberRequired: true,
+					isRequired: true,
+				},
+			},
+		});
+
+		if (error) {
+			setReady(true);
+			Alert.alert(error.code, error.message);
+			// Update UI to prompt user to retry payment (and possibly another payment method)
+			return;
+		}
+		Alert.alert('Success', 'The payment was confirmed successfully.');
+	};
+
 	const buyWithCard = async () => {
+		setReady(false);
 		const { error, paymentOption } = await presentPaymentSheet({
 			confirmPayment: false,
 		});
 		if (error) {
 			setReady(true);
 			alert(`Error: ${error.message}`);
-		} else {
-			setReady(false);
-			setPaymentMethod(paymentOption);
+			return;
 		}
+		setReady(false);
+		setPaymentMethod(paymentOption);
 	};
 
 	const initializePaymentSheet = async () => {
 		try {
-			const response = await initPaymentSheet({
+			const { error, paymentOption } = await initPaymentSheet({
 				paymentIntentClientSecret: paymentIntent,
 				customerEphemeralKeySecret: ephemeralKey,
 				customerId: customer.id,
@@ -76,8 +99,8 @@ export const Payment = ({
 				merchantCountryCode: 'US', // Countrycode of the merchant
 				// testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
 			});
-			console.log('***response from init payment sheet***: ', response);
-			setPaymentMethod(true);
+			console.log('paymentOption: ', paymentOption);
+			setPaymentMethod(paymentOption);
 		} catch (error) {
 			console.log(error);
 		}
@@ -124,13 +147,9 @@ export const Payment = ({
 					>{`Your donation amount is $${donationAmount}.00`}</Text>
 				)}
 			</View>
-			<View
-				style={{
-					alignItems: 'center',
-				}}
-			>
+			<View style={{ alignItems: 'center' }}>
 				<PlatformPayButton
-					onPress={buyWithApplePay}
+					onPress={Platform.OS === 'ios' ? buyWithApplePay : buyWithGooglePay}
 					disabled={!ready}
 					style={styles.payButton}
 				/>
@@ -149,16 +168,12 @@ const styles = StyleSheet.create({
 	// ...
 	screen: {
 		paddingHorizontal: 10,
-		alignSelf: 'stretch',
-		flexGrow: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	payButton: {
 		borderRadius: 100,
 		paddingVertical: 14,
 		top: 0.5,
-		margin: 10,
 		maxWidth: '80%',
 		width: 271,
 		height: 48,

@@ -1,11 +1,10 @@
 {
   "name": "trailfundsapp",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
@@ -25,7 +24,7 @@
     "@react-navigation/stack": "^6.2.3",
     "@stripe/stripe-react-native": "0.23.3",
     "babel-preset-expo": "^9.3.0",
-    "expo": "^48.0.0",
+    "expo": "~48.0.9",
     "expo-cli": "^6.3.2",
     "expo-dev-client": "~2.1.6",
     "expo-linear-gradient": "~12.1.2",
@@ -50,7 +49,8 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.11",
     "styled-components": "^5.3.6",
-    "supercluster": "^7.1.5"
+    "supercluster": "^7.1.5",
+    "expo-splash-screen": "~0.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

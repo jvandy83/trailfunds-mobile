@@ -1,20 +1,19 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
-import { defaults } from '../styles/frontendStyles';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text } from 'react-native';
 
-function PAGENAME({ navigation }) {
+import { PageContainer } from '../components/layout/PageContainer';
+
+import { defaults } from '../styles/frontendStyles';
+
+export const Template = ({ navigation }) => {
 	return (
 		<View>
-			<LinearGradient
-				colors={['#59C0922C', '#FAFDFCF9', '#FFFFFF']}
-				style={[defaults.background]}
-			>
+			<PageContainer styleProp={[defaults.background]}>
+				<Text>Template Page</Text>
 				<StatusBar style='auto' />
-			</LinearGradient>
+			</PageContainer>
 		</View>
 	);
 }
 
-export default PAGENAME;

@@ -47,7 +47,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Map');
+						navigation.navigate('Trail Map');
 					}}
 				>
 					<Text style={styles.contentText}>Map</Text>

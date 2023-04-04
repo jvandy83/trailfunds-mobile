@@ -230,6 +230,7 @@ def make_payment_intent():
     
     amount = request.json['amount']
 
+
     try:
         customer = stripe.Customer.create(
             name = 'Jared'
@@ -247,6 +248,7 @@ def make_payment_intent():
         print('***ephemeral_key***: ', ephemeral_key)
         print('***customer***: ', customer)
         print('***payment_intent***: ', payment_intent)
+        print(amount)
         return jsonify({ 'message': 'Payment initiated!', 'paymentIntent': payment_intent.client_secret, 'customer': customer, 'ephemeralKey': ephemeral_key.secret, 'data': payment_intent })
     
     except Exception as e:

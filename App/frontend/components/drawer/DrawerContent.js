@@ -70,6 +70,15 @@ export const CustomDrawerContent = ({ navigation }) => {
 				>
 					<Text style={styles.contentText}>Help</Text>
 				</Pressable>
+				<Pressable
+					style={styles.contentItem}
+					onPress={() => {
+						// Navigate using the `navigation` prop that you received
+						navigation.navigate('Login');
+					}}
+				>
+					<Text style={styles.contentText}>Sign In</Text>
+				</Pressable>
 			</View>
 			<View style={styles.footer}>
 				<PrimaryButton text='Log Out' color='white' />

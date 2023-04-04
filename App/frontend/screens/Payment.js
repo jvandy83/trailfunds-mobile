@@ -25,7 +25,6 @@ export const Payment = ({
 	const [ready, setReady] = useState(true);
 
 	const buyWithApplePay = async () => {
-		setReady(false);
 		const response = await confirmPlatformPayPayment(paymentIntent, {
 			applePay: {
 				cartItems: [
@@ -48,7 +47,6 @@ export const Payment = ({
 	};
 
 	const buyWithGooglePay = async () => {
-		setReady(false);
 		const { error } = await confirmPlatformPayPayment(paymentIntent, {
 			googlePay: {
 				testEnv: true,
@@ -72,7 +70,6 @@ export const Payment = ({
 	};
 
 	const buyWithCard = async () => {
-		setReady(false);
 		const { error, paymentOption } = await presentPaymentSheet({
 			confirmPayment: false,
 		});
@@ -119,6 +116,7 @@ export const Payment = ({
 	};
 
 	useEffect(() => {
+		console.log('useEffect ran on page render');
 		setup();
 		// 	// Initialize the PaymentSheet with the paymentIntent data,
 		// 	// we will later present and confirm this

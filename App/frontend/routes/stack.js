@@ -5,15 +5,16 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; //Stack navigator Lib
 
 //pages
-import { Profile } from '../pages/Profile';
-import { Wallet } from '../pages/Wallet';
-import { Dashboard } from '../pages/Dashboard';
-import { Template } from '../pages/Template';
-import { About } from '../pages/About';
-import { Donate } from '../pages/Donate';
-import { Payment } from '../pages/Payment';
-import { WalletRefill } from '../pages/WalletRefill';
-import { Map } from '../pages/map/Map';
+import { Profile } from '../screens/Profile';
+import { Wallet } from '../screens/Wallet';
+import { Dashboard } from '../screens/Dashboard';
+import { Template } from '../screens/Template';
+import { About } from '../screens/About';
+import { Donate } from '../screens/Donate';
+import { Payment } from '../screens/Payment';
+import { WalletRefill } from '../screens/WalletRefill';
+import { SignIn } from '../screens/SignIn';
+import { Map } from '../screens/map/Map';
 
 import { DrawerMenu } from '../components/drawer/DrawerMenu';
 
@@ -38,6 +39,7 @@ export const StackHome = () => {
 			<Stack.Screen name='Trail Map' component={Map} />
 			<Stack.Screen name='Donate' component={Donate} />
 			<Stack.Screen name='Payment' component={Payment} />
+			<Stack.Screen name='Login' component={SignIn} />
 		</Stack.Navigator>
 	);
 };

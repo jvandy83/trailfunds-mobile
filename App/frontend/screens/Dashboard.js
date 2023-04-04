@@ -9,7 +9,6 @@ import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
 export const Dashboard = ({ navigation }) => {
 	const name = 'Bryan Wachs';
-
 	return (
 		<View>
 			<PageContainer styleProp={defaults.background}>
@@ -34,4 +33,4 @@ export const Dashboard = ({ navigation }) => {
 			</PageContainer>
 		</View>
 	);
-}
+};

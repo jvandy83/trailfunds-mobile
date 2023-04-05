@@ -27,7 +27,7 @@ export const DrawerMenu = () => {
 			drawerStyle={{ backgroundColor: '#59C0922C' }}
 			screenOptions={({ navigation }) => ({
 				drawerType: dimensions.width >= 768 ? 'permanent' : 'front',
-				headerShown: true,
+				headerShown: false,
 				headerTransparent: true,
 			})}
 		>

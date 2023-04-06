@@ -4,19 +4,50 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; //Stack navigator Lib
 
-//pages
-import { Profile } from '../screens/Profile';
-import { Wallet } from '../screens/Wallet';
-import { Dashboard } from '../screens/Dashboard';
-import { Template } from '../screens/Template';
-import { About } from '../screens/About';
-import { Donate } from '../screens/Donate';
-import { Payment } from '../screens/Payment';
-import { WalletRefill } from '../screens/WalletRefill';
-import { SignIn } from '../screens/SignIn';
-import { Map } from '../screens/map/Map';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useWindowDimensions } from 'react-native';
 
-import { DrawerMenu } from '../components/drawer/DrawerMenu';
+//pages
+import {
+	Profile,
+	Wallet,
+	Dashboard,
+	Template,
+	About,
+	Donate,
+	WalletRefill,
+	SignIn,
+	Map,
+} from '../screens';
+
+import { CustomDrawerContent } from '../components/drawer/DrawerContent';
+
+const Drawer = createDrawerNavigator();
+
+export const DrawerMenu = () => {
+	const dimensions = useWindowDimensions();
+	return (
+		<Drawer.Navigator
+			useLegacyImplementation
+			drawerContent={(props) => <CustomDrawerContent {...props} />}
+			drawerStyle={{ backgroundColor: '#59C0922C' }}
+			screenOptions={({ navigation }) => ({
+				drawerType: dimensions.width >= 768 ? 'permanent' : 'front',
+				// headerShown: false,
+				headerTransparent: true,
+			})}
+		>
+			<Drawer.Screen name='Home' component={Dashboard} />
+			<Drawer.Screen name='Wallet' component={Wallet} />
+			<Drawer.Screen name='Trail Map' component={Map} />
+			<Drawer.Screen name='About' component={About} />
+			<Drawer.Screen name='Help' component={Template} />
+			<Drawer.Screen name='Profile' component={Profile} />
+			<Drawer.Screen name='Donate' component={Donate} />
+			<Drawer.Screen name='Login' component={SignIn} />
+		</Drawer.Navigator>
+	);
+};
 
 //creating the navigator
 const Stack = createNativeStackNavigator();
@@ -34,11 +65,9 @@ export const StackHome = () => {
 			<Stack.Screen name='Profile' component={Profile} />
 			<Stack.Screen name='Wallet' component={Wallet} />
 			<Stack.Screen name='About' component={About} />
-			{/* <Stack.Screen name="Donations" component={TransactionPage} /> */}
 			<Stack.Screen name='Wallet Refill' component={WalletRefill} />
 			<Stack.Screen name='Trail Map' component={Map} />
 			<Stack.Screen name='Donate' component={Donate} />
-			<Stack.Screen name='Payment' component={Payment} />
 			<Stack.Screen name='Login' component={SignIn} />
 		</Stack.Navigator>
 	);

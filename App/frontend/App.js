@@ -7,8 +7,11 @@ import 'expo-dev-client';
 import { StripeProvider } from '@stripe/stripe-react-native';
 
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native'; //Allows for navigation in the app
+
 import { StackHome } from './routeNavigation/stack'; //Importing the main stack of pages for the app
+
+import { Provider } from 'react-redux';
+import { store } from './reduxStore';
 
 export default function App() {
 	return (
@@ -16,9 +19,9 @@ export default function App() {
 			merchantIdentifier='merchant.com.trailfunds'
 			publishableKey='pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi'
 		>
-			<NavigationContainer>
+			<Provider store={store}>
 				<StackHome />
-			</NavigationContainer>
+			</Provider>
 		</StripeProvider>
 	);
 }

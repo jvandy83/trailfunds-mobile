@@ -17,6 +17,5 @@ export {
 	SignIn,
 	Template,
 	About,
-	Template,
 	Map,
 };

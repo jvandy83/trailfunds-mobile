@@ -222,42 +222,5 @@ def Delete_ByID(ContentID):
     recipes.remove(recipe)
     return jsonify(recipes)
 
-### Stripe payments ###
-@app.route('/payment-intents', methods=['POST'])
-def make_payment_intent():
-
-    print(request.json)
-    
-    amount = request.json['amount']
-
-
-    try:
-        customer = stripe.Customer.create(
-            name = 'Jared'
-        )
-        ephemeral_key = stripe.EphemeralKey.create(
-            customer=customer['id'],
-            stripe_version='2020-03-02',
-        )
-
-        payment_intent = stripe.PaymentIntent.create(
-            amount = int(amount) * 100,
-            currency = 'USD',
-            customer = customer.id
-        )
-        print('***ephemeral_key***: ', ephemeral_key)
-        print('***customer***: ', customer)
-        print('***payment_intent***: ', payment_intent)
-        print(amount)
-        return jsonify({ 'message': 'Payment initiated!', 'paymentIntent': payment_intent.client_secret, 'customer': customer, 'ephemeralKey': ephemeral_key.secret, 'data': payment_intent })
-    
-    except Exception as e:
-        print(e)
-        return jsonify({'message': 'Error'})
-
-@app.route('/.well-known/apple-developer-merchantid-domain-association', methods=['GET'])
-def verify_merchant_account():
-    return send_file(path.normpath('./stripe/apple-developer-merchantid-domain-association'))
-
 if __name__ == '__main__':
     app.run()

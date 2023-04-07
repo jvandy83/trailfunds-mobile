@@ -11,18 +11,34 @@ import {
 
 import { Svg, Path, G } from 'react-native-svg';
 
+import { useSignUpMutation } from '../services/api/auth';
+
 import { PrimaryButton } from '../styles/frontendStyles';
 
-import mountains from '../assets/images/mountains.avif';
-import logo from '../assets/images/TrailFundsLogo.png';
-import googleIcon from '../assets/images/googleIcon.png';
-import facebookIcon from '../assets/images/facebookIcon.png';
-import appleIcon from '../assets/images/appleIcon.png';
+import {
+	mountains,
+	logo,
+	googleIcon,
+	facebookIcon,
+	appleIcon,
+} from '../assets/images';
 
-const IS_NEW_USER = true;
-
-export const SignIn = () => {
+export const SignIn = ({ navigation }) => {
+	const [newUser, setNewUser] = useState(false);
 	const [values, setValues] = useState({ email: '', password: '' });
+	const [signUp, result] = useSignUpMutation();
+
+	const handleSubmit = () => {
+		signUp(values)
+			.unwrap()
+			.then((data) => {
+				console.log('data inside thenable signup function: ', data);
+				const { id, isNew } = data;
+				navigation.navigate('Dashboard', { userId: id, isNew });
+			})
+			.catch((rejected) => console.error(rejected));
+	};
+
 	const handleChange = (text, inputType) => {
 		setValues((prev) => ({
 			...prev,
@@ -52,7 +68,7 @@ export const SignIn = () => {
 					textShadowRadius: 10,
 				}}
 			>
-				Sign In
+				{`${newUser ? 'Sign Up' : 'Log In'}`}
 			</Text>
 			<View
 				style={{
@@ -96,12 +112,32 @@ export const SignIn = () => {
 					bottom: -80,
 				}}
 			>
+				{newUser && (
+					<View>
+						<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
+							<TextInput
+								style={styles.loginInput}
+								placeholder='first name'
+								value={values.firstName}
+								onChangeText={(text) => handleChange(text, 'firstName')}
+							/>
+						</View>
+						<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
+							<TextInput
+								style={styles.loginInput}
+								placeholder='last name'
+								value={values.lastName}
+								onChangeText={(text) => handleChange(text, 'lastName')}
+							/>
+						</View>
+					</View>
+				)}
 				<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
 					<TextInput
 						style={styles.loginInput}
 						placeholder='E-mail'
 						value={values.email}
-						type='email'
+						autoComplete='email'
 						onChangeText={(text) => handleChange(text, 'email')}
 					/>
 				</View>
@@ -110,91 +146,109 @@ export const SignIn = () => {
 						style={styles.loginInput}
 						placeholder='Password'
 						value={values.password}
-						type='password'
+						autoComplete='password-new'
+						secureTextEntry={true}
 						onChangeText={(text) => handleChange(text, 'password')}
 					/>
 				</View>
 				<View style={{ alignItems: 'center' }}>
-					<PrimaryButton text='Log in' color='white' />
-					<View style={{ flexDirection: 'row' }}>
-						<Pressable
-							style={{
-								borderRadius: 100,
-								paddingVertical: 10,
-								paddingHorizontal: 20,
-								borderWidth: 1,
-								borderColor: 'black',
-								margin: 4,
-							}}
-						>
-							<View style={{ alignItems: 'center' }}>
-								<Text>New User</Text>
-							</View>
+					<PrimaryButton
+						onPress={handleSubmit}
+						text={`${!newUser ? 'Log in' : 'Sign up'}`}
+						color='white'
+					/>
+					{newUser && (
+						<Pressable onPress={() => setNewUser(false)}>
+							<Text style={{ fontWeight: 'bold' }}>Log In</Text>
 						</Pressable>
-						<Pressable
-							style={{
-								backgroundColor: 'black',
-								borderRadius: 100,
-								paddingVertical: 10,
-								paddingHorizontal: 20,
-								borderWidth: 1,
-								borderColor: 'black',
-								backgroundColor: 'black',
-								margin: 4,
-							}}
-						>
-							<View style={{ alignItems: 'center' }}>
-								<Text style={{ color: 'white' }}>Forgot Password</Text>
+					)}
+					{!newUser && (
+						<View style={{ alignItems: 'center' }}>
+							<View style={{ flexDirection: 'row' }}>
+								<Pressable
+									onPress={() => setNewUser(true)}
+									style={{
+										borderRadius: 100,
+										paddingVertical: 10,
+										paddingHorizontal: 20,
+										borderWidth: 1,
+										borderColor: 'black',
+										margin: 4,
+									}}
+								>
+									<View style={{ alignItems: 'center' }}>
+										<Text>New User</Text>
+									</View>
+								</Pressable>
+								<Pressable
+									style={{
+										backgroundColor: 'black',
+										borderRadius: 100,
+										paddingVertical: 10,
+										paddingHorizontal: 20,
+										borderWidth: 1,
+										borderColor: 'black',
+										backgroundColor: 'black',
+										margin: 4,
+									}}
+								>
+									<View style={{ alignItems: 'center' }}>
+										<Text style={{ color: 'white' }}>Forgot Password</Text>
+									</View>
+								</Pressable>
 							</View>
-						</Pressable>
-					</View>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-						}}
-					>
-						<View
-							style={{
-								borderBottomColor: 'black',
-								borderBottomWidth: 1,
-								paddingVertical: 10,
-								paddingHorizontal: 10,
-								width: '30%',
-							}}
-						/>
-						<Text
-							style={{ transform: [{ translateY: 9 }], paddingHorizontal: 3 }}
-						>
-							OR
-						</Text>
-						<View
-							style={{
-								borderBottomColor: 'black',
-								borderBottomWidth: 1,
-								paddingVertical: 10,
-								paddingHorizontal: 10,
-								width: '30%',
-							}}
-						/>
-					</View>
-					<View style={{ flexDirection: 'row', marginTop: 20 }}>
-						<Image
-							source={googleIcon}
-							style={{ width: 50, height: 50, marginHorizontal: 30 }}
-							resize='center'
-						/>
-						<Image
-							source={appleIcon}
-							style={{ width: 50, height: 50, marginHorizontal: 30 }}
-							resize='center'
-						/>
-						<Image
-							source={facebookIcon}
-							style={{ width: 50, height: 50, marginHorizontal: 30 }}
-							resize='center'
-						/>
-					</View>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+								}}
+							>
+								<View
+									style={{
+										borderBottomColor: 'black',
+										borderBottomWidth: 1,
+										paddingVertical: 10,
+										paddingHorizontal: 10,
+										width: '30%',
+									}}
+								/>
+								<Text
+									style={{
+										transform: [{ translateY: 9 }],
+										paddingHorizontal: 3,
+									}}
+								>
+									OR
+								</Text>
+								<View
+									style={{
+										borderBottomColor: 'black',
+										borderBottomWidth: 1,
+										paddingVertical: 10,
+										paddingHorizontal: 10,
+										width: '30%',
+									}}
+								/>
+							</View>
+							<View style={{ flexDirection: 'row', marginTop: 20 }}>
+								<Image
+									source={googleIcon}
+									style={{ width: 50, height: 50, marginHorizontal: 30 }}
+									resize='center'
+								/>
+								<Image
+									source={appleIcon}
+									style={{ width: 50, height: 50, marginHorizontal: 30 }}
+									resize='center'
+								/>
+								<Image
+									source={facebookIcon}
+									style={{ width: 50, height: 50, marginHorizontal: 30 }}
+									resize='center'
+								/>
+							</View>
+						</View>
+					)}
 				</View>
 			</View>
 		</View>

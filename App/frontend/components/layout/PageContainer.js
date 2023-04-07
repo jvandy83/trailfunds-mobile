@@ -1,10 +1,18 @@
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export const PageContainer = ({ children, styleProp }) => {
+	const insets = useSafeAreaInsets();
 	return (
 		<LinearGradient
 			colors={['#59C0922C', '#FAFDFCF9', '#FFFFFF']}
-			style={styleProp}
+			style={{
+				...styleProp,
+				paddingTop: insets.top,
+				paddingBottom: insets.bottom,
+				paddingLeft: insets.left,
+				paddingRight: insets.right,
+			}}
 		>
 			{children}
 		</LinearGradient>

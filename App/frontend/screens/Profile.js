@@ -8,6 +8,7 @@ import {
 	Button,
 	Alert,
 } from 'react-native';
+
 import profile from '../styles/profileStyles';
 
 import { PageContainer } from '../components/layout/PageContainer';
@@ -19,6 +20,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 export const Profile = () => {
 	return (
 		<PageContainer styleProp={profile.background}>
+			<Text>Profile Form</Text>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View>
 					<View style={profile.titleBar}>
@@ -127,4 +129,4 @@ export const Profile = () => {
 			</ScrollView>
 		</PageContainer>
 	);
-}
+};

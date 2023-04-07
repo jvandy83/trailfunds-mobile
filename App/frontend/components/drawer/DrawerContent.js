@@ -29,7 +29,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Home');
+						navigation.navigate('Dashboard');
 					}}
 				>
 					<Text style={styles.contentText}>Home</Text>
@@ -69,15 +69,6 @@ export const CustomDrawerContent = ({ navigation }) => {
 					}}
 				>
 					<Text style={styles.contentText}>Help</Text>
-				</Pressable>
-				<Pressable
-					style={styles.contentItem}
-					onPress={() => {
-						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Login');
-					}}
-				>
-					<Text style={styles.contentText}>Sign In</Text>
 				</Pressable>
 			</View>
 			<View style={styles.footer}>

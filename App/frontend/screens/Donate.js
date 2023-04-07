@@ -184,7 +184,7 @@ export const Donate = ({ navigation }) => {
 	const handleInitiatePaymentIntent = async () => {
 		const donationAmount =
 			amount.customAmount > 1 ? amount.customAmount : amount.selectAmount;
-		const URL = 'https://trailfunds.ngrok.io/payment-intents';
+		const URL = 'https://trailfunds.ngrok.io/api/v1/payment-intents';
 		try {
 			const response = await axios.post(URL, {
 				amount: donationAmount,

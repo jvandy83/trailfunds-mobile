@@ -9,6 +9,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useWindowDimensions } from 'react-native';
 
+import { useSelector } from 'react-redux';
+
 //pages
 import {
 	Profile,
@@ -28,6 +30,7 @@ const Drawer = createDrawerNavigator();
 
 export const DrawerMenu = () => {
 	const dimensions = useWindowDimensions();
+
 	return (
 		<Drawer.Navigator
 			useLegacyImplementation
@@ -52,12 +55,13 @@ export const DrawerMenu = () => {
 //creating the navigator
 const Stack = createNativeStackNavigator();
 
-const isLoggedIn = true;
 // add functionality that
 // checks keychain or local storage
 // for a valid token
 
 export const StackHome = () => {
+	const { isLoggedIn } = useSelector((state) => state.auth);
+	console.log(isLoggedIn);
 	return (
 		<NavigationContainer>
 			<Stack.Navigator

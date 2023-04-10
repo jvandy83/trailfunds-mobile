@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
 	View,
@@ -11,9 +13,15 @@ import {
 
 import { Svg, Path, G } from 'react-native-svg';
 
-import { useSignUpMutation } from '../services/api/auth';
+import {
+	useSignUpMutation,
+	useLoginMutation,
+	useTestQuery,
+} from '../services/api/auth';
 
 import { PrimaryButton } from '../styles/frontendStyles';
+
+import { save, setUser } from '../reduxStore/features/auth/authSlice';
 
 import {
 	mountains,
@@ -24,19 +32,51 @@ import {
 } from '../assets/images';
 
 export const SignIn = ({ navigation }) => {
+	console.log();
 	const [newUser, setNewUser] = useState(false);
-	const [values, setValues] = useState({ email: '', password: '' });
-	const [signUp, result] = useSignUpMutation();
+	const [values, setValues] = useState({});
+	const [signUp, { isLoading, error, isSuccess, data }] = useSignUpMutation();
+	const [
+		login,
+		{
+			isLoading: isLoginLoading,
+			error: loginError,
+			isSuccess: isLoginSuccess,
+			data: loginData,
+		},
+	] = useLoginMutation();
 
-	const handleSubmit = () => {
-		signUp(values)
-			.unwrap()
-			.then((data) => {
-				console.log('data inside thenable signup function: ', data);
-				const { id, isNew } = data;
-				navigation.navigate('Dashboard', { userId: id, isNew });
-			})
-			.catch((rejected) => console.error(rejected));
+	const { isLoggedIn } = useSelector((state) => state.auth);
+
+	const dispatch = useDispatch();
+
+	if (isLoading || isLoginLoading) {
+		return (
+			<View>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
+
+	if (error || loginError) {
+		const errorStatus = error || loginError;
+		console.log(errorStatus.status);
+		console.error(JSON.stringify(errorStatus.data));
+	}
+
+	const handleSubmit = async () => {
+		if (newUser) {
+			const { currentUser, isNew, accessToken } = await signUp(values).unwrap();
+			save('accessToken', accessToken);
+			dispatch(setUser({ token: accessToken, user: currentUser }));
+		} else {
+			const { currentUser, isNew, accessToken } = await login({
+				...values,
+				id: 'clgb5jysl000e81l49bxo8rbn',
+			}).unwrap();
+			save('accessToken', accessToken);
+			dispatch(setUser({ token: accessToken, user: currentUser }));
+		}
 	};
 
 	const handleChange = (text, inputType) => {
@@ -45,6 +85,7 @@ export const SignIn = ({ navigation }) => {
 			[inputType]: text,
 		}));
 	};
+
 	return (
 		<View>
 			<View>
@@ -118,7 +159,7 @@ export const SignIn = ({ navigation }) => {
 							<TextInput
 								style={styles.loginInput}
 								placeholder='first name'
-								value={values.firstName}
+								value={values.firstName || ''}
 								onChangeText={(text) => handleChange(text, 'firstName')}
 							/>
 						</View>
@@ -126,7 +167,7 @@ export const SignIn = ({ navigation }) => {
 							<TextInput
 								style={styles.loginInput}
 								placeholder='last name'
-								value={values.lastName}
+								value={values.lastName || ''}
 								onChangeText={(text) => handleChange(text, 'lastName')}
 							/>
 						</View>
@@ -136,7 +177,7 @@ export const SignIn = ({ navigation }) => {
 					<TextInput
 						style={styles.loginInput}
 						placeholder='E-mail'
-						value={values.email}
+						value={values.email || ''}
 						autoComplete='email'
 						onChangeText={(text) => handleChange(text, 'email')}
 					/>
@@ -145,7 +186,7 @@ export const SignIn = ({ navigation }) => {
 					<TextInput
 						style={styles.loginInput}
 						placeholder='Password'
-						value={values.password}
+						value={values.password || ''}
 						autoComplete='password-new'
 						secureTextEntry={true}
 						onChangeText={(text) => handleChange(text, 'password')}

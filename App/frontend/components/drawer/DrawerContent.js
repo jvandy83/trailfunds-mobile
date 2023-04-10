@@ -6,11 +6,17 @@ import {
 	ImageBackground,
 } from 'react-native';
 
+import { useDispatch } from 'react-redux';
+
+import { loggedOut } from '../../reduxStore/features/auth/authSlice';
+
 import { PrimaryButton } from '../../styles/frontendStyles';
 
 import profilePic from '../../assets/images/profile-pic.jpeg';
 
 export const CustomDrawerContent = ({ navigation }) => {
+	const dispatch = useDispatch();
+
 	return (
 		<View style={styles.customContentContainer}>
 			<View style={styles.header}>
@@ -72,7 +78,11 @@ export const CustomDrawerContent = ({ navigation }) => {
 				</Pressable>
 			</View>
 			<View style={styles.footer}>
-				<PrimaryButton text='Log Out' color='white' />
+				<PrimaryButton
+					onPress={() => dispatch(loggedOut())}
+					text='Log Out'
+					color='white'
+				/>
 			</View>
 		</View>
 	);

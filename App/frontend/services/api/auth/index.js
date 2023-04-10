@@ -1,20 +1,25 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseApi } from '../base';
 
-export const authApi = baseApi.injectEndpoints({
+export const authApi = createApi({
+	reducerPath: 'authApi',
+	baseQuery: fetchBaseQuery({
+		baseUrl: 'https://trailfunds.ngrok.io/api/v1',
+	}),
 	endpoints: (build) => ({
 		test: build.query({
-			query: () => 'auth/test',
+			query: () => 'user/test',
 		}),
 		login: build.mutation({
 			query: (body) => ({
-				url: `login`,
+				url: `user/login`,
 				method: 'POST',
 				body,
 			}),
 		}),
 		signUp: build.mutation({
 			query: (body) => ({
-				url: `auth/sign-up`,
+				url: `user/sign-up`,
 				method: 'POST',
 				body,
 			}),

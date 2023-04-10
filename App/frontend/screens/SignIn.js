@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
 	View,
@@ -36,17 +36,8 @@ export const SignIn = ({ navigation }) => {
 	const [newUser, setNewUser] = useState(false);
 	const [values, setValues] = useState({});
 	const [signUp, { isLoading, error, isSuccess, data }] = useSignUpMutation();
-	const [
-		login,
-		{
-			isLoading: isLoginLoading,
-			error: loginError,
-			isSuccess: isLoginSuccess,
-			data: loginData,
-		},
-	] = useLoginMutation();
-
-	const { isLoggedIn } = useSelector((state) => state.auth);
+	const [login, { isLoading: isLoginLoading, error: loginError }] =
+		useLoginMutation();
 
 	const dispatch = useDispatch();
 
@@ -66,11 +57,11 @@ export const SignIn = ({ navigation }) => {
 
 	const handleSubmit = async () => {
 		if (newUser) {
-			const { currentUser, isNew, accessToken } = await signUp(values).unwrap();
+			const { currentUser, accessToken } = await signUp(values).unwrap();
 			save('accessToken', accessToken);
 			dispatch(setUser({ token: accessToken, user: currentUser }));
 		} else {
-			const { currentUser, isNew, accessToken } = await login({
+			const { currentUser, accessToken } = await login({
 				...values,
 				id: 'clgb5jysl000e81l49bxo8rbn',
 			}).unwrap();

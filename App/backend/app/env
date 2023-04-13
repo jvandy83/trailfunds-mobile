@@ -1,0 +1,2 @@
+DATABASE_URL=postgresql://<your-username>:<your-password>@localhost:5432/trailfunds.db
+DATABASE_URL_WITH_SCHEMA=${DATABASE_URL}?schema=public SECRET='secret'

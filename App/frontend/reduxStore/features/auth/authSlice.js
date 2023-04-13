@@ -1,54 +1,69 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import * as SecureStore from 'expo-secure-store';
 
-export const save = async (key, value) => {
+export const saveToken = async (key, value) => {
 	await SecureStore.setItemAsync(key, JSON.stringify(value));
 };
 
 export const fetchToken = async (key) => {
 	let result = await SecureStore.getItemAsync(key);
 	if (result) {
-		alert("🔐 Here's your value 🔐 \n" + result);
-		return result;
+		return JSON.parse(result);
 	} else {
-		alert('No values stored under that key.');
 		return null;
 	}
 };
 
-const destroyToken = async (key) => {
+export const destroyToken = async (key) => {
 	await SecureStore.deleteItemAsync(key);
 };
 
+export const logoutUser = createAsyncThunk(
+	'users/logout',
+	async (_, thunkApi) => {
+		try {
+			await destroyToken();
+		} catch (error) {
+			console.error(error);
+			// throw new Error('Error occurred while logging out');
+		}
+	},
+);
+
 const initialState = {
 	acessToken: null,
-	user: null,
+	currentUser: null,
 	isLoggedIn: false,
 };
 
 export const authSlice = createSlice({
-	name: 'auth',
+	name: 'users',
 	initialState,
 	reducers: {
-		setUser: (state, { payload }) => {
-			state.acessToken = payload.accessToken;
-			state.user = payload.currentUser;
+		setAuth: (state, { payload }) => {
+			state.currentUser = payload.currentUser;
 			state.isLoggedIn = true;
 		},
 		loggedOut: (state, _) => {
-			destroyToken();
-			state.accessToken = null;
-			state.user = null;
+			state.currentUser = null;
 			state.isLoggedIn = false;
 		},
 		defaultState: (state) => {
 			state = initialState;
 		},
 	},
+	extraReducers: (builder) => {
+		// Add reducers for additional action types here, and handle loading state as needed
+		builder.addCase(logoutUser.fulfilled, (state, action) => {
+			// Add user to the state array
+			state.currentUser = null;
+			state.isLoggedIn = false;
+		});
+	},
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, loggedOut, defaultState } = authSlice.actions;
+export const { setAuth, loggedOut, defaultState } = authSlice.actions;
 
 export default authSlice.reducer;

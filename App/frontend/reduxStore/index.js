@@ -1,19 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit';
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { authApi } from '../services/api/auth';
+import { api } from '../services/api';
 import authReducer from '../reduxStore/features/auth/authSlice';
 
 export const store = configureStore({
 	reducer: {
 		// Add the generated reducer as a specific top-level slice
-		[authApi.reducerPath]: authApi.reducer,
+		[api.reducerPath]: api.reducer,
 		auth: authReducer,
 	},
 	// Adding the api middleware enables caching, invalidation, polling,
 	// and other useful features of `rtk-query`.
+	// TODO: figure out how to use multiple
+	// api's to middleware
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(authApi.middleware),
+		getDefaultMiddleware().concat([api.middleware]),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

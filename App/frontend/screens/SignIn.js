@@ -13,15 +13,11 @@ import {
 
 import { Svg, Path, G } from 'react-native-svg';
 
-import {
-	useSignUpMutation,
-	useLoginMutation,
-	useTestQuery,
-} from '../services/api/auth';
+import { useSignUpMutation, useLoginMutation } from '../services/api';
 
 import { PrimaryButton } from '../styles/frontendStyles';
 
-import { save, setUser } from '../reduxStore/features/auth/authSlice';
+import { saveToken, setAuth } from '../reduxStore/features/auth/authSlice';
 
 import {
 	mountains,
@@ -31,11 +27,13 @@ import {
 	appleIcon,
 } from '../assets/images';
 
-export const SignIn = ({ navigation }) => {
-	console.log();
+export const SignIn = () => {
 	const [newUser, setNewUser] = useState(false);
 	const [values, setValues] = useState({});
+
 	const [signUp, { isLoading, error, isSuccess, data }] = useSignUpMutation();
+	// create alias due to multiple mutations
+	// being called in the same module
 	const [login, { isLoading: isLoginLoading, error: loginError }] =
 		useLoginMutation();
 
@@ -57,16 +55,25 @@ export const SignIn = ({ navigation }) => {
 
 	const handleSubmit = async () => {
 		if (newUser) {
-			const { currentUser, accessToken } = await signUp(values).unwrap();
-			save('accessToken', accessToken);
-			dispatch(setUser({ token: accessToken, user: currentUser }));
+			// calling unwrap makes the return
+			// value available ready immediately
+			signUp(values)
+				.unwrap()
+				.then(({ currentUser, accessToken }) => {
+					saveToken('accessToken', accessToken);
+					dispatch(setAuth({ token: accessToken, currentUser, isNew: true }));
+				})
+				.catch((err) => console.error(err));
 		} else {
-			const { currentUser, accessToken } = await login({
-				...values,
-				id: 'clgb5jysl000e81l49bxo8rbn',
-			}).unwrap();
-			save('accessToken', accessToken);
-			dispatch(setUser({ token: accessToken, user: currentUser }));
+			login(values)
+				.unwrap()
+				.then(({ currentUser, accessToken }) => {
+					console.log(currentUser);
+					console.log(accessToken);
+					saveToken('accessToken', accessToken);
+					dispatch(setAuth({ token: accessToken, currentUser, isNew: false }));
+				})
+				.catch((err) => console.error(err));
 		}
 	};
 

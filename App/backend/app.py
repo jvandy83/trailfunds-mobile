@@ -11,15 +11,6 @@ import maintainers
 import donations
 import config
 
-import stripe
-
-
-stripe.api_key='sk_test_D4pNByx08dJpJShCHbDp79Y70007pq01Qn'
-stripe.ApplePayDomain.create(
-  domain_name="trailfunds.ngrok.io"
-)
-
-
 app = Flask(__name__)
 CORS(app)
 

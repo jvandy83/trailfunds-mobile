@@ -1,23 +1,22 @@
 import { View, Text, Image } from 'react-native';
 
-import { useGetUserQuery } from '../services/api/auth';
-
-import { useSelector } from 'react-redux';
+import { useGetUserQuery } from '../services/api';
 
 import { PageContainer } from '../components/layout/PageContainer';
-
-import { fetchToken } from '../reduxStore/features/auth/authSlice';
 
 import dashboard from '../styles/dashboardStyles';
 import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 
 import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
-export const Dashboard = ({ navigation, route }) => {
-	// console.log(fetchToken('accessToken'));
-	const { user } = useSelector((state) => state.auth);
-	console.log(user);
-	const { data, error, isLoading } = useGetUserQuery(user?.id);
+export const Dashboard = ({ navigation }) => {
+	const {
+		data: user,
+		error,
+		isLoading,
+	} = useGetUserQuery({ refetchOnMountOrArgChange: true });
+
+	console.log('*** user ***: ', user);
 
 	if (isLoading) {
 		return (
@@ -30,11 +29,9 @@ export const Dashboard = ({ navigation, route }) => {
 		console.error(error);
 	}
 
-	const { user: currentUser } = data;
-
-	const greeting = currentUser.isNew
-		? `Welcome ${currentUser.firstName}!`
-		: `Welcome back, ${currentUser.firstName}!`;
+	const greeting = user.isNew
+		? `Welcome ${user.firstName}!`
+		: `Welcome back, ${user.firstName}!`;
 
 	return (
 		<View>

@@ -8,7 +8,7 @@ import {
 
 import { useDispatch } from 'react-redux';
 
-import { loggedOut } from '../../reduxStore/features/auth/authSlice';
+import { logoutUser } from '../../reduxStore/features/auth/authSlice';
 
 import { PrimaryButton } from '../../styles/frontendStyles';
 
@@ -79,7 +79,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 			</View>
 			<View style={styles.footer}>
 				<PrimaryButton
-					onPress={() => dispatch(loggedOut())}
+					onPress={() => dispatch(logoutUser())}
 					text='Log Out'
 					color='white'
 				/>

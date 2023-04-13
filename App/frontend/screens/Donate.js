@@ -8,13 +8,13 @@ import {
 	PlatformPay,
 } from '@stripe/stripe-react-native';
 
-import { defaults } from '../styles/frontendStyles';
+import { fetchToken } from '../reduxStore/features/auth/authSlice';
 
 import { CustomInputModal } from '../components/modal/CustomInputModal';
 
 import { PageContainer } from '../components/layout/PageContainer';
 
-import { PrimaryButton } from '../styles/frontendStyles';
+import { PrimaryButton, defaults } from '../styles/frontendStyles';
 
 import axios from 'axios';
 
@@ -50,6 +50,7 @@ export const Donate = ({ navigation }) => {
 		10: 0,
 		other: '',
 	});
+
 	const [amount, setSelectedAmount] = useState({
 		customAmount: 0,
 		selectAmount: 1,
@@ -188,6 +189,9 @@ export const Donate = ({ navigation }) => {
 		try {
 			const response = await axios.post(URL, {
 				amount: donationAmount,
+				headers: {
+					Authorization: `Bearer ${fetchToken('accessToken')}`,
+				},
 			});
 			const { paymentIntent, customer, ephemeralKey } = response.data;
 
@@ -196,7 +200,7 @@ export const Donate = ({ navigation }) => {
 
 			await initializePaymentSheet(paymentIntent, customer, ephemeralKey);
 		} catch (error) {
-			console.error(error);
+			console.error(error.response.data);
 		}
 	};
 	/*----> End of Stripe SDK <----*/

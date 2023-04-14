@@ -56,9 +56,13 @@
       psql
 
 - Now you're inside the default DB 'postgres'
-- To create a username and password
+- Create a username and password
 
       CREATE USER <your-username> WITH PASSWORD <your-password>;
+
+- Create db
+
+      CREATE DATABASE trailfunds.db;
 
 ### Prisma (database ORM)
 

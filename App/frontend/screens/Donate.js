@@ -185,12 +185,13 @@ export const Donate = ({ navigation }) => {
 	const handleInitiatePaymentIntent = async () => {
 		const donationAmount =
 			amount.customAmount > 1 ? amount.customAmount : amount.selectAmount;
-		const URL = 'https://trailfunds.ngrok.dev/api/v1/payment-intents';
+		const URL = `https://trailfunds.ngrok.dev/api/v1/payment-intents/${donationAmount}`;
+		const token = await fetchToken('accessToken');
+		console.log(token);
 		try {
-			const response = await axios.post(URL, {
-				amount: donationAmount,
+			const response = await axios.get(URL, {
 				headers: {
-					Authorization: `Bearer ${fetchToken('accessToken')}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
 			const { paymentIntent, customer, ephemeralKey } = response.data;

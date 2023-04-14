@@ -9,9 +9,9 @@ from dependencies import get_auth
 import stripe
 
 stripe.api_key='sk_test_D4pNByx08dJpJShCHbDp79Y70007pq01Qn'
-stripe.ApplePayDomain.create(
-  domain_name="trailfunds.ngrok.io"
-)
+# stripe.ApplePayDomain.create(
+#   domain_name="trailfunds.ngrok.io"
+# )
 
 class User(BaseModel): 
   first_name: str
@@ -24,14 +24,14 @@ class Donation(BaseModel):
 
 router = APIRouter(
     prefix="/api/v1",
-    # tags=["payments"],
-    # dependencies=[Depends(get_auth)],
-    # responses={401: {"description": "Not authorized"}},
+    tags=["payments"],
+    dependencies=[Depends(get_auth)], 
+    responses={401: {"description": "Not authorized"}},
 )
 
-@router.post('/payment-intents')
-async def make_payment_intent(donation: Donation):
-  print(donation)
+@router.get('/payment-intents/{amount}')
+async def make_payment_intent(amount):
+  print(amount)
 
   try:
     customer = stripe.Customer.create(
@@ -43,7 +43,7 @@ async def make_payment_intent(donation: Donation):
     )
 
     payment_intent = stripe.PaymentIntent.create(
-        amount = int(donation.amount) * 100,
+        amount = int(amount) * 100,
         currency = 'USD',
         customer = customer.id
     )

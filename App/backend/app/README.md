@@ -38,6 +38,10 @@
 
 ### Install PostgreSQL
 
+- If you have postgreSQL installed already, go to 'create username and password'
+
+- Open a new terminal and run
+
       brew install postgresql@14
 
 - Start postgreSQL server
@@ -53,7 +57,7 @@
 
 - To access your postgreSQL instance in your terminal
 
-      psql
+      psql postgres
 
 - Now you're inside the default DB 'postgres'
 - Create a username and password

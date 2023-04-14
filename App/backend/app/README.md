@@ -60,7 +60,7 @@
 
       CREATE USER <your-username> WITH PASSWORD <your-password>;
 
-- Create db
+- Create database
 
       CREATE DATABASE trailfunds.db;
 

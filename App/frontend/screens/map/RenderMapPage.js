@@ -1,6 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+
+import * as Location from 'expo-location';
 
 import MapView from 'react-native-map-clustering'; // For some reason this must be on it's own line
 import { Marker } from 'react-native-maps';
@@ -17,11 +19,54 @@ const INITIAL_REGION = {
 };
 
 export const RenderMapPage = ({ children }) => {
+	const [initialLocation, setInitialLocation] = useState({});
+
 	const mapRef = useRef(null);
+
 	let MarkerKey = 0;
+
 	let raw = Object.entries(TrailData);
-	let parsed = raw[3][1];
-	console.log('Rendering parent map component');
+
+	const trailData = raw[3][1];
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') return;
+			} catch (error) {
+				console.error(error);
+			}
+			try {
+				const { coords } = await Location.getCurrentPositionAsync({
+					accuracy: 6,
+				});
+				console.log('***cords***: ', coords);
+				const userRegion = {
+					latitude: coords.latitude,
+					longitude: coords.longitude,
+					latitudeDelta: 0.1,
+					longitudeDelta: 0.1,
+				};
+				setInitialLocation(userRegion);
+				mapRef.current?.animateToRegion(userRegion);
+				console.log('--- Location Set ---');
+			} catch (error) {
+				console.error(error);
+			}
+		})();
+	}, []);
+
+	console.log('initialLocation: ', initialLocation);
+
+	if (!initialLocation.latitude) {
+		return (
+			<View>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
+
 	return (
 		<View style={mapStyles.mapContainer}>
 			<View
@@ -33,12 +78,12 @@ export const RenderMapPage = ({ children }) => {
 				})}
 			>
 				<MapView
-					provider={'google'}
+					provider={MapView.PROVIDER_GOOGLE}
 					ref={mapRef}
 					style={mapStyles.map}
 					showsUserLocation={true}
 					// onRegionChangeComplete={setLocation}
-					initialRegion={INITIAL_REGION}
+					initialRegion={initialLocation || INITIAL_REGION}
 					loadingEnabled={true}
 					loadingIndicatorColor='#666666'
 					loadingBackgroundColor='#eeeeee'
@@ -50,7 +95,7 @@ export const RenderMapPage = ({ children }) => {
 						{ featureType: 'transit', stylers: [{ visibility: 'off' }] },
 					]}
 				>
-					{parsed.map(({ type, properties, geometry }) => (
+					{trailData.map(({ properties, geometry }) => (
 						<Marker
 							coordinate={{
 								latitude: geometry['coordinates'][1],
@@ -66,4 +111,3 @@ export const RenderMapPage = ({ children }) => {
 		</View>
 	);
 };
-

@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TouchableOpacity, Text, View, Animated, FlatList } from 'react-native';
 
-import {RenderMapPage} from './RenderMapPage';
+import { RenderMapPage } from './RenderMapPage';
 
-import * as Location from 'expo-location';
 import { MaterialIcons } from '@expo/vector-icons';
 
 // components
-import {NearButton} from '../../components/buttons/NearButton'
-import {SearchButton} from '../../components/buttons/SearchButton';
-import {LikeButton} from '../../components/buttons/LikeButton';
-import {AnimatedButtonBackground} from '../../components/layout/AnimatedButtonBackground'
+import { NearButton } from '../../components/buttons/NearButton';
+import { SearchButton } from '../../components/buttons/SearchButton';
+import { LikeButton } from '../../components/buttons/LikeButton';
+import { AnimatedButtonBackground } from '../../components/layout/AnimatedButtonBackground';
 
 import { mapStyles } from '../../styles/mapStyles';
 import { defaults } from '../../styles/frontendStyles';
@@ -152,7 +151,10 @@ export const Map = () => {
 		console.log('render search menu');
 		return (
 			<View style={mapStyles.map_column}>
-				<AnimatedButtonBackground backgroundColor='#71a890' scale={searchScale} />
+				<AnimatedButtonBackground
+					backgroundColor='#71a890'
+					scale={searchScale}
+				/>
 				<View
 					style={{
 						...mapStyles.search_menu,
@@ -219,33 +221,6 @@ export const Map = () => {
 	};
 
 	useEffect(() => {
-		let locationResponse;
-		(async () => {
-			try {
-				locationResponse = await Location.requestForegroundPermissionsAsync();
-			} catch (error) {
-				console.error(error);
-			}
-			console.log('*** STATUS IN USE EFFECT ***: ', locationResponse.status);
-			if (locationResponse.status !== 'granted') return;
-			try {
-				const location = await Location.getCurrentPositionAsync({});
-				console.log('*** LOCATION IN USE EFFECT ***: ', location);
-				const userRegion = {
-					latitude: location.coords.latitude,
-					longitude: location.coords.longitude,
-					latitudeDelta: 0.1,
-					longitudeDelta: 0.1,
-				};
-				mapRef.current?.animateToRegion(userRegion);
-				console.log('--- Location Set ---');
-			} catch (error) {
-				console.error(error);
-			}
-		})();
-	}, []);
-
-	useEffect(() => {
 		Animated.timing(likeScale, {
 			toValue: isLiked ? SCALE_SIZE : 0,
 			duration: ANIMATION_DURATION,
@@ -298,4 +273,3 @@ export const Map = () => {
 		</RenderMapPage>
 	);
 };
-

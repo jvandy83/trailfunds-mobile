@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 
 import {
@@ -232,11 +232,6 @@ export const Donate = ({ navigation }) => {
 	};
 
 	/* ----> USE EFFECTS <---- */
-	const reRenderPage = useCallback(() => {
-		console.log('screen was focused...');
-	});
-
-	// useFocusEffect(reRenderPage);
 
 	useEffect(() => {
 		setup();

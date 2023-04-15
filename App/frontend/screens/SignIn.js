@@ -65,7 +65,7 @@ export const SignIn = () => {
 				})
 				.catch((err) => console.error(err));
 		} else {
-			login(values)
+			login({ email: 'Bobdole@gmail.com', password: 'password' })
 				.unwrap()
 				.then(({ currentUser, accessToken }) => {
 					console.log(currentUser);

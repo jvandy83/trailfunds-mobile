@@ -37,6 +37,8 @@ async def sign_up(user: UserSignUp):
 
   existing_user = await prisma_user.find_first(where={'email': user.email } )
 
+  print('existing_user: ', existing_user)
+
   if existing_user is not None:
     raise HTTPException(status_code=404, detail="E-mail is already in use")
 
@@ -55,7 +57,7 @@ async def sign_up(user: UserSignUp):
   # password using a query
   # or using decorator in prisma file
 
-  access_token = jwt.encode({'id': new_user.id }, settings.secret, "HS256")
+  access_token = jwt.encode({'id': created_user.id }, settings.secret, "HS256")
   print()
 
   return { 'currentUser': {'email': created_user.email, 'firstName': created_user.first_name, 'lastName': created_user.last_name, 'id': created_user.id }, 'accessToken': access_token }

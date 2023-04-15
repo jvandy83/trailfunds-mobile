@@ -6,15 +6,14 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi_auth_middleware import FastAPIUser, AuthMiddleware
 from pydantic import BaseModel
 
-from routers import users, auth, payments
-
-from typing import Tuple, List, Any
+from routers import users, auth, payments, trails
 
 app = FastAPI()
 
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(payments.router)
+app.include_router(trails.router)
 
 # DB setup and tear down
 @app.on_event("startup")

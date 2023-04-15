@@ -18,3 +18,10 @@ model User {
   email String
   password String
 }
+
+model Trail {
+  id String @id @default(cuid())
+  latitude Float
+  longitude Float
+  name String
+}

@@ -66,6 +66,15 @@ export const api = createApi({
 		getUser: build.query({
 			query: () => `users/me`,
 		}),
+		getTrailsNearMe: build.query({
+			query: (arg) => {
+				const { lat, lon, radius } = arg;
+				return {
+					url: `trails/near-me?lat=${lat}&lon=${lon}`,
+					params: { lat, lon, radius },
+				};
+			},
+		}),
 		updateUser: build.mutation({
 			query: ({ id, ...patch }) => ({
 				url: `users/${id}`,
@@ -99,6 +108,7 @@ export const api = createApi({
 
 export const {
 	useGetUserQuery,
+	useGetTrailsNearMeQuery,
 	useUpdateUserMutation,
 	useDeleteUserMutation,
 	useLoginMutation,

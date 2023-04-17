@@ -15,7 +15,7 @@ with open('TrailData.json', 'r') as openfile:
 filtered_trails = []
  
 for trail in trails:
-  filtered_trails.append({'latitude': trail['geometry']['coordinates'][0], 'longitude': trail['geometry']['coordinates'][1], 'name': trail['properties']['Name']})
+  filtered_trails.append({ 'longitude': trail['geometry']['coordinates'][0], 'latitude': trail['geometry']['coordinates'][1],'name': trail['properties']['Name']})
 
 async def create_seed_trails():
   await prisma.connect()

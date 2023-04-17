@@ -1,33 +1,43 @@
-import {
-	Pressable,
-	View,
-	Text,
-	StyleSheet,
-	ImageBackground,
-} from 'react-native';
+import { Pressable, View, Text, StyleSheet, Image } from 'react-native';
 
 import { useDispatch } from 'react-redux';
 
 import { logoutUser } from '../../reduxStore/features/auth/authSlice';
 
+import { useGetUserQuery } from '../../services/api';
+
 import { PrimaryButton } from '../../styles/frontendStyles';
 
-import profilePic from '../../assets/images/profile-pic.jpeg';
+import { profilePic } from '../../assets/images/profile-pic.png';
 
-export const CustomDrawerContent = ({ navigation }) => {
+export const CustomDrawerContent = (props) => {
 	const dispatch = useDispatch();
+
+	const { data, isLoading, error } = useGetUserQuery();
+	if (isLoading) {
+		return (
+			<View>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
+	if (error) {
+		console.error(error);
+	}
+	console.log(data);
 
 	return (
 		<View style={styles.customContentContainer}>
 			<View style={styles.header}>
 				<View>
-					<ImageBackground
-						resizeMode='cover'
+					<Image
 						borderRadius={100}
 						style={styles.headerImage}
 						source={profilePic}
 					/>
-					<Text style={styles.headerText}>Maeve</Text>
+					<Text
+						style={styles.headerText}
+					>{`${data.firstName} ${data.lastName}`}</Text>
 				</View>
 			</View>
 			<View style={styles.navigation}>
@@ -35,7 +45,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Dashboard');
+						props.navigation.navigate('Dashboard');
 					}}
 				>
 					<Text style={styles.contentText}>Home</Text>
@@ -44,7 +54,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Wallet');
+						props.navigation.navigate('Wallet');
 					}}
 				>
 					<Text style={styles.contentText}>Wallet</Text>
@@ -53,7 +63,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Trail Map');
+						props.navigation.navigate('Trail Map');
 					}}
 				>
 					<Text style={styles.contentText}>Map</Text>
@@ -62,7 +72,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('About');
+						props.navigation.navigate('About');
 					}}
 				>
 					<Text style={styles.contentText}>About Trail Funds</Text>
@@ -71,7 +81,7 @@ export const CustomDrawerContent = ({ navigation }) => {
 					style={styles.contentItem}
 					onPress={() => {
 						// Navigate using the `navigation` prop that you received
-						navigation.navigate('Help');
+						props.navigation.navigate('Help');
 					}}
 				>
 					<Text style={styles.contentText}>Help</Text>

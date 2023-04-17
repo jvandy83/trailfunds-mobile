@@ -70,8 +70,30 @@ export const api = createApi({
 			query: (arg) => {
 				const { lat, lon, radius } = arg;
 				return {
-					url: `trails/near-me?lat=${lat}&lon=${lon}`,
-					params: { lat, lon, radius },
+					url: `trails/near-me?lat=${lat}&lon=${lon}&radius=${radius}`,
+				};
+			},
+		}),
+		getDistanceFromMe: build.query({
+			query: (arg) => {
+				const { nearLat, nearLon, farLat, farLon } = arg;
+				return {
+					url: `trails/distance-from-me?nearLat=${nearLat}&nearLon=${nearLon}&farLat=${farLat}&farLon=${farLon}`,
+				};
+			},
+		}),
+		searchTrails: build.query({
+			query: (arg) => {
+				const { query } = arg;
+				return {
+					url: `trails/search-trails?query=${query}`,
+				};
+			},
+		}),
+		getTrail: build.query({
+			query: (arg) => {
+				return {
+					url: `trails/get-trail?trailId=${arg}`,
 				};
 			},
 		}),
@@ -109,6 +131,9 @@ export const api = createApi({
 export const {
 	useGetUserQuery,
 	useGetTrailsNearMeQuery,
+	useLazySearchTrailsQuery,
+	useGetTrailQuery,
+	useGetDistanceFromMeQuery,
 	useUpdateUserMutation,
 	useDeleteUserMutation,
 	useLoginMutation,

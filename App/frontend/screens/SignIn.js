@@ -130,8 +130,7 @@ export const SignIn = () => {
 						/>
 					</G>
 				</Svg>
-				<Image
-					source={logo}
+				<View
 					style={{
 						width: 200,
 						height: 300,
@@ -139,8 +138,16 @@ export const SignIn = () => {
 						top: 200,
 						left: 15,
 					}}
-					resize='center'
-				/>
+				>
+					<Svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38.81 44.29'>
+						<Path
+							d='M24.91 18.22h-2.27V7.3h8.87c4.03 0 7.3-3.27 7.3-7.3s-5.55 0-5.55 0H7.3C3.27 0 0 3.27 0 7.3l14.8.06v36.93a7.84 7.84 0 0 0 7.84-7.84V25.59h9.63c0-4.07-3.3-7.36-7.36-7.36Z'
+							style={{
+								fill: '#5cc093',
+							}}
+						/>
+					</Svg>
+				</View>
 			</View>
 			<View
 				style={{

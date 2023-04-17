@@ -14,7 +14,7 @@ PODS:
     - ExpoModulesCore
   - EXManifests (0.5.2):
     - EXJSONUtils
-  - Expo (48.0.9):
+  - Expo (48.0.10):
     - ExpoModulesCore
   - expo-dev-client (2.1.6):
     - EXManifests
@@ -96,6 +96,8 @@ PODS:
     - React-Core
     - React-RCTAppDelegate
     - ReactCommon/turbomodule/core
+  - EXSecureStore (12.1.1):
+    - ExpoModulesCore
   - EXSplashScreen (0.18.1):
     - ExpoModulesCore
     - React-Core
@@ -465,7 +467,7 @@ PODS:
     - React-Core
   - RNCPicker (2.4.8):
     - React-Core
-  - RNDeviceInfo (10.4.0):
+  - RNDeviceInfo (10.6.0):
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
@@ -559,6 +561,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -657,6 +660,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-linear-gradient/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  EXSecureStore:
+    :path: "../node_modules/expo-secure-store/ios"
   EXSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
   EXUpdatesInterface:
@@ -762,7 +767,7 @@ SPEC CHECKSUMS:
   EXJSONUtils: 48b1e764ac35160e6f54d21ab60d7d9501f3e473
   EXLocation: 74a0ba446f54fd585ea6cfcd19a25644bf22c30d
   EXManifests: 500666d48e8dd7ca5a482c9e729e4a7a6c34081b
-  Expo: 863488a600a4565698a79577117c70b170054d08
+  Expo: b04d142a2b477a391b47c62d179c1a9e1140e6ad
   expo-dev-client: 84792ce20d34fa5c882cdc3ca338ea1b2cde5013
   expo-dev-launcher: c50f1b78ea294f5762902b768952898d17739983
   expo-dev-menu: 9f454e0353860c80c55a9805e16dfebf4fd2da5e
@@ -770,6 +775,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
   ExpoLinearGradient: 8eaab76b7f55c612ed8348c8be8c2a18a9b4529f
   ExpoModulesCore: 6e0259511f4c4341b6b8357db393624df2280828
+  EXSecureStore: e8923258361cc406d0401af380f12bd05b2b720f
   EXSplashScreen: cd7fb052dff5ba8311d5c2455ecbebffe1b7a8ca
   EXUpdatesInterface: dd699d1930e28639dcbd70a402caea98e86364ca
   FBLazyVector: 446e84642979fff0ba57f3c804c2228a473aeac2
@@ -811,7 +817,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
-  RNDeviceInfo: 749f2e049dcd79e2e44f134f66b73a06951b5066
+  RNDeviceInfo: 475a4c447168d0ad4c807e48ef5e0963a0f4eb1b
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f

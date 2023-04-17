@@ -32,10 +32,6 @@ export const Wallet = ({ navigation }) => {
 				<Text style={wallet.label}>{`${data.firstName}'s Wallet`}</Text>
 
 				<PrimaryButton
-					text='Donate'
-					onPress={() => navigation.navigate('Donate')}
-				/>
-				<PrimaryButton
 					text='Refill'
 					onPress={() => console.log('refill clicked')}
 				/>

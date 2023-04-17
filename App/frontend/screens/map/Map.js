@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 
 import * as Location from 'expo-location';
 
 import MapView from 'react-native-map-clustering'; // For some reason this must be on it's own line
 import { Marker } from 'react-native-maps';
+
+import { TrailDataBottomSheet } from './TrailDataBottomSheet';
 
 import { useGetTrailsNearMeQuery } from '../../services/api';
 
@@ -26,8 +28,9 @@ let RAW_DATA = Object.entries(TrailData);
 
 const TRAIL_DATA = RAW_DATA[3][1];
 
-export const Map = ({ children }) => {
+export const Map = () => {
 	const [initialLocation, setInitialLocation] = useState({});
+	const [radius, setRadius] = useState('5');
 
 	const mapRef = useRef(null);
 
@@ -35,7 +38,7 @@ export const Map = ({ children }) => {
 		{
 			lat: initialLocation.latitude,
 			lon: initialLocation.longitude,
-			radius: 3,
+			radius,
 		},
 		{ skip: !initialLocation.latitude },
 		{ refetchOnMountOrArgChange: true },
@@ -79,7 +82,7 @@ export const Map = ({ children }) => {
 		console.error(error);
 	}
 
-	console.log(data);
+	console.log('***DATA***: ', data);
 
 	return (
 		<View style={mapStyles.mapContainer}>
@@ -109,17 +112,23 @@ export const Map = ({ children }) => {
 						{ featureType: 'transit', stylers: [{ visibility: 'off' }] },
 					]}
 				>
-					{TRAIL_DATA.map(({ properties, geometry }) => (
+					{data.trails.map(({ latitude, longitude, name }) => (
 						<Marker
 							coordinate={{
-								latitude: geometry['coordinates'][1],
-								longitude: geometry['coordinates'][0],
+								latitude,
+								longitude,
 							}}
-							title={properties['Name']}
+							title={name}
 							key={(MARKER_KEY += 1)}
 						/>
 					))}
 				</MapView>
+				<TrailDataBottomSheet
+					radius={radius}
+					data={data}
+					initialLocation={initialLocation}
+					setRadius={setRadius}
+				/>
 			</View>
 		</View>
 	);

@@ -6,6 +6,7 @@ import { Profile } from './Profile';
 import { SignIn } from './SignIn';
 import { Template } from './Template';
 import { About } from './About';
+import { Trail } from './Trail';
 import { Map } from './map/Map';
 
 export {
@@ -17,5 +18,6 @@ export {
 	SignIn,
 	Template,
 	About,
+	Trail,
 	Map,
 };

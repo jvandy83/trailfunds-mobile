@@ -2,6 +2,8 @@
 //  <NameOfPage> should match exactly what you are calling on the page that you made
 //  If you have questions talk to Peyton about how to do it :)
 
+import { Pressable, Image, View } from 'react-native';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; //Stack navigator Lib
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,7 +11,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useWindowDimensions } from 'react-native';
 
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
+import { faN, faNavicon } from '@fortawesome/free-solid-svg-icons';
+
 import { useSelector } from 'react-redux';
+
+import { logoBlack } from '../assets/images';
 
 //pages
 import {
@@ -22,6 +30,7 @@ import {
 	WalletRefill,
 	SignIn,
 	Map,
+	Trail,
 } from '../screens';
 
 import { CustomDrawerContent } from '../components/drawer/DrawerContent';
@@ -33,12 +42,30 @@ export const DrawerMenu = () => {
 
 	return (
 		<Drawer.Navigator
-			useLegacyImplementation
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
 			drawerStyle={{ backgroundColor: '#59C092' }}
-			screenOptions={() => ({
+			screenOptions={({ navigation }) => ({
 				drawerType: dimensions.width >= 768 ? 'permanent' : 'front',
-				headerShown: false,
+				headerShown: true,
+				headerTransparent: true,
+				headerTitle: '',
+				headerLeft: (config) => {
+					return (
+						<Pressable
+							style={{ paddingHorizontal: 16 }}
+							onPress={navigation.toggleDrawer}
+						>
+							<FontAwesomeIcon size={24} icon={faNavicon} />
+						</Pressable>
+					);
+				},
+				headerRight: (config) => {
+					return (
+						<View style={{ paddingHorizontal: 10 }}>
+							<Image source={logoBlack} style={{ height: 40, width: 40 }} />
+						</View>
+					);
+				},
 			})}
 		>
 			<Drawer.Screen name='Dashboard' component={Dashboard} />
@@ -64,7 +91,9 @@ export const StackHome = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
-				screenOptions={{ headerShown: false, initialRouteName: 'Login' }}
+				screenOptions={{
+					headerShown: false,
+				}}
 			>
 				{isLoggedIn ? (
 					<>
@@ -80,6 +109,7 @@ export const StackHome = () => {
 						<Stack.Screen name='Wallet Refill' component={WalletRefill} />
 						<Stack.Screen name='Trail Map' component={Map} />
 						<Stack.Screen name='Donate' component={Donate} />
+						<Stack.Screen name='Trail' component={Trail} />
 					</>
 				) : (
 					<>

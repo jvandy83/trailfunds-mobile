@@ -98,13 +98,13 @@ export const SignIn = () => {
 					position: 'absolute',
 					fontSize: 30,
 					fontWeight: 'bold',
-					color: '#59C092',
+					color: '#414d59',
 					top: 456,
 					right: 40,
 					zIndex: 800,
 					textShadowOffset: { width: 2, height: 2 },
-					textShadowColor: 'rgba(0, 0, 0, 0.2)',
-					textShadowRadius: 10,
+					textShadowColor: 'rgba(0, 0, 0, 0.4)',
+					textShadowRadius: 5,
 				}}
 			>
 				{`${newUser ? 'Sign Up' : 'Log In'}`}

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 
 import { useGetDistanceFromMeQuery } from '../../services/api';
 
-export const TrailLocation = ({ trail, initialLoc, onPress }) => {
+export const TrailLocation = ({ trail, initialLoc, onPress, key }) => {
 	const { data, error, isLoading } = useGetDistanceFromMeQuery({
 		nearLat: initialLoc.latitude,
 		nearLon: initialLoc.longitude,
@@ -29,6 +29,7 @@ export const TrailLocation = ({ trail, initialLoc, onPress }) => {
 	return (
 		<TouchableOpacity onPress={onPress} style={{ paddingVertical: 10 }}>
 			<View
+				key={key}
 				style={{
 					flexDirection: 'row',
 					alignItems: 'center',

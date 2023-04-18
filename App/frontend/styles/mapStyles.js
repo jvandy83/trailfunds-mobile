@@ -16,28 +16,7 @@ export const mapStyles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 	},
-	mapContainer: {
-		position: 'relative',
-		width: '100%',
-		height: '100%',
-		backgroundColor: '#59C0922C',
-		alignItems: 'center',
-		justifyContent: 'center',
-		flexGrow: 1,
-	},
-	map_column_container: {
-		top: '84%',
-		position: 'absolute',
-		flexDirection: 'row',
-	},
-	map_column: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		textAlign: 'center',
-		paddingTop: 5,
-		paddingBottom: 10,
-	},
+
 	like: {
 		width: 80,
 		height: 80,

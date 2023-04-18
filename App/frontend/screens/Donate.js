@@ -19,9 +19,9 @@ import { PrimaryButton, defaults } from '../styles/frontendStyles';
 import axios from 'axios';
 
 const preselectedInputs = {
-	1: 0,
 	5: 0,
 	10: 0,
+	20: 0,
 	other: '',
 };
 
@@ -45,15 +45,15 @@ export const Donate = ({ navigation }) => {
 	const [showCustomAmountInput, setShowCustomAmountInput] = useState(false);
 
 	const [preselectedInputAmount, setPreselectedAmount] = useState({
-		1: 1,
-		5: 0,
+		5: 5,
 		10: 0,
+		20: 0,
 		other: '',
 	});
 
 	const [amount, setSelectedAmount] = useState({
 		customAmount: 0,
-		selectAmount: 1,
+		selectAmount: 5,
 	});
 
 	/* ----> REFS <---- */
@@ -97,9 +97,9 @@ export const Donate = ({ navigation }) => {
 						setReady(true);
 						setSelectedAmount(currentAmounts);
 						setPreselectedAmount({
-							1: 1,
-							5: 0,
+							5: 5,
 							10: 0,
+							20: 0,
 							other: '',
 						});
 						navigation.navigate('Wallet');
@@ -184,7 +184,7 @@ export const Donate = ({ navigation }) => {
 
 	const handleInitiatePaymentIntent = async () => {
 		const donationAmount =
-			amount.customAmount > 1 ? amount.customAmount : amount.selectAmount;
+			amount.customAmount > 5 ? amount.customAmount : amount.selectAmount;
 		const URL = `https://trailfunds.ngrok.dev/api/v1/payment-intents/${donationAmount}`;
 		const token = await fetchToken('accessToken');
 		console.log(token);
@@ -213,7 +213,7 @@ export const Donate = ({ navigation }) => {
 	// control transaction flow
 	const handleCustomAmountClick = () => {
 		setPreselectedAmount({ ...preselectedInputs, other: 'other' });
-		setSelectedAmount({ selectAmount: 1, customAmount: 0 });
+		setSelectedAmount({ selectAmount: 5, customAmount: 0 });
 
 		setShowCustomAmountInput(true);
 	};
@@ -282,31 +282,13 @@ export const Donate = ({ navigation }) => {
 					</View>
 					<View style={styles.donationTabs}>
 						<Pressable
-							onPress={() => handlePreselectedAmountClick(1)}
+							onPress={() => handlePreselectedAmountClick(5)}
 							style={{
 								backgroundColor:
-									preselectedInputAmount[1] === 1 ? '#59C092' : 'white',
+									preselectedInputAmount[5] === 5 ? '#59C092' : 'white',
 								borderBottomLeftRadius: 100,
 								borderTopLeftRadius: 100,
 								...styles.donationTab,
-							}}
-						>
-							<View>
-								<Text
-									style={{
-										color: preselectedInputAmount[1] === 1 ? 'white' : 'gray',
-									}}
-								>
-									$1
-								</Text>
-							</View>
-						</Pressable>
-						<Pressable
-							onPress={() => handlePreselectedAmountClick(5)}
-							style={{
-								...styles.donationTab,
-								backgroundColor:
-									preselectedInputAmount[5] === 5 ? '#59C092' : 'white',
 							}}
 						>
 							<View>
@@ -322,9 +304,9 @@ export const Donate = ({ navigation }) => {
 						<Pressable
 							onPress={() => handlePreselectedAmountClick(10)}
 							style={{
+								...styles.donationTab,
 								backgroundColor:
 									preselectedInputAmount[10] === 10 ? '#59C092' : 'white',
-								...styles.donationTab,
 							}}
 						>
 							<View>
@@ -334,6 +316,24 @@ export const Donate = ({ navigation }) => {
 									}}
 								>
 									$10
+								</Text>
+							</View>
+						</Pressable>
+						<Pressable
+							onPress={() => handlePreselectedAmountClick(20)}
+							style={{
+								backgroundColor:
+									preselectedInputAmount[20] === 20 ? '#59C092' : 'white',
+								...styles.donationTab,
+							}}
+						>
+							<View>
+								<Text
+									style={{
+										color: preselectedInputAmount[20] === 20 ? 'white' : 'gray',
+									}}
+								>
+									$20
 								</Text>
 							</View>
 						</Pressable>

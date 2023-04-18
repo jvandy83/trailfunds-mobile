@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { View, Text } from 'react-native';
 
 import * as Location from 'expo-location';
 
@@ -11,9 +11,15 @@ import { TrailDataBottomSheet } from './TrailDataBottomSheet';
 
 import { useGetTrailsNearMeQuery } from '../../services/api';
 
+import uuid from 'react-native-uuid';
+
 import { mapStyles } from '../../styles/mapStyles';
 
-import TrailData from '../../assets/data/TrailData.json';
+// if you don't set your coordinates
+// in your ios/android simulator
+// to return your location from
+// Location.getCurrentPositionAsync
+// INITIAL_REGION will be used
 
 const INITIAL_REGION = {
 	latitude: 39.081311,
@@ -21,12 +27,6 @@ const INITIAL_REGION = {
 	latitudeDelta: 0.1,
 	longitudeDelta: 0.1,
 };
-
-let MARKER_KEY = 0;
-
-let RAW_DATA = Object.entries(TrailData);
-
-const TRAIL_DATA = RAW_DATA[3][1];
 
 export const Map = () => {
 	const [initialLocation, setInitialLocation] = useState({});
@@ -40,8 +40,24 @@ export const Map = () => {
 			lon: initialLocation.longitude,
 			radius,
 		},
+		// skip api call until the initial
+		// location has been set
 		{ skip: !initialLocation.latitude },
 		{ refetchOnMountOrArgChange: true },
+	);
+
+	const renderMarker = useCallback(
+		({ latitude, longitude, name }) => (
+			<Marker
+				coordinate={{
+					latitude,
+					longitude,
+				}}
+				title={name}
+				key={uuid.v4()}
+			/>
+		),
+		[],
 	);
 
 	useEffect(() => {
@@ -82,54 +98,34 @@ export const Map = () => {
 		console.error(error);
 	}
 
-	console.log('***DATA***: ', data);
-
 	return (
-		<View style={mapStyles.mapContainer}>
-			<View
-				style={StyleSheet.create({
-					width: '100%',
-					height: '100%',
-					borderColor: '#80998e',
-					borderTopWidth: 2,
-				})}
+		<View>
+			<MapView
+				provider={MapView.PROVIDER_GOOGLE}
+				ref={mapRef}
+				style={mapStyles.map}
+				showsUserLocation={true}
+				// onRegionChangeComplete={setLocation}
+				initialRegion={initialLocation || INITIAL_REGION}
+				loadingEnabled={true}
+				loadingIndicatorColor='#666666'
+				loadingBackgroundColor='#eeeeee'
+				moveOnMarkerPress={false}
+				showsCompass={true}
+				showsPointsOfInterest={false}
+				customMapStyle={[
+					{ featureType: 'poi', stylers: [{ visibility: 'off' }] },
+					{ featureType: 'transit', stylers: [{ visibility: 'off' }] },
+				]}
 			>
-				<MapView
-					provider={MapView.PROVIDER_GOOGLE}
-					ref={mapRef}
-					style={mapStyles.map}
-					showsUserLocation={true}
-					// onRegionChangeComplete={setLocation}
-					initialRegion={initialLocation || INITIAL_REGION}
-					loadingEnabled={true}
-					loadingIndicatorColor='#666666'
-					loadingBackgroundColor='#eeeeee'
-					moveOnMarkerPress={false}
-					showsCompass={true}
-					showsPointsOfInterest={false}
-					customMapStyle={[
-						{ featureType: 'poi', stylers: [{ visibility: 'off' }] },
-						{ featureType: 'transit', stylers: [{ visibility: 'off' }] },
-					]}
-				>
-					{data.trails.map(({ latitude, longitude, name }) => (
-						<Marker
-							coordinate={{
-								latitude,
-								longitude,
-							}}
-							title={name}
-							key={(MARKER_KEY += 1)}
-						/>
-					))}
-				</MapView>
-				<TrailDataBottomSheet
-					radius={radius}
-					data={data}
-					initialLocation={initialLocation}
-					setRadius={setRadius}
-				/>
-			</View>
+				{data.trails.map(renderMarker)}
+			</MapView>
+			<TrailDataBottomSheet
+				radius={radius}
+				data={data}
+				initialLocation={initialLocation}
+				setRadius={setRadius}
+			/>
 		</View>
 	);
 };

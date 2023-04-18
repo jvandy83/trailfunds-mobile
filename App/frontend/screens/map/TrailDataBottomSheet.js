@@ -1,10 +1,4 @@
-import React, {
-	useCallback,
-	useMemo,
-	useRef,
-	useEffect,
-	useState,
-} from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import {
 	View,
@@ -12,7 +6,6 @@ import {
 	StyleSheet,
 	TextInput,
 	Pressable,
-	ScrollView,
 	SafeAreaView,
 } from 'react-native';
 
@@ -20,12 +13,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Picker } from '@react-native-picker/picker';
 
-import {
-	BottomSheetModal,
-	BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { TrailLocation } from './TrailLocation';
+
+import uuid from 'react-native-uuid';
 
 import axios from 'axios';
 
@@ -36,7 +28,7 @@ export const TrailDataBottomSheet = ({
 	radius,
 }) => {
 	// ref
-	const bottomSheetModalRef = useRef(null);
+	const bottomSheetRef = useRef(null);
 
 	const [queryData, setQueryData] = useState([]);
 
@@ -60,30 +52,19 @@ export const TrailDataBottomSheet = ({
 	};
 
 	const handleSheetChanges = useCallback((index) => {
-		console.log('handleSheetChanges', bottomSheetModalRef.current);
+		// console.log('handleSheetChanges', bottomSheetModalRef.current);
 	}, []);
 
-	const renderTrails = () => {
-		return data.trails.map((trail) => (
+	const renderTrail = useCallback((trail) => {
+		return (
 			<TrailLocation
 				trail={trail}
 				onPress={() => navigate('Trail', { trailId: trail.id })}
 				initialLoc={initialLocation}
-				key={trail.name}
+				key={uuid.v4()}
 			/>
-		));
-	};
-
-	const renderQueriedTrails = () => {
-		return queryData.trails?.map((trail) => (
-			<TrailLocation
-				trail={trail}
-				onPress={() => navigate('Trail', { trailId: trail.id })}
-				initialLoc={initialLocation}
-				key={trail.name}
-			/>
-		));
-	};
+		);
+	}, []);
 
 	const renderPicker = () => {
 		const arr = [];
@@ -97,125 +78,122 @@ export const TrailDataBottomSheet = ({
 
 	const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
 
-	useEffect(() => {
-		bottomSheetModalRef.current?.present();
-	}, []);
-
-	// renders
 	return (
-		<BottomSheetModalProvider>
-			<View style={styles.container}>
-				<BottomSheetModal
-					ref={bottomSheetModalRef}
-					index={1}
-					snapPoints={snapPoints}
-					onChange={handleSheetChanges}
-				>
-					<ScrollView>
-						<View style={{ paddingTop: 40, paddingHorizontal: 30 }}>
-							<Text
+		<View style={styles.container}>
+			<BottomSheet
+				ref={bottomSheetRef}
+				index={1}
+				snapPoints={snapPoints}
+				onChange={handleSheetChanges}
+			>
+				<BottomSheetScrollView>
+					<View style={{ paddingVertical: 30, paddingHorizontal: 30 }}>
+						<Text
+							style={{
+								fontSize: 30,
+								fontWeight: 'bold',
+								color: '#59C092',
+							}}
+						>
+							Find A Trail
+						</Text>
+						<TextInput
+							placeholder='Search'
+							onChangeText={(text) => handleSearchQuery(text)}
+							style={{
+								marginVertical: 15,
+								paddingVertical: 10,
+								paddingHorizontal: 20,
+								borderWidth: 1,
+								borderColor: 'rgba(0, 0, 0, 0.2)',
+								borderRadius: 100,
+							}}
+						/>
+						<View>{queryData.trails?.map(renderTrail)}</View>
+						<View
+							style={{
+								flexDirection: 'row',
+								justifyContent: 'space-around',
+								paddingVertical: 20,
+							}}
+						>
+							<Pressable
 								style={{
-									fontSize: 30,
-									fontWeight: 'bold',
-									color: '#59C092',
-								}}
-							>
-								Find A Trail
-							</Text>
-							<TextInput
-								placeholder='Search'
-								onChangeText={(text) => handleSearchQuery(text)}
-								style={{
-									marginVertical: 15,
-									paddingVertical: 10,
-									paddingHorizontal: 20,
-									borderWidth: 1,
-									borderColor: 'rgba(0, 0, 0, 0.2)',
-									borderRadius: 100,
-								}}
-							/>
-							<View>{renderQueriedTrails()}</View>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-around',
-									paddingVertical: 20,
-								}}
-							>
-								<Pressable
-									style={{
-										borderBottomColor: '#59C092',
-										borderBottomWidth: 2,
-									}}
-								>
-									<Text
-										style={{
-											fontSize: 16,
-											color: '#59C092',
-										}}
-									>
-										Favorite
-									</Text>
-								</Pressable>
-								<Pressable>
-									<Text style={{ fontSize: 16 }}>Recent</Text>
-								</Pressable>
-							</View>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-									marginBottom: 40,
-									height: 60,
-									overflow: 'hidden',
+									borderBottomColor: '#59C092',
+									borderBottomWidth: 2,
 								}}
 							>
 								<Text
 									style={{
-										fontSize: 20,
-										fontWeight: 'bold',
+										fontSize: 16,
 										color: '#59C092',
 									}}
 								>
-									Trails Near Me
+									Favorite
 								</Text>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'center',
-										alignItems: 'center',
+							</Pressable>
+							<Pressable>
+								<Text style={{ fontSize: 16 }}>Recent</Text>
+							</Pressable>
+						</View>
+						<View
+							style={{
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+								marginBottom: 40,
+								height: 60,
+								overflow: 'hidden',
+							}}
+						>
+							<Text
+								style={{
+									fontSize: 20,
+									fontWeight: 'bold',
+									color: '#59C092',
+								}}
+							>
+								Trails Near Me
+							</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<Picker
+									style={{ width: '50%' }}
+									selectedValue={selectedRadiusValue}
+									onValueChange={(itemValue, itemIndex) => {
+										setSelectedRadiusValue(itemValue);
+										setRadius(itemValue);
 									}}
 								>
-									<Picker
-										style={{ width: '50%' }}
-										selectedValue={selectedRadiusValue}
-										onValueChange={(itemValue, itemIndex) => {
-											setSelectedRadiusValue(itemValue);
-											setRadius(itemValue);
-										}}
-									>
-										{renderPicker()}
-									</Picker>
-									<Text style={{ fontSize: 16 }}>mi</Text>
-								</View>
+									{renderPicker()}
+								</Picker>
+								<Text style={{ fontSize: 16 }}>mi</Text>
 							</View>
-							<SafeAreaView>
-								<View>{renderTrails()}</View>
-							</SafeAreaView>
 						</View>
-					</ScrollView>
-				</BottomSheetModal>
-			</View>
-		</BottomSheetModalProvider>
+						<SafeAreaView>
+							<View>{data.trails.map(renderTrail)}</View>
+						</SafeAreaView>
+					</View>
+				</BottomSheetScrollView>
+			</BottomSheet>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
+		position: 'absolute',
+		bottom: 0,
+		right: 0,
+		left: 0,
+		height: '100%',
 		padding: 24,
 		justifyContent: 'center',
-		backgroundColor: 'grey',
 	},
 	contentContainer: {
 		alignItems: 'center',

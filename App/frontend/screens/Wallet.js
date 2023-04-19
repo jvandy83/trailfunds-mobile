@@ -19,8 +19,6 @@ import {
 
 import uuid from 'react-native-uuid';
 
-import { defaults } from '../styles/frontendStyles';
-
 import { forrestService } from '../assets/images';
 
 const mockData = [

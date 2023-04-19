@@ -35,9 +35,7 @@ export const CustomDrawerContent = (props) => {
 						style={styles.headerImage}
 						source={profilePic}
 					/>
-					<Text
-						style={styles.headerText}
-					>{`${data.firstName} ${data.lastName}`}</Text>
+					<Text style={styles.headerText}>{data.firstName}</Text>
 				</View>
 			</View>
 			<View style={styles.navigation}>

@@ -20,6 +20,7 @@ model User {
   trailbucks      Trailbucks?
   favorite_trails FavoriteTrails[]
   recent_trails   RecentTrails[]
+  is_new Boolean  @default(true)
 }
 
 model FavoriteTrails {

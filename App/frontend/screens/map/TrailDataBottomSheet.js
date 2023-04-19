@@ -107,7 +107,7 @@ export const TrailDataBottomSheet = ({
 					snapPoints={snapPoints}
 					onChange={handleSheetChanges}
 				>
-					<ScrollView>
+					<ScrollView style={{ flexGrow: 1 }}>
 						<View style={{ paddingTop: 40, paddingHorizontal: 30 }}>
 							<Text
 								style={{

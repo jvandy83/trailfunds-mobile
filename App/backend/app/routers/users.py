@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from typing import Annotated
 
+from src.prisma import User as UserModel
+
 from pydantic import BaseModel
 
 from dependencies import get_auth
@@ -11,6 +13,7 @@ class User(BaseModel):
     last_name: str
     email: str
     id: str
+    is_new: bool
 
 router = APIRouter(
     prefix="/api/v1/users",
@@ -20,6 +23,11 @@ router = APIRouter(
 )
 
 @router.get('/me')
-async def get_user(current_user: Annotated[User, Depends(get_auth)]):
-  return current_user
+async def get_user(user: Annotated[User, Depends(get_auth)]):
+ 
+  current_user = await UserModel.find_unique(where={'id': user['id']})
+
+  print('current_user: ', current_user)
+
+  return { 'firstName': current_user.first_name, 'isNew': current_user.is_new }
   

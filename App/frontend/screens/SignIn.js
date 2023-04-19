@@ -32,7 +32,7 @@ export const SignIn = () => {
 	const [newUser, setNewUser] = useState(false);
 	const [values, setValues] = useState({});
 
-	const [signUp, { isLoading, error, isSuccess, data }] = useSignUpMutation();
+	const [signUp, { isLoading, error }] = useSignUpMutation();
 	// create alias due to multiple mutations
 	// being called in the same module
 	const [login, { isLoading: isLoginLoading, error: loginError }] =
@@ -58,21 +58,25 @@ export const SignIn = () => {
 		if (newUser) {
 			// calling unwrap makes the return
 			// value available ready immediately
-			signUp(values)
+			signUp({ ...values, isNew: true })
 				.unwrap()
 				.then(({ currentUser, accessToken }) => {
 					saveToken('accessToken', accessToken);
-					dispatch(setAuth({ token: accessToken, currentUser, isNew: true }));
+					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
 				.catch((err) => console.error(err));
 		} else {
-			login({ email: 'Vanthedev@gmail.com', password: 'password' })
+			login({
+				email: 'Vanthedev@gmail.com',
+				password: 'password',
+				isNew: false,
+			})
 				.unwrap()
 				.then(({ currentUser, accessToken }) => {
 					console.log(currentUser);
 					console.log(accessToken);
 					saveToken('accessToken', accessToken);
-					dispatch(setAuth({ token: accessToken, currentUser, isNew: false }));
+					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
 				.catch((err) => console.error(err));
 		}

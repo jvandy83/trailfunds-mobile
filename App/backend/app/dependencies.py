@@ -13,7 +13,6 @@ settings = Settings()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def get_auth(token: Annotated[str, Depends(oauth2_scheme)]):
-  print('*** token *** :', token)
   credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",
@@ -21,6 +20,7 @@ def get_auth(token: Annotated[str, Depends(oauth2_scheme)]):
   )
   try:
     user = jwt.decode(token, key='secret', algorithms=['HS256'])
+    print('***user***: ', user)
     return user
   except Exception as e:
     print('error in decoding jwt: ', e)

@@ -10,13 +10,9 @@ import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
 export const Dashboard = ({ navigation }) => {
-	const {
-		data: user,
-		error,
-		isLoading,
-	} = useGetUserQuery({ refetchOnMountOrArgChange: true });
-
-	console.log('*** user ***: ', user);
+	const { data, error, isLoading } = useGetUserQuery({
+		refetchOnMountOrArgChange: true,
+	});
 
 	if (isLoading) {
 		return (
@@ -29,9 +25,9 @@ export const Dashboard = ({ navigation }) => {
 		console.error(error);
 	}
 
-	const greeting = user.isNew
-		? `Welcome ${user.firstName}!`
-		: `Welcome back, ${user.firstName}!`;
+	const greeting = data.isNew
+		? `Welcome ${data.firstName}!`
+		: `Welcome back, ${data.firstName}!`;
 
 	return (
 		<View>

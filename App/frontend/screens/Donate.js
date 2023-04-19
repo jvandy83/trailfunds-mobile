@@ -21,7 +21,7 @@ import { PrimaryButton, defaults } from '../styles/frontendStyles';
 import axios from 'axios';
 
 const preselectedInputs = {
-	5: 5,
+	5: 0,
 	10: 0,
 	20: 0,
 	other: '',
@@ -29,7 +29,7 @@ const preselectedInputs = {
 
 const currentAmounts = {
 	customAmount: 0,
-	selectAmount: 5,
+	selectAmount: 0,
 };
 
 export const Donate = ({ navigation }) => {

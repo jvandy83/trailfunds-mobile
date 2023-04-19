@@ -55,7 +55,7 @@ async def search_trails(trailId: str):
 
   print(trailId)
 
-  trail = await prisma_trail.find_unique(where={'id': trailId})
+  trail = await Trail.find_unique(where={'id': trailId})
 
   print(trail)
 

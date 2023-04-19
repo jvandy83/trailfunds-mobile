@@ -17,12 +17,14 @@ settings = Settings()
 class UserLogin(BaseModel):
     email: str
     password: str
+    isNew: bool
 
 class UserSignUp(BaseModel):
     firstName: str
     lastName: str
     email: str
     password: str
+    isNew: bool
 
 router = APIRouter(
     prefix="/api/v1/auth",
@@ -33,11 +35,7 @@ router = APIRouter(
 @router.post('/sign-up')
 async def sign_up(user: UserSignUp):
 
-  print('user in signup: ', user)
-
   existing_user = await User.find_first(where={'email': user.email } )
-
-  print('existing_user: ', existing_user)
 
   if existing_user is not None:
     raise HTTPException(status_code=404, detail="E-mail is already in use")
@@ -49,37 +47,42 @@ async def sign_up(user: UserSignUp):
         'first_name': user.firstName,
         'last_name': user.lastName,
         'email': user.email,
-        'password': hashed_password.decode()
-      }
+        'password': hashed_password.decode(),
+        }
   )
-
-  print('created_user: ', created_user)
 
   # find better way to exclude 
   # password using a query
   # or using decorator in prisma file
 
   access_token = jwt.encode({'id': created_user.id }, settings.secret, "HS256")
-  print()
 
-  return { 'currentUser': {'email': created_user.email, 'firstName': created_user.first_name, 'lastName': created_user.last_name, 'id': created_user.id }, 'accessToken': access_token }
+  return { 'currentUser': {'email': created_user.email, 'firstName': created_user.first_name, 'lastName': created_user.last_name, 'id': created_user.id}, 'accessToken': access_token }
 
 @router.post('/login')
 async def login(user: UserLogin):
 
-  print('user: ', user)
+  existing_user = await User.find_first(where={ 'email': user.email } )
 
-  existing_user = await User.find_first(where={'email': user.email } )
-
-  print('existing_user: ', existing_user)
-  
   hashed_password = existing_user.password
 
   if bcrypt.checkpw(user.password.encode('utf-8'), hashed_password.encode('utf-8')) and existing_user is not None:
 
-    access_token = jwt.encode({'email': existing_user.email, 'firstName': existing_user.first_name, 'lastName': existing_user.last_name, 'id': existing_user.id, 'isNew': False }, settings.secret)
+    # update user.is_new = false
+    updated_user = await User.update(
+    where={
+        'id': existing_user.id,
+    },
+    data={
+        'is_new': {
+            'set': False,
+        },
+    },
+)
 
-    return { 'currentUser': {'email': existing_user.email, 'firstName': existing_user.first_name, 'lastName': existing_user.last_name, 'id': existing_user.id }, 'accessToken': access_token }
+    access_token = jwt.encode({'email': updated_user.email, 'firstName': updated_user.first_name, 'lastName': updated_user.last_name, 'id': updated_user.id, 'isNew': updated_user.is_new }, settings.secret)
+
+    return { 'currentUser': {'email': updated_user.email, 'firstName': updated_user.first_name, 'lastName': updated_user.last_name, 'id': updated_user.id}, 'accessToken': access_token }
 
   else:
 

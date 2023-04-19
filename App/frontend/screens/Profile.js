@@ -11,7 +11,7 @@ import {
 
 import profile from '../styles/profileStyles';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
 import ProfilePic from '../assets/images/profile-pic.jpeg';
 
@@ -19,7 +19,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 export const Profile = () => {
 	return (
-		<PageContainer styleProp={profile.background}>
+		<MainLayout styleProp={profile.background}>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View>
 					<View style={profile.titleBar}>
@@ -126,6 +126,6 @@ export const Profile = () => {
 					</View>
 				</TouchableOpacity>
 			</ScrollView>
-		</PageContainer>
+		</MainLayout>
 	);
 };

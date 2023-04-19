@@ -10,18 +10,57 @@ generator db {
 }
 
 model User {
-  id String @id @default(cuid())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  first_name String
-  last_name String
-  email String
-  password String
+  id              String           @id @default(cuid())
+  created_at      DateTime         @default(now())
+  updated_at      DateTime         @updatedAt
+  first_name      String
+  last_name       String
+  email           String
+  password        String
+  trailbucks      Trailbucks?
+  favorite_trails FavoriteTrails[]
+  recent_trails   RecentTrails[]
+}
+
+model FavoriteTrails {
+  id      String  @id @default(cuid())
+  user    User    @relation(fields: [user_id], references: [id])
+  user_id String
+  trails Trail[]
+  trail_id String
+}
+
+model RecentTrails {
+  id      String @id @default(cuid())
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+  trails   Trail[]
+  trail_id String
 }
 
 model Trail {
-  id String @id @default(cuid())
-  latitude Float
-  longitude Float
-  name String
+  id              String          @id @default(cuid())
+  latitude        Float
+  longitude       Float
+  name            String
+  recent_trails RecentTrails? @relation(fields: [recent_trail_id], references: [id])
+  favorite_trails FavoriteTrails? @relation(fields: [favorite_trail_id], references: [id])
+  recent_trail_id String?
+  favorite_trail_id String?
+}
+
+model TrailOrg {
+  id         String       @id @default(cuid())
+  name       String
+  trailbucks Trailbucks[]
+}
+
+model Trailbucks {
+  id           String   @id @default(cuid())
+  created_at   DateTime @default(now())
+  trail_org    TrailOrg @relation(fields: [trail_org_id], references: [id])
+  user         User     @relation(fields: [user_id], references: [id])
+  user_id      String   @unique
+  trail_org_id String
+  amount       Int
 }

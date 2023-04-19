@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 
-from src.prisma import prisma_user
+from src.prisma import User
 
 from config import Settings
 
@@ -35,7 +35,7 @@ async def sign_up(user: UserSignUp):
 
   print('user in signup: ', user)
 
-  existing_user = await prisma_user.find_first(where={'email': user.email } )
+  existing_user = await User.find_first(where={'email': user.email } )
 
   print('existing_user: ', existing_user)
 
@@ -44,7 +44,7 @@ async def sign_up(user: UserSignUp):
 
   hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
   
-  created_user = await prisma_user.create(
+  created_user = await User.create(
       data={
         'first_name': user.firstName,
         'last_name': user.lastName,
@@ -52,6 +52,8 @@ async def sign_up(user: UserSignUp):
         'password': hashed_password.decode()
       }
   )
+
+  print('created_user: ', created_user)
 
   # find better way to exclude 
   # password using a query
@@ -65,7 +67,11 @@ async def sign_up(user: UserSignUp):
 @router.post('/login')
 async def login(user: UserLogin):
 
-  existing_user = await prisma_user.find_first(where={'email': user.email } )
+  print('user: ', user)
+
+  existing_user = await User.find_first(where={'email': user.email } )
+
+  print('existing_user: ', existing_user)
   
   hashed_password = existing_user.password
 

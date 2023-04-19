@@ -1,4 +1,4 @@
 import { AnimatedButtonBackground } from './AnimatedButtonBackground';
-import { PageContainer } from './PageContainer';
+import { MainLayout } from './MainLayout';
 
-export { AnimatedButtonBackground, PageContainer };
+export { AnimatedButtonBackground, MainLayout };

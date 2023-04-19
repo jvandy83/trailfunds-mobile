@@ -1,12 +1,8 @@
 from typing import Annotated
 
-from pydantic import BaseModel
-
 from fastapi import Depends, HTTPException, status
 
 from fastapi.security import OAuth2PasswordBearer
-
-from src.prisma import prisma_user
 
 from config import Settings
 

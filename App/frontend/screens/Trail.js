@@ -8,7 +8,7 @@ import { Marker } from 'react-native-maps';
 
 import { useGetTrailQuery } from '../services/api';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
 import { PrimaryButton } from '../styles/frontendStyles';
 
@@ -56,7 +56,7 @@ export const Trail = ({ route, navigation }) => {
 	mapRef.current?.animateToRegion(initialLocation);
 
 	return (
-		<PageContainer styleProp={defaults.background}>
+		<MainLayout styleProp={defaults.background}>
 			<View
 				style={{
 					width: 250,
@@ -105,6 +105,6 @@ export const Trail = ({ route, navigation }) => {
 					onPress={() => navigation.navigate('Donate')}
 				/>
 			</View>
-		</PageContainer>
+		</MainLayout>
 	);
 };

@@ -9,6 +9,7 @@ import {
 	StyleSheet,
 	Pressable,
 	Text,
+	Platform,
 } from 'react-native';
 
 import { Svg, Path, G } from 'react-native-svg';
@@ -65,7 +66,7 @@ export const SignIn = () => {
 				})
 				.catch((err) => console.error(err));
 		} else {
-			login({ email: 'Bobdole@gmail.com', password: 'password' })
+			login({ email: 'Vanthedev@gmail.com', password: 'password' })
 				.unwrap()
 				.then(({ currentUser, accessToken }) => {
 					console.log(currentUser);
@@ -85,7 +86,7 @@ export const SignIn = () => {
 	};
 
 	return (
-		<View>
+		<View style={{ paddingBottom: Platform.OS === 'android' ? 80 : 0 }}>
 			<View>
 				<Image
 					source={mountains}
@@ -99,7 +100,7 @@ export const SignIn = () => {
 					fontSize: 30,
 					fontWeight: 'bold',
 					color: '#414d59',
-					top: 456,
+					top: Platform.OS === 'android' ? 375 : 456,
 					right: 40,
 					zIndex: 800,
 					textShadowOffset: { width: 2, height: 2 },
@@ -116,7 +117,9 @@ export const SignIn = () => {
 				}}
 			>
 				<Svg
-					style={{ transform: [{ translateY: 300 }] }}
+					style={{
+						transform: [{ translateY: Platform.OS === 'android' ? 220 : 300 }],
+					}}
 					width={1024}
 					height={768}
 					viewbox='0 0 100 100'
@@ -135,7 +138,7 @@ export const SignIn = () => {
 						width: 200,
 						height: 300,
 						position: 'absolute',
-						top: 200,
+						top: Platform.OS === 'android' ? 120 : 200,
 						left: 15,
 					}}
 				>
@@ -156,6 +159,7 @@ export const SignIn = () => {
 					width: '100%',
 					height: '50%',
 					bottom: -80,
+					bottom: Platform.OS === 'android' ? 0 : -80,
 				}}
 			>
 				{newUser && (

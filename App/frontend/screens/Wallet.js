@@ -1,11 +1,23 @@
-import React, { useRef, useCallback, useMemo } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useRef, useCallback, useMemo, useEffect } from 'react';
+import {
+	Text,
+	View,
+	TouchableOpacity,
+	StyleSheet,
+	Image,
+	ScrollView,
+} from 'react-native';
 
 import { useGetUserQuery } from '../services/api';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import {
+	BottomSheetModal,
+	BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+
+import uuid from 'react-native-uuid';
 
 import { defaults } from '../styles/frontendStyles';
 
@@ -30,7 +42,7 @@ const mockData = [
 ];
 
 export const Wallet = ({ navigation }) => {
-	const sheetRef = useRef(null);
+	const bottomSheetModalRef = useRef(null);
 
 	const { data, error, isLoading } = useGetUserQuery();
 
@@ -48,7 +60,7 @@ export const Wallet = ({ navigation }) => {
 
 	const renderItem = useCallback(
 		(item) => (
-			<View key={item.name} style={styles.itemContainer}>
+			<View key={uuid.v4()} style={styles.itemContainer}>
 				<View
 					style={{
 						flexDirection: 'row',
@@ -78,21 +90,39 @@ export const Wallet = ({ navigation }) => {
 	);
 
 	// callbacks
-	const handleSheetChange = useCallback((index) => {
-		// console.log('handleSheetChange', index);
+	const handleSheetChanges = useCallback((index) => {
+		// this keeps modal from closing all the way
+		// and leaving the screen
+		bottomSheetModalRef.current?.present();
 	}, []);
 
-	const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
+	const snapPoints = useMemo(() => ['25%', '40%', '60%']);
+
+	useEffect(() => {
+		bottomSheetModalRef.current?.present();
+	}, []);
 
 	return (
-		<PageContainer styleProp={defaults.background}>
-			<View style={{ width: '80%', marginTop: -250 }}>
+		<View style={{ position: 'relative' }}>
+			<View
+				style={{
+					paddingTop: 180,
+					width: '100%',
+					height: '100%',
+					backgroundColor: '#59C0922C',
+					alignItems: 'center',
+					flexGrow: 1,
+				}}
+			>
 				<View
 					style={{
 						height: 200,
-						width: '100%',
+						width: '80%',
+						alignItems: 'center',
+						justifyContent: 'center',
 						backgroundColor: '#59C092',
 						borderRadius: 20,
+						elevation: 5,
 						shadowColor: 'rgba(0, 0, 0, 0.3)',
 						shadowOpacity: 0.8,
 						shadowRadius: 6,
@@ -101,23 +131,9 @@ export const Wallet = ({ navigation }) => {
 							width: 1,
 						},
 					}}
-				></View>
-
-				<View
-					style={{
-						position: 'relative',
-						flexDirection: 'row',
-						justifyContent: 'space-around',
-						width: '100%',
-						marginVertical: 30,
-						fontWeight: 'bold',
-					}}
 				>
 					<Text
 						style={{
-							position: 'absolute',
-							bottom: 145,
-							left: 50,
 							color: 'white',
 							fontSize: 55,
 							fontWeight: 'bold',
@@ -125,53 +141,55 @@ export const Wallet = ({ navigation }) => {
 					>
 						$10.00
 					</Text>
-					<View
+				</View>
+
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						justifyContent: 'space-around',
+						width: '80%',
+						paddingTop: 30,
+					}}
+				>
+					<TouchableOpacity
+						onPress={() => navigation.navigate('Donate')}
 						style={{
-							flexDirection: 'row',
 							alignItems: 'center',
-							justifyContent: 'space-around',
+							borderRadius: 100,
+							paddingVertical: 14,
+							backgroundColor: '#59C092',
+							width: '40%',
 						}}
 					>
-						<TouchableOpacity
-							onPress={navigation.navigate('Donate')}
-							style={{
-								alignItems: 'center',
-								borderRadius: 100,
-								paddingVertical: 14,
-								backgroundColor: '#59C092',
-								width: '40%',
-							}}
-						>
-							<Text style={{ color: 'white', fontWeight: 'bold' }}>
-								Add Funds
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={{
-								alignItems: 'center',
-								borderRadius: 100,
-								paddingVertical: 14,
-								width: '50%',
-								paddingHorizontal: 10,
-								borderColor: 'black',
-								borderWidth: 1,
-							}}
-						>
-							<Text>Change Design</Text>
-						</TouchableOpacity>
-					</View>
+						<Text style={{ color: 'white', fontWeight: 'bold' }}>
+							Add Funds
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={{
+							alignItems: 'center',
+							borderRadius: 100,
+							paddingVertical: 14,
+							width: '50%',
+							paddingHorizontal: 10,
+							borderColor: 'black',
+							borderWidth: 1,
+						}}
+					>
+						<Text>Change Design</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
-			<View style={styles.container}>
-				<BottomSheet
-					ref={sheetRef}
+
+			<BottomSheetModalProvider>
+				<BottomSheetModal
+					ref={bottomSheetModalRef}
 					index={1}
 					snapPoints={snapPoints}
-					onChange={handleSheetChange}
+					onChange={handleSheetChanges}
 				>
-					<BottomSheetScrollView
-						contentContainerStyle={styles.contentContainer}
-					>
+					<ScrollView contentContainerStyle={styles.contentContainer}>
 						<View>
 							<Text
 								style={{
@@ -184,29 +202,15 @@ export const Wallet = ({ navigation }) => {
 								Transactions
 							</Text>
 						</View>
-						{mockData.map(renderItem)}
-					</BottomSheetScrollView>
-				</BottomSheet>
-			</View>
-		</PageContainer>
+						<View>{mockData.map(renderItem)}</View>
+					</ScrollView>
+				</BottomSheetModal>
+			</BottomSheetModalProvider>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		bottom: 0,
-		height: '100%',
-		shadowColor: 'rgba(0, 0, 0, 0.3)',
-		shadowOpacity: 0.8,
-		shadowRadius: 6,
-		shadowOffset: {
-			height: 1,
-			width: 1,
-		},
-	},
 	contentContainer: {
 		paddingHorizontal: 30,
 		paddingVertical: 30,

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
 import refill from '../styles/refillStyles';
 
@@ -42,7 +42,7 @@ export const WalletRefill = ({ navigation }) => {
 	};
 
 	return (
-		<PageContainer styleProp={profile.background}>
+		<MainLayout styleProp={profile.background}>
 			<View style={refill.container}>
 				<View style={refill.panel}>
 					<Text style={refill.title}>{input}</Text>
@@ -79,6 +79,6 @@ export const WalletRefill = ({ navigation }) => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</PageContainer>
+		</MainLayout>
 	);
 };

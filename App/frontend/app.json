@@ -25,7 +25,12 @@
 				"foregroundImage": "./assets/images/adaptive-icon.png",
 				"backgroundColor": "#FFFFFF"
 			},
-			"package": "com.vanthedev.TrailFundsApp"
+			"package": "com.vanthedev.TrailFundsApp",
+			"config": {
+				"googleMaps": {
+					"apiKey": "AIzaSyDSSDORhpHXtWD3lLlo9V5SYrvqzBg4xE0"
+				}
+			}
 		},
 		"web": {
 			"favicon": "./assets/images/favicon.png"

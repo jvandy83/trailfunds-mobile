@@ -98,8 +98,10 @@ export const Map = () => {
 		console.error(error);
 	}
 
+	console.log(data);
+
 	return (
-		<View>
+		<View style={{ position: 'relative' }}>
 			<MapView
 				provider={MapView.PROVIDER_GOOGLE}
 				ref={mapRef}

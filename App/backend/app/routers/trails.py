@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from geopy.distance import geodesic
 
-from src.prisma import prisma_trail, prisma
+from src.prisma import Trail
 
 router = APIRouter(
     prefix="/api/v1/trails",
@@ -13,7 +13,7 @@ router = APIRouter(
 async def get_trails_near_me(lat: float, lon: float, radius: int):
   print(lat, lon, radius)
 
-  trails = await prisma_trail.query_raw(
+  trails = await Trail.query_raw(
     f'''
     SELECT id, latitude, longitude, name
     FROM "Trail" WHERE ST_DWithin(ST_MakePoint(longitude, latitude),
@@ -36,7 +36,7 @@ async def search_trails(query: str):
   trails = []
 
   if len(query) > 0:
-    trails = await prisma_trail.find_many(
+    trails = await Trail.find_many(
     take = 10,
     where = {
       'name': {

@@ -1,7 +1,10 @@
 
 import json
 
-from src.prisma import prisma_user, prisma
+import asyncio
+
+from prisma import Prisma
+prisma = Prisma()
 
 trails = None
  
@@ -19,17 +22,14 @@ for trail in trails:
 
 async def create_seed_trails():
   await prisma.connect()
-  await prisma_user.create_many(
+  await prisma.create_many(
     data=filtered_trails
   )
   await prisma.disconnect()
 
-
-create_seed_trails()
+asyncio.run(create_seed_trails())
 
 """
-
-
 {
   "geometry": {
     "coordinates": [-108.55511, 39.081311], 

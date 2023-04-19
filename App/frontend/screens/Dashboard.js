@@ -2,7 +2,7 @@ import { View, Text, Image } from 'react-native';
 
 import { useGetUserQuery } from '../services/api';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
 import dashboard from '../styles/dashboardStyles';
 import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
@@ -35,7 +35,7 @@ export const Dashboard = ({ navigation }) => {
 
 	return (
 		<View>
-			<PageContainer styleProp={defaults.background}>
+			<MainLayout styleProp={defaults.background}>
 				<View style={dashboard.welcomeContainer}>
 					<Text style={dashboard.trailFunds}>Trail Funds</Text>
 					<Image source={TrailFundsLogo} style={dashboard.logo} />
@@ -53,7 +53,7 @@ export const Dashboard = ({ navigation }) => {
 					text='Recent Donations'
 					//onPress={() => navigation.navigate("Donations")}
 				/>
-			</PageContainer>
+			</MainLayout>
 		</View>
 	);
 };

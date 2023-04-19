@@ -97,6 +97,17 @@ export const api = createApi({
 				};
 			},
 		}),
+		addTrailbucks: build.mutation({
+			query: ({ userId, amount }) => {
+				console.log('userId: ', userId);
+				console.log('typeof amount: ', typeof amount);
+				return {
+					url: `trailbucks`,
+					method: 'POST',
+					body: { amount, userId },
+				};
+			},
+		}),
 		updateUser: build.mutation({
 			query: ({ id, ...patch }) => ({
 				url: `users/${id}`,
@@ -138,4 +149,5 @@ export const {
 	useDeleteUserMutation,
 	useLoginMutation,
 	useSignUpMutation,
+	useAddTrailbucksMutation,
 } = api;

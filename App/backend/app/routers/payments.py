@@ -8,6 +8,8 @@ from dependencies import get_auth
 
 import stripe
 
+from src.prisma import Trailbucks
+
 stripe.api_key='sk_test_D4pNByx08dJpJShCHbDp79Y70007pq01Qn'
 # stripe.ApplePayDomain.create(
 #   domain_name="trailfunds.ngrok.io"
@@ -21,6 +23,10 @@ class User(BaseModel):
 
 class Donation(BaseModel):
   amount: int
+
+class Trailbucks(BaseModel):
+  amount: int
+  userId: str
 
 router = APIRouter(
     prefix="/api/v1",
@@ -56,3 +62,22 @@ async def make_payment_intent(amount):
   except Exception as e:
     print(e)
     return {'message': 'Error'}
+  
+@router.post('/trailbucks')
+async def add_trail_bucks(data: Trailbucks):
+  print(data)
+
+  try:
+    trailbucks = await Trailbucks.create(
+      data = {
+      'amount': data.amount,
+      },
+      where = {
+        'user_id': data.id
+      },
+    )
+    print(trailbucks)
+  except Exception as e:
+    print('Error: ', e)
+
+  return {'msg': 'hello'}

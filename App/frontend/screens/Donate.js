@@ -10,16 +10,18 @@ import {
 
 import { fetchToken } from '../reduxStore/features/auth/authSlice';
 
+import { useAddTrailbucksMutation, useGetUserQuery } from '../services/api';
+
 import { CustomInputModal } from '../components/modal/CustomInputModal';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
 import { PrimaryButton, defaults } from '../styles/frontendStyles';
 
 import axios from 'axios';
 
 const preselectedInputs = {
-	5: 0,
+	5: 5,
 	10: 0,
 	20: 0,
 	other: '',
@@ -27,7 +29,7 @@ const preselectedInputs = {
 
 const currentAmounts = {
 	customAmount: 0,
-	selectAmount: 1,
+	selectAmount: 5,
 };
 
 export const Donate = ({ navigation }) => {
@@ -55,6 +57,22 @@ export const Donate = ({ navigation }) => {
 		customAmount: 0,
 		selectAmount: 5,
 	});
+
+	const { data, isLoading: isUserLoading, error } = useGetUserQuery();
+
+	if (isUserLoading) {
+		return (
+			<View>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
+
+	if (error) {
+		console.error(error);
+	}
+
+	const [addTrailbucks, { isLoading, isUpdating }] = useAddTrailbucksMutation();
 
 	/* ----> REFS <---- */
 	const textInputRef = useRef(null);
@@ -86,6 +104,7 @@ export const Donate = ({ navigation }) => {
 			alert(`Error: ${response.error.message}`);
 			return;
 		}
+		addTrailbucks({ userId: data.id, amount: donationAmount });
 		setReady(false);
 		Alert.alert(
 			'Your payment was successful',
@@ -256,7 +275,7 @@ export const Donate = ({ navigation }) => {
 	}, [amount.customAmount]);
 
 	return (
-		<PageContainer styleProp={defaults.background}>
+		<MainLayout styleProp={defaults.background}>
 			<View style={styles.paymentScreenContainer}>
 				<View
 					style={{
@@ -387,7 +406,7 @@ export const Donate = ({ navigation }) => {
 					</View>
 				</View>
 			</View>
-		</PageContainer>
+		</MainLayout>
 	);
 };
 

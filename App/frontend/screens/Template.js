@@ -2,18 +2,17 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text } from 'react-native';
 
-import { PageContainer } from '../components/layout/PageContainer';
+import { MainLayout } from '../components/layout/MainLayout';
 
 import { defaults } from '../styles/frontendStyles';
 
 export const Template = ({ navigation }) => {
 	return (
 		<View>
-			<PageContainer styleProp={[defaults.background]}>
+			<MainLayout styleProp={[defaults.background]}>
 				<Text>Template Page</Text>
 				<StatusBar style='auto' />
-			</PageContainer>
+			</MainLayout>
 		</View>
 	);
-}
-
+};

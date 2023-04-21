@@ -106,7 +106,7 @@ export function PrimaryButton({ text, onPress, color, disabled }) {
 	);
 }
 
-export function SecondaryButton({ text, onPress }) {
+export function SecondaryButton({ text, onPress, color = 'white' }) {
 	return (
 		<TouchableOpacity onPress={onPress}>
 			<View
@@ -123,7 +123,7 @@ export function SecondaryButton({ text, onPress }) {
 			>
 				<Text
 					style={StyleSheet.create({
-						color: 'white',
+						color: color,
 						fontWeight: 'bold',
 						textTransform: 'uppercase',
 						fontSize: 16,

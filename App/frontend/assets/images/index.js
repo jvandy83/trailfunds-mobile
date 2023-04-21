@@ -6,6 +6,7 @@ import facebookIcon from './facebookIcon.png';
 import appleIcon from './appleIcon.png';
 import profilePic from './profile-pic.png';
 import forrestService from './forrestService.png';
+import infoIcon from './infoIcon.png';
 
 export {
 	mountains,
@@ -16,4 +17,5 @@ export {
 	logoBlack,
 	profilePic,
 	forrestService,
+	infoIcon,
 };

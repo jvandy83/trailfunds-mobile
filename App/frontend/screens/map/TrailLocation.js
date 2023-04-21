@@ -22,8 +22,6 @@ export const TrailLocation = ({ trail, initialLoc, onPress }) => {
 		console.error(error);
 	}
 
-	console.log(data);
-
 	const formattedDistance = Math.round(data.distance * 10) / 10;
 
 	return (

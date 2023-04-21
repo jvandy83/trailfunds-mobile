@@ -16,9 +16,7 @@ const baseQuery = fetchBaseQuery({
 	prepareHeaders: async (headers, { getState, endpoint }) => {
 		const user = getState().auth.currentUser;
 		const accessToken = await fetchToken('accessToken');
-		console.log('*** user *** : ', user);
 		if (user && isProtectedRoute(endpoint)) {
-			console.log('adding auth token');
 			headers.set('Authorization', `Bearer ${accessToken}`);
 		}
 		return headers;
@@ -48,6 +46,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
 export const api = createApi({
 	baseQuery: baseQueryWithReauth,
+	tagTypes: ['Trailbucks'],
 	endpoints: (build) => ({
 		login: build.mutation({
 			query: (body) => ({
@@ -83,58 +82,42 @@ export const api = createApi({
 			},
 		}),
 		searchTrails: build.query({
-			query: (arg) => {
-				const { query } = arg;
-				return {
-					url: `trails/search-trails?query=${query}`,
-				};
-			},
+			query: ({ query }) => `trails/search-trails?query=${query}`,
 		}),
 		getTrail: build.query({
-			query: (arg) => {
-				return {
-					url: `trails/get-trail?trailId=${arg}`,
-				};
-			},
+			query: (arg) => `trails/get-trail?trailId=${arg}`,
+		}),
+		getCurrentBalance: build.query({
+			query: () => `current-balance`,
+			providesTags: (result, error) => [
+				{ type: 'Trailbucks', id: 'CURRENT_BALANCE' },
+			],
+		}),
+		getTransactions: build.query({
+			query: () => `transactions`,
+			providesTags: (result, error) => [
+				{ type: 'Trailbucks', id: 'CURRENT_BALANCE' },
+			],
 		}),
 		addTrailbucks: build.mutation({
 			query: ({ userId, amount }) => {
-				console.log('userId: ', userId);
-				console.log('typeof amount: ', typeof amount);
 				return {
 					url: `trailbucks`,
 					method: 'POST',
 					body: { amount, userId },
 				};
 			},
+			invalidatesTags: [{ type: 'Trailbucks', id: 'CURRENT_BALANCE' }],
 		}),
-		updateUser: build.mutation({
-			query: ({ id, ...patch }) => ({
-				url: `users/${id}`,
-				method: 'PUT',
-				body: patch,
-			}),
-			async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
-				const patchResult = dispatch(
-					api.util.updateQueryData('getUser', id, (draft) => {
-						Object.assign(draft, patch);
-					}),
-				);
-				try {
-					await queryFulfilled;
-				} catch {
-					patchResult.undo();
-				}
-			},
-			invalidatesTags: (result, error, { id }) => [{ type: 'Post', id }],
-		}),
-		deleteUser: build.mutation({
-			query(id) {
+		donate: build.mutation({
+			query: ({ userId, amount, trailId }) => {
 				return {
-					url: `user/${id}`,
-					method: 'DELETE',
+					url: `donate`,
+					method: 'POST',
+					body: { amount, userId, trailId },
 				};
 			},
+			invalidatesTags: [{ type: 'Trailbucks', id: 'CURRENT_BALANCE' }],
 		}),
 	}),
 });
@@ -142,12 +125,13 @@ export const api = createApi({
 export const {
 	useGetUserQuery,
 	useGetTrailsNearMeQuery,
+	useGetTransactionsQuery,
 	useLazySearchTrailsQuery,
 	useGetTrailQuery,
+	useGetCurrentBalanceQuery,
 	useGetDistanceFromMeQuery,
-	useUpdateUserMutation,
-	useDeleteUserMutation,
 	useLoginMutation,
 	useSignUpMutation,
 	useAddTrailbucksMutation,
+	useDonateMutation,
 } = api;

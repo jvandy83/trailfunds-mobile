@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from typing import Annotated
 
@@ -29,5 +29,5 @@ async def get_user(user: Annotated[User, Depends(get_auth)]):
 
   print('current_user: ', current_user)
 
-  return { 'firstName': current_user.first_name, 'isNew': current_user.is_new }
+  return { 'firstName': current_user.first_name, 'isNew': current_user.is_new, 'id': current_user.id }
   

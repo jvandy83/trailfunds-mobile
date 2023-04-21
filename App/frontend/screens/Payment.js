@@ -96,7 +96,6 @@ export const Payment = ({
 				merchantCountryCode: 'US', // Countrycode of the merchant
 				// testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
 			});
-			console.log('paymentOption: ', paymentOption);
 			setPaymentMethod(paymentOption);
 		} catch (error) {
 			console.log(error);
@@ -116,7 +115,6 @@ export const Payment = ({
 	};
 
 	useEffect(() => {
-		console.log('useEffect ran on page render');
 		setup();
 		// 	// Initialize the PaymentSheet with the paymentIntent data,
 		// 	// we will later present and confirm this

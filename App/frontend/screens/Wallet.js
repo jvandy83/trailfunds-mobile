@@ -8,9 +8,12 @@ import {
 	ScrollView,
 } from 'react-native';
 
-import { useGetUserQuery } from '../services/api';
+import {
+	useGetCurrentBalanceQuery,
+	useGetTransactionsQuery,
+} from '../services/api';
 
-import { MainLayout } from '../components/layout/MainLayout';
+import { useIsFocused } from '@react-navigation/native';
 
 import {
 	BottomSheetModal,
@@ -42,22 +45,19 @@ const mockData = [
 export const Wallet = ({ navigation }) => {
 	const bottomSheetModalRef = useRef(null);
 
-	const { data, error, isLoading } = useGetUserQuery();
+	const { data, error, isLoading } = useGetCurrentBalanceQuery({
+		skip: !useIsFocused(),
+	});
 
-	if (isLoading) {
+	const {
+		data: transactionData,
+		error: transactionError,
+		isLoading: transactionLoading,
+	} = useGetTransactionsQuery({ skip: !useIsFocused() });
+
+	const renderItem = useCallback((item) => {
+		console.log(item);
 		return (
-			<View>
-				<Text>Loading...</Text>
-			</View>
-		);
-	}
-
-	if (error) {
-		console.error(error);
-	}
-
-	const renderItem = useCallback(
-		(item) => (
 			<View key={uuid.v4()} style={styles.itemContainer}>
 				<View
 					style={{
@@ -65,12 +65,9 @@ export const Wallet = ({ navigation }) => {
 						alignItems: 'center',
 					}}
 				>
-					<View style={{ paddingRight: 8 }}>
-						<Image style={{ width: 24, height: 24 }} source={forrestService} />
-					</View>
 					<View>
-						<Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
-						<Text style={{ fontWeight: 'bold' }}>{item.trailService}</Text>
+						<Text style={{ fontWeight: 'bold' }}>{item.trail.name}</Text>
+						<Text style={{ fontWeight: 'bold' }}>{item.trail_org.name}</Text>
 					</View>
 				</View>
 				<Text
@@ -83,9 +80,8 @@ export const Wallet = ({ navigation }) => {
 					{`$${item.amount}`}
 				</Text>
 			</View>
-		),
-		[],
-	);
+		);
+	}, []);
 
 	// callbacks
 	const handleSheetChanges = useCallback((index) => {
@@ -99,6 +95,9 @@ export const Wallet = ({ navigation }) => {
 	useEffect(() => {
 		bottomSheetModalRef.current?.present();
 	}, []);
+
+	console.log('currentBalanceData inside Wallet!!!!!: ', data);
+	console.log('transactionData inside Wallet!!!!!: ', transactionData);
 
 	return (
 		<View style={{ position: 'relative' }}>
@@ -137,7 +136,7 @@ export const Wallet = ({ navigation }) => {
 							fontWeight: 'bold',
 						}}
 					>
-						$10.00
+						{isLoading ? '' : `$${data}.00`}
 					</Text>
 				</View>
 
@@ -151,7 +150,7 @@ export const Wallet = ({ navigation }) => {
 					}}
 				>
 					<TouchableOpacity
-						onPress={() => navigation.navigate('Donate')}
+						onPress={() => navigation.navigate('WalletRefill')}
 						style={{
 							alignItems: 'center',
 							borderRadius: 100,
@@ -200,7 +199,7 @@ export const Wallet = ({ navigation }) => {
 								Transactions
 							</Text>
 						</View>
-						<View>{mockData.map(renderItem)}</View>
+						<View>{transactionData.map(renderItem)}</View>
 					</ScrollView>
 				</BottomSheetModal>
 			</BottomSheetModalProvider>

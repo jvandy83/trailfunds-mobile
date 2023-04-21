@@ -13,7 +13,7 @@ import { useWindowDimensions } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { faN, faNavicon } from '@fortawesome/free-solid-svg-icons';
+import { faNavicon } from '@fortawesome/free-solid-svg-icons';
 
 import { useSelector } from 'react-redux';
 
@@ -26,11 +26,11 @@ import {
 	Dashboard,
 	Template,
 	About,
-	Donate,
 	WalletRefill,
 	SignIn,
 	Map,
 	Trail,
+	Donate,
 } from '../screens';
 
 import { CustomDrawerContent } from '../components/drawer/DrawerContent';
@@ -70,6 +70,7 @@ export const DrawerMenu = () => {
 		>
 			<Drawer.Screen name='Dashboard' component={Dashboard} />
 			<Drawer.Screen name='Wallet' component={Wallet} />
+			<Drawer.Screen name='WalletRefill' component={WalletRefill} />
 			<Drawer.Screen name='Trail Map' component={Map} />
 			<Drawer.Screen name='About' component={About} />
 			<Drawer.Screen name='Help' component={Template} />
@@ -106,9 +107,8 @@ export const StackHome = () => {
 						<Stack.Screen name='Profile' component={Profile} />
 						<Stack.Screen name='Wallet' component={Wallet} />
 						<Stack.Screen name='About' component={About} />
-						<Stack.Screen name='Wallet Refill' component={WalletRefill} />
+						<Stack.Screen name='WalletRefill' component={WalletRefill} />
 						<Stack.Screen name='Trail Map' component={Map} />
-						<Stack.Screen name='Donate' component={Donate} />
 						<Stack.Screen name='Trail' component={Trail} />
 					</>
 				) : (

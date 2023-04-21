@@ -48,7 +48,12 @@ async def sign_up(user: UserSignUp):
         'last_name': user.lastName,
         'email': user.email,
         'password': hashed_password.decode(),
+        'trailbucks': {
+          'create': {
+            'amount': 0,
+          }
         }
+      }
   )
 
   # find better way to exclude 
@@ -70,17 +75,19 @@ async def login(user: UserLogin):
 
     # update user.is_new = false
     updated_user = await User.update(
-    where={
-        'id': existing_user.id,
-    },
-    data={
-        'is_new': {
-            'set': False,
-        },
-    },
-)
+      where={
+          'id': existing_user.id,
+      },
+      data={
+          'is_new': {
+              'set': False,
+          },
+      },
+    )
 
-    access_token = jwt.encode({'email': updated_user.email, 'firstName': updated_user.first_name, 'lastName': updated_user.last_name, 'id': updated_user.id, 'isNew': updated_user.is_new }, settings.secret)
+    print('updated_user: ', updated_user)
+
+    access_token = jwt.encode({ 'id': updated_user.id, 'isNew': updated_user.is_new }, settings.secret)
 
     return { 'currentUser': {'email': updated_user.email, 'firstName': updated_user.first_name, 'lastName': updated_user.last_name, 'id': updated_user.id}, 'accessToken': access_token }
 

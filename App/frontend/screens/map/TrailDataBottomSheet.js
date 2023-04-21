@@ -52,9 +52,7 @@ export const TrailDataBottomSheet = ({
 				`https://trailfunds.ngrok.dev/api/v1/trails/search-trails?query=${data}`,
 			);
 			setQueryData(res.data);
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	};
 
 	const handleSearchQuery = (text) => {

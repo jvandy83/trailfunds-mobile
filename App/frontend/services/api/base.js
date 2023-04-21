@@ -17,9 +17,7 @@ const baseQuery = fetchBaseQuery({
 	prepareHeaders: async (headers, { getState, endpoint }) => {
 		const user = getState().auth.currentUser;
 		const accessToken = await fetchToken('accessToken');
-		console.log('*** user *** : ', user);
 		if (user && isProtectedRoute(endpoint)) {
-			console.log('adding auth token');
 			headers.set('Authorization', `Bearer ${accessToken}`);
 		}
 		return headers;

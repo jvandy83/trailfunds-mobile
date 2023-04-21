@@ -10,7 +10,7 @@ import { useGetTrailQuery } from '../services/api';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
-import { PrimaryButton } from '../styles/frontendStyles';
+import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 
 import { defaults } from '../styles/frontendStyles';
 
@@ -95,14 +95,36 @@ export const Trail = ({ route, navigation }) => {
 				</View>
 			</View>
 			<View style={{ alignItems: 'center', width: '90%' }}>
-				<Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+				<Text
+					style={{
+						fontWeight: 'bold',
+						fontSize: 30,
+						paddingVertical: 20,
+						color: '#59C092',
+						textAlign: 'center',
+					}}
+				>
 					{data.trail.name}
+				</Text>
+				<Text>
+					<Text style={{ fontWeight: 'bold', fontSize: 16 }}>Trail Org:</Text>
+					<Text style={{ fontSize: 16 }}> COPMOBA</Text>
 				</Text>
 			</View>
 			<View style={{ alignItems: 'center', marginTop: 30 }}>
 				<PrimaryButton
-					text='Donate'
+					text='Donate $1'
+					color='white'
 					onPress={() => navigation.navigate('Donate')}
+				/>
+			</View>
+			<View style={{ alignItems: 'center' }}>
+				<SecondaryButton
+					text='Custom Amount'
+					color='white'
+					onPress={() =>
+						navigation.navigate('Donate', { trailId: data.trail.id })
+					}
 				/>
 			</View>
 		</MainLayout>

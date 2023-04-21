@@ -73,8 +73,6 @@ export const SignIn = () => {
 			})
 				.unwrap()
 				.then(({ currentUser, accessToken }) => {
-					console.log(currentUser);
-					console.log(accessToken);
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})

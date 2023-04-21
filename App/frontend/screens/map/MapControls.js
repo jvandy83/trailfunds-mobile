@@ -121,7 +121,6 @@ export const Map = () => {
 			{ name: 'Yet Another Liked Trail', id: 14 },
 			{ name: 'Yet Another Liked Trail', id: 15 },
 		];
-		console.log('Rendering Like Menu');
 		return (
 			<View style={mapStyles.map_column}>
 				<AnimatedButtonBackground backgroundColor='#a97089' scale={likeScale} />
@@ -146,7 +145,7 @@ export const Map = () => {
 	};
 
 	const RenderSearch = () => {
-		console.log('render search menu');
+		('render search menu');
 		return (
 			<View style={mapStyles.map_column}>
 				<AnimatedButtonBackground
@@ -192,7 +191,6 @@ export const Map = () => {
 			{ name: 'Yet Another Liked Trail', id: 14 },
 			{ name: 'Yet Another Liked Trail', id: 15 },
 		];
-		console.log('render near menu');
 		return (
 			<View style={mapStyles.map_column}>
 				<AnimatedButtonBackground backgroundColor='#726faa' scale={nearScale} />

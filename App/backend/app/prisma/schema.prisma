@@ -15,53 +15,63 @@ model User {
   updated_at      DateTime         @updatedAt
   first_name      String
   last_name       String
-  email           String
+  email           String           @unique
   password        String
-  trailbucks      Trailbucks?
+  is_new          Boolean          @default(true)
   favorite_trails FavoriteTrails[]
   recent_trails   RecentTrails[]
-  is_new Boolean  @default(true)
+  transactions    Transactions[]
+  trailbucks      Trailbucks?
 }
 
 model FavoriteTrails {
-  id      String  @id @default(cuid())
-  user    User    @relation(fields: [user_id], references: [id])
-  user_id String
-  trails Trail[]
-  trail_id String
+  id       String  @id @default(cuid())
+  user_id  String
+  user     User    @relation(fields: [user_id], references: [id])
+  trails   Trail[]
 }
 
 model RecentTrails {
-  id      String @id @default(cuid())
-  user    User   @relation(fields: [user_id], references: [id])
-  user_id String
+  id       String   @id @default(cuid())
+  user_id  String
+  user     User     @relation(fields: [user_id], references: [id])
   trails   Trail[]
-  trail_id String
 }
 
 model Trail {
-  id              String          @id @default(cuid())
-  latitude        Float
-  longitude       Float
-  name            String
-  recent_trails RecentTrails? @relation(fields: [recent_trail_id], references: [id])
-  favorite_trails FavoriteTrails? @relation(fields: [favorite_trail_id], references: [id])
-  recent_trail_id String?
+  id                String          @id @default(cuid())
+  latitude          Float
+  longitude         Float
+  name              String
+  recent_trail_id   String?
   favorite_trail_id String?
+  recent_trails     RecentTrails?   @relation(fields: [recent_trail_id], references: [id])
+  favorite_trails   FavoriteTrails? @relation(fields: [favorite_trail_id], references: [id])
+  transactions Transactions[]
 }
 
 model TrailOrg {
-  id         String       @id @default(cuid())
-  name       String
-  trailbucks Trailbucks[]
+  id           String         @id @default(cuid())
+  name         String
+  transaction  Transactions[]    
 }
 
 model Trailbucks {
-  id           String   @id @default(cuid())
-  created_at   DateTime @default(now())
-  trail_org    TrailOrg @relation(fields: [trail_org_id], references: [id])
-  user         User     @relation(fields: [user_id], references: [id])
-  user_id      String   @unique
-  trail_org_id String
+  id           String    @id @default(cuid())
+  created_at   DateTime  @default(now())
+  amount       Int       @default(0)
+  user_id      String    @unique
+  user         User      @relation(fields: [user_id], references: [id])
+}
+
+model Transactions {
+  id           String    @id @default(cuid())
+  created_at   DateTime  @default(now())
   amount       Int
+  trail_id     String
+  trail        Trail @relation(fields: [trail_id], references: [id])
+  user_id      String
+  user         User @relation(fields: [user_id], references: [id])
+  trail_org    TrailOrg @relation(fields: [trail_org_id], references: [id])
+  trail_org_id String
 }

@@ -23,7 +23,7 @@ export const logoutUser = createAsyncThunk(
 	'users/logout',
 	async (_, thunkApi) => {
 		try {
-			await destroyToken();
+			await destroyToken('accessToken');
 		} catch (error) {
 			console.error(error);
 			// throw new Error('Error occurred while logging out');

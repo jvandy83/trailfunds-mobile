@@ -67,8 +67,6 @@ async def add_trailbucks(data: Trailbucks):
 
   existing_trailbucks_account = await TrailbucksModel.find_unique(where={'user_id': data.userId})
 
-  print('existing_trailbucks_account: ', existing_trailbucks_account)
-
   # this will eventually involve calling/receiving
   # a balance from the users financial account
 
@@ -97,17 +95,12 @@ async def add_trailbucks(data: Trailbucks):
   except Exception as e:
     print('Error: ', e)
 
-  return {'msg': 'hello'}
+  return {'Error': e}
 
 @router.post('/donate')
 async def donate_trailbucks(data: Donation):
-  print('data inside addTrailbucks: ', data)
 
   existing_trailbucks_account = await TrailbucksModel.find_unique(where={'user_id': data.userId})
-
-  user = await UserModal.find_unique(where={'id': data.userId})
-
-  print('existing_trailbucks_account: ', existing_trailbucks_account)
 
   # this will eventually involve calling/receiving
   # a balance from the users financial account
@@ -150,13 +143,10 @@ async def donate_trailbucks(data: Donation):
 
 @router.get('/current-balance')
 async def get_current_balance(user: Annotated[User, Depends(get_auth)]):
-  print('user in current-balance: ', user)
 
   current_account = await TrailbucksModel.find_unique(where={'user_id': user['id']})
-  print('current_account: ', current_account)
 
   current_balance = current_account.amount
-  print('current_balance: ', current_balance)
 
   return current_balance
   
@@ -172,9 +162,6 @@ async def get_transactions(user: Annotated[User, Depends(get_auth)]):
       'user_id': user['id']
     }
   )
-
-  print('transactions_trail_orgs: ', transactions_trail_orgs)
-
 
   return transactions_trail_orgs
   

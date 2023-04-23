@@ -17,8 +17,6 @@ async def seed_db(Trail):
       for trail in trails:
         filtered_trails.append({ 'longitude': trail['geometry']['coordinates'][0], 'latitude': trail['geometry']['coordinates'][1],'name': trail['properties']['Name']})
         
-    #   print('filtered_trails: ', filtered_trails[0])
-
       await Trail.create_many(
         data=filtered_trails
       )
@@ -29,7 +27,7 @@ async def seed_db(Trail):
 
 """
 {
-  "geometry": {
+  "geometry": {        LON         LAT
     "coordinates": [-108.55511, 39.081311], 
     "type": "Point"
   }, 
@@ -38,12 +36,4 @@ async def seed_db(Trail):
   }, 
   "type": "Feature"
 }
-
-{
-  latitude: coordinates[0]
-  longitude: coordinates[1]
-  name: properties['name']
-}
-
-
 """

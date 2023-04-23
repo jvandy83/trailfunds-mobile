@@ -1,6 +1,6 @@
 import { useRef, useCallback, useMemo } from 'react';
 
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
@@ -9,11 +9,7 @@ import {
 	BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 
-import uuid from 'react-native-uuid';
-
 import { PrimaryButton } from '../styles/frontendStyles';
-
-import { MainLayout } from '../components/layout/MainLayout';
 
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';

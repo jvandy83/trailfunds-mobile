@@ -88,11 +88,14 @@ export const DonateDollar = ({ route }) => {
 								}}
 							>{`$${amount}.00`}</Text>
 						</View>
-
 						<View style={{ alignItems: 'center', marginTop: 30 }}>
 							<SecondaryButton
 								color='#59C092'
-								onPress={handleSubmitDonation}
+								onPress={() => {
+									setTimeout(() => {
+										handleSubmitDonation();
+									}, 2000);
+								}}
 								text='Donate'
 							/>
 							<SecondaryButton

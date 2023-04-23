@@ -17,7 +17,7 @@ export const Template = ({ navigation }) => {
 				justifyContent: 'center',
 			}}
 		>
-			<View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
+			<View style={{ alignItems: 'center', paddingHorizontal: 30 }}>
 				<Text style={{ textAlign: 'center', marginBottom: 40 }}>
 					This page will contain general information Trailfunds.
 				</Text>

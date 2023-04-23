@@ -248,7 +248,11 @@ export const Donate = ({ route }) => {
 						<View style={{ alignItems: 'center', marginTop: 30 }}>
 							<SecondaryButton
 								color='#59C092'
-								onPress={handleSubmitDonation}
+								onPress={() => {
+									setTimeout(() => {
+										handleSubmitDonation();
+									}, 2000);
+								}}
 								text={`Donate $${
 									amount.customAmount > amount.selectAmount
 										? amount.customAmount

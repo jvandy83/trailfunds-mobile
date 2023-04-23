@@ -20,8 +20,6 @@ async def get_trails_near_me(lat: float, lon: float, radius: int):
     ST_MakePoint({lon}, {lat})::geography, {radius} * 1609.34 );
     ''',
   )
-  print('trails_query: ', trails)
-
 
   return {'trails': trails}
 
@@ -53,11 +51,7 @@ async def search_trails(query: str):
 @router.get('/get-trail')
 async def search_trails(trailId: str):
 
-  print(trailId)
-
   trail = await Trail.find_unique(where={'id': trailId})
-
-  print(trail)
 
   return {'trail': trail}
   

@@ -22,8 +22,6 @@ async def startup():
 async def shutdown():
     await prisma.disconnect()
 
-
-
 @app.get("/seed-db")
 async def root():
   res = await seed_db(Trail)

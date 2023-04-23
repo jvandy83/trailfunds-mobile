@@ -7,6 +7,8 @@ import { Template } from './Template';
 import { About } from './About';
 import { Trail } from './Trail';
 import { Donate } from './Donate';
+import { DonateDollar } from './DonateDollar';
+import { PaymentSuccess } from './PaymentSuccess';
 import { Map } from './map/Map';
 
 export {
@@ -20,4 +22,6 @@ export {
 	Trail,
 	Map,
 	Donate,
+	DonateDollar,
+	PaymentSuccess,
 };

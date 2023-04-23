@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Alert, Image } from 'react-native';
 
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import {
 	useStripe,
@@ -18,7 +18,11 @@ import { CustomInputModal } from '../components/modal/CustomInputModal';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
-import { PrimaryButton, defaults } from '../styles/frontendStyles';
+import {
+	PrimaryButton,
+	SecondaryButton,
+	defaults,
+} from '../styles/frontendStyles';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
@@ -41,6 +45,8 @@ const currentAmounts = {
 };
 
 export const WalletRefill = ({ navigation }) => {
+	const { goBack } = useNavigation();
+
 	/* ----> LOCAL STATE <---- */
 
 	const [ready, setReady] = useState(true);
@@ -122,7 +128,7 @@ export const WalletRefill = ({ navigation }) => {
 							20: 0,
 							other: '',
 						});
-						navigation.navigate('Wallet');
+						navigation.goBack();
 					},
 				},
 			],
@@ -415,6 +421,12 @@ export const WalletRefill = ({ navigation }) => {
 							text='Pay with card'
 							disabled={!ready}
 							color='white'
+						/>
+						<SecondaryButton
+							onPress={() => goBack()}
+							text='Go Back'
+							color='black'
+							backgroundColor='transparent'
 						/>
 					</View>
 				</View>

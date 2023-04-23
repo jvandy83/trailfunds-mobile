@@ -42,17 +42,23 @@ export const TrailDataBottomSheet = ({
 
 	const [queryData, setQueryData] = useState([]);
 
+	const [loadingTrails, setLoadingTrails] = useState(false);
+
 	const [selectedRadiusValue, setSelectedRadiusValue] = useState(radius);
 
 	const { navigate } = useNavigation();
 
 	const searchTrails = async (data) => {
+		setLoadingTrails(true);
 		try {
 			const res = await axios.get(
 				`https://trailfunds.ngrok.dev/api/v1/trails/search-trails?query=${data}`,
 			);
 			setQueryData(res.data);
-		} catch (error) {}
+			setLoadingTrails(false);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const handleSearchQuery = (text) => {
@@ -128,7 +134,13 @@ export const TrailDataBottomSheet = ({
 									borderRadius: 100,
 								}}
 							/>
-							<View>{queryData.map(renderTrails)}</View>
+							<View>
+								{loadingTrails ? (
+									<Text>Loading...</Text>
+								) : (
+									queryData.trails?.map(renderTrails)
+								)}
+							</View>
 							<View
 								style={{
 									flexDirection: 'row',

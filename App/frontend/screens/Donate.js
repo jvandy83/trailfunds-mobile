@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-import { useIsFocused } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import {
 	useGetTrailQuery,
@@ -10,6 +10,7 @@ import {
 } from '../services/api';
 
 import { CustomInputModal } from '../components/modal/CustomInputModal';
+import { PaymentSuccess } from './PaymentSuccess';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
@@ -22,28 +23,19 @@ const preselectedInputs = {
 	other: '',
 };
 
-const currentAmounts = {
-	customAmount: 0,
-	selectAmount: 5,
-};
-
 export const Donate = ({ route }) => {
 	const { trailId } = route.params;
+
+	const { goBack } = useNavigation();
 
 	/* ----> REFS <---- */
 	const textInputRef = useRef(null);
 
 	/* ----> LOCAL STATE <---- */
 
-	const [ready, setReady] = useState(true);
-
-	const [paymentIntent, setPaymentIntent] = useState('');
-
-	const [donationAmount, setDonationAmount] = useState();
-
-	const [verifyPaymentAmount, setVerifiedPaymentAmount] = useState(false);
-
 	const [showCustomAmountInput, setShowCustomAmountInput] = useState(false);
+
+	const [verifiedPaymentAmount, setVerifiedPaymentAmount] = useState(false);
 
 	const [preselectedInputAmount, setPreselectedAmount] = useState({
 		5: 5,
@@ -68,12 +60,6 @@ export const Donate = ({ route }) => {
 	const { data, isLoading, error } = useGetTrailQuery(trailId);
 
 	const [donate, { isSuccess, isUninitialized }] = useDonateMutation();
-
-	console.log(
-		'userData and donationAmount inside Donate: ',
-		userData,
-		donationAmount,
-	);
 
 	/* ----> EVENT HANDLERS <---- */
 	// modify local state to
@@ -125,151 +111,162 @@ export const Donate = ({ route }) => {
 		console.error(error);
 	}
 
-	console.log('trailData inside Donate: ', data);
-
 	return (
 		<MainLayout styleProp={defaults.background}>
-			<View style={styles.paymentScreenContainer}>
-				<View
-					style={{
-						alignItems: 'center',
-						width: '100%',
-						paddingHorizontal: 16,
-					}}
-				>
-					<View>
-						<Text
-							style={{
-								fontWeight: 'bold',
-								fontSize: 30,
-								paddingVertical: 20,
-								textAlign: 'center',
-							}}
-						>
-							{data.trail.name}
-						</Text>
-					</View>
-					<View>
-						<Text
-							style={{
-								fontSize: 60,
-								color: '#59C092',
-								fontWeight: 'bold',
-								textShadowOffset: { width: 2, height: 2 },
-								textShadowColor: 'rgba(0, 0, 0, 0.2)',
-								textShadowRadius: 10,
-							}}
-						>{`$${
-							amount.customAmount > amount.selectAmount
-								? amount.customAmount
-								: amount.selectAmount
-						}.00`}</Text>
-					</View>
-
-					<View style={styles.donationTabs}>
-						<Pressable
-							onPress={() => handlePreselectedAmountClick(5)}
-							style={{
-								backgroundColor:
-									preselectedInputAmount[5] === 5 ? '#59C092' : 'white',
-								borderBottomLeftRadius: 100,
-								borderTopLeftRadius: 100,
-								...styles.donationTab,
-							}}
-						>
-							<View>
-								<Text
-									style={{
-										color: preselectedInputAmount[5] === 5 ? 'white' : 'gray',
-									}}
-								>
-									$5
-								</Text>
-							</View>
-						</Pressable>
-						<Pressable
-							onPress={() => handlePreselectedAmountClick(10)}
-							style={{
-								...styles.donationTab,
-								backgroundColor:
-									preselectedInputAmount[10] === 10 ? '#59C092' : 'white',
-							}}
-						>
-							<View>
-								<Text
-									style={{
-										color: preselectedInputAmount[10] === 10 ? 'white' : 'gray',
-									}}
-								>
-									$10
-								</Text>
-							</View>
-						</Pressable>
-						<Pressable
-							onPress={() => handlePreselectedAmountClick(20)}
-							style={{
-								backgroundColor:
-									preselectedInputAmount[20] === 20 ? '#59C092' : 'white',
-								...styles.donationTab,
-							}}
-						>
-							<View>
-								<Text
-									style={{
-										color: preselectedInputAmount[20] === 20 ? 'white' : 'gray',
-									}}
-								>
-									$20
-								</Text>
-							</View>
-						</Pressable>
-						<Pressable
-							onPress={() => handlePreselectedAmountClick()}
-							style={{
-								...styles.donationTab,
-								backgroundColor:
-									preselectedInputAmount['other'] === 'other'
-										? '#59C092'
-										: 'white',
-								borderBottomRightRadius: 100,
-								borderTopRightRadius: 100,
-							}}
-						>
-							<View>
-								<Text
-									style={{
-										color:
-											preselectedInputAmount['other'] === 'other'
-												? 'white'
-												: 'gray',
-									}}
-								>
-									Other
-								</Text>
-							</View>
-						</Pressable>
-					</View>
-					<CustomInputModal
-						ref={textInputRef}
-						showModal={showCustomAmountInput}
-						setShowModal={setShowCustomAmountInput}
-						onSelectedAmount={setSelectedAmount}
-						handlePaymentVerified={setVerifiedPaymentAmount}
-					/>
-					<View style={{ alignItems: 'center', marginTop: 30 }}>
-						<SecondaryButton
-							color='#59C092'
-							onPress={handleSubmitDonation}
-							text={`Donate $${
+			{isSuccess ? (
+				<PaymentSuccess />
+			) : (
+				<View style={styles.paymentScreenContainer}>
+					<View
+						style={{
+							alignItems: 'center',
+							width: '100%',
+							paddingHorizontal: 16,
+						}}
+					>
+						<View>
+							<Text
+								style={{
+									fontWeight: 'bold',
+									fontSize: 30,
+									paddingVertical: 20,
+									textAlign: 'center',
+								}}
+							>
+								{data.trail.name}
+							</Text>
+						</View>
+						<View>
+							<Text
+								style={{
+									fontSize: 60,
+									color: '#59C092',
+									fontWeight: 'bold',
+									textShadowOffset: { width: 2, height: 2 },
+									textShadowColor: 'rgba(0, 0, 0, 0.2)',
+									textShadowRadius: 10,
+								}}
+							>{`$${
 								amount.customAmount > amount.selectAmount
 									? amount.customAmount
 									: amount.selectAmount
-							}`}
-							disabled={!ready}
+							}.00`}</Text>
+						</View>
+
+						<View style={styles.donationTabs}>
+							<Pressable
+								onPress={() => handlePreselectedAmountClick(5)}
+								style={{
+									backgroundColor:
+										preselectedInputAmount[5] === 5 ? '#59C092' : 'white',
+									borderBottomLeftRadius: 100,
+									borderTopLeftRadius: 100,
+									...styles.donationTab,
+								}}
+							>
+								<View>
+									<Text
+										style={{
+											color: preselectedInputAmount[5] === 5 ? 'white' : 'gray',
+										}}
+									>
+										$5
+									</Text>
+								</View>
+							</Pressable>
+							<Pressable
+								onPress={() => handlePreselectedAmountClick(10)}
+								style={{
+									...styles.donationTab,
+									backgroundColor:
+										preselectedInputAmount[10] === 10 ? '#59C092' : 'white',
+								}}
+							>
+								<View>
+									<Text
+										style={{
+											color:
+												preselectedInputAmount[10] === 10 ? 'white' : 'gray',
+										}}
+									>
+										$10
+									</Text>
+								</View>
+							</Pressable>
+							<Pressable
+								onPress={() => handlePreselectedAmountClick(20)}
+								style={{
+									backgroundColor:
+										preselectedInputAmount[20] === 20 ? '#59C092' : 'white',
+									...styles.donationTab,
+								}}
+							>
+								<View>
+									<Text
+										style={{
+											color:
+												preselectedInputAmount[20] === 20 ? 'white' : 'gray',
+										}}
+									>
+										$20
+									</Text>
+								</View>
+							</Pressable>
+							<Pressable
+								onPress={() => handlePreselectedAmountClick()}
+								style={{
+									...styles.donationTab,
+									backgroundColor:
+										preselectedInputAmount['other'] === 'other'
+											? '#59C092'
+											: 'white',
+									borderBottomRightRadius: 100,
+									borderTopRightRadius: 100,
+								}}
+							>
+								<View>
+									<Text
+										style={{
+											color:
+												preselectedInputAmount['other'] === 'other'
+													? 'white'
+													: 'gray',
+										}}
+									>
+										Other
+									</Text>
+								</View>
+							</Pressable>
+						</View>
+						<CustomInputModal
+							ref={textInputRef}
+							showModal={showCustomAmountInput}
+							setShowModal={setShowCustomAmountInput}
+							onSelectedAmount={setSelectedAmount}
+							handlePaymentVerified={setVerifiedPaymentAmount}
 						/>
+						<View style={{ alignItems: 'center', marginTop: 30 }}>
+							<SecondaryButton
+								color='#59C092'
+								onPress={handleSubmitDonation}
+								text={`Donate $${
+									amount.customAmount > amount.selectAmount
+										? amount.customAmount
+										: amount.selectAmount
+								}`}
+							/>
+						</View>
+						<View>
+							<SecondaryButton
+								backgroundColor='transparent'
+								color='black'
+								onPress={() => goBack()}
+								text='Go Back'
+							/>
+						</View>
 					</View>
 				</View>
-			</View>
+			)}
 		</MainLayout>
 	);
 };

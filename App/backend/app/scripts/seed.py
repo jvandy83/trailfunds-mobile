@@ -1,33 +1,31 @@
 
 import json
 
-import asyncio
+async def seed_db(Trail):
+  trails = await Trail.find_many()
 
-from prisma import Prisma
-prisma = Prisma()
+  filtered_trails = []
 
-trails = None
- 
-# Opening JSON file
-with open('TrailData.json', 'r') as openfile:
- 
-    # Reading from json file
-    raw = json.load(openfile)
-    trails = raw['features']
+  if len(trails) == 0:
+    # Opening JSON file
+    with open('TrailData.json', 'r') as openfile:
 
-filtered_trails = []
- 
-for trail in trails:
-  filtered_trails.append({ 'longitude': trail['geometry']['coordinates'][0], 'latitude': trail['geometry']['coordinates'][1],'name': trail['properties']['Name']})
+      # Reading from json file
+      raw = json.load(openfile)
+      trails = raw['features'] 
+        
+      for trail in trails:
+        filtered_trails.append({ 'longitude': trail['geometry']['coordinates'][0], 'latitude': trail['geometry']['coordinates'][1],'name': trail['properties']['Name']})
+        
+    #   print('filtered_trails: ', filtered_trails[0])
 
-async def create_seed_trails():
-  await prisma.connect()
-  await prisma.create_many(
-    data=filtered_trails
-  )
-  await prisma.disconnect()
+      await Trail.create_many(
+        data=filtered_trails
+      )
 
-asyncio.run(create_seed_trails())
+      return {'msg': 'trails were created'}
+    
+  return {'msg': 'trails already exist'}
 
 """
 {

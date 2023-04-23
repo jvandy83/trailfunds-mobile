@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 
 import { View, Text } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 import * as Location from 'expo-location';
 import MapView from 'react-native-map-clustering';
 import { Marker } from 'react-native-maps';
@@ -16,10 +18,12 @@ import { defaults } from '../styles/frontendStyles';
 
 import { mapStyles } from '../styles/mapStyles';
 
-export const Trail = ({ route, navigation }) => {
+export const Trail = ({ route }) => {
 	const mapRef = useRef(null);
 
 	const { trailId } = route.params;
+
+	const { navigate, goBack } = useNavigation();
 
 	useEffect(() => {
 		(async () => {
@@ -115,16 +119,25 @@ export const Trail = ({ route, navigation }) => {
 				<PrimaryButton
 					text='Donate $1'
 					color='white'
-					onPress={() => navigation.navigate('Donate')}
+					onPress={() =>
+						navigate('DonateDollar', {
+							trailId: data.trail.id,
+							amount: 1,
+						})
+					}
 				/>
 			</View>
 			<View style={{ alignItems: 'center' }}>
 				<SecondaryButton
 					text='Custom Amount'
 					color='white'
-					onPress={() =>
-						navigation.navigate('Donate', { trailId: data.trail.id })
-					}
+					onPress={() => navigate('Donate', { trailId: data.trail.id })}
+				/>
+				<SecondaryButton
+					text='Go Back'
+					color='black'
+					backgroundColor='transparent'
+					onPress={() => goBack()}
 				/>
 			</View>
 		</MainLayout>

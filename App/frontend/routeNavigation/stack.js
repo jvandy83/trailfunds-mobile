@@ -2,7 +2,7 @@
 //  <NameOfPage> should match exactly what you are calling on the page that you made
 //  If you have questions talk to Peyton about how to do it :)
 
-import { Pressable, Image, View } from 'react-native';
+import { Pressable, Image, View, Text } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; //Stack navigator Lib
 
@@ -22,34 +22,36 @@ import { logoBlack } from '../assets/images';
 //pages
 import {
 	Profile,
-	Wallet,
 	Dashboard,
 	Template,
 	About,
+	Wallet,
 	WalletRefill,
 	SignIn,
 	Map,
 	Trail,
 	Donate,
+	DonateDollar,
+	PaymentSuccess,
 } from '../screens';
 
 import { CustomDrawerContent } from '../components/drawer/DrawerContent';
 
 const Drawer = createDrawerNavigator();
 
-export const DrawerMenu = () => {
+export const Root = () => {
 	const dimensions = useWindowDimensions();
 
 	return (
 		<Drawer.Navigator
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
-			drawerStyle={{ backgroundColor: '#59C092' }}
-			screenOptions={({ navigation }) => ({
+			screenOptions={({ navigation, route }) => ({
 				drawerType: dimensions.width >= 768 ? 'permanent' : 'front',
 				headerShown: true,
 				headerTransparent: true,
 				headerTitle: '',
 				headerLeft: (config) => {
+					console.log('route.name inside drawer navigation: ', route);
 					return (
 						<Pressable
 							style={{ paddingHorizontal: 16 }}
@@ -61,21 +63,29 @@ export const DrawerMenu = () => {
 				},
 				headerRight: (config) => {
 					return (
-						<View style={{ paddingHorizontal: 10 }}>
-							<Image source={logoBlack} style={{ height: 40, width: 40 }} />
+						<View
+							style={{
+								paddingRight: 10,
+								flexDirection: 'row',
+								alignItems: 'center',
+							}}
+						>
+							<Text style={{ fontSize: 24, paddingRight: 6, fontWeight: 600 }}>
+								{route.name}
+							</Text>
+							<Text style={{ fontSize: 30, marginBottom: 4 }}>|</Text>
+							<Image source={logoBlack} style={{ height: 30, width: 30 }} />
 						</View>
 					);
 				},
 			})}
 		>
-			<Drawer.Screen name='Dashboard' component={Dashboard} />
 			<Drawer.Screen name='Wallet' component={Wallet} />
-			<Drawer.Screen name='WalletRefill' component={WalletRefill} />
-			<Drawer.Screen name='Trail Map' component={Map} />
+			<Drawer.Screen name='Dashboard' component={Dashboard} />
+			<Drawer.Screen name='TrailMap' component={Map} />
 			<Drawer.Screen name='About' component={About} />
 			<Drawer.Screen name='Help' component={Template} />
 			<Drawer.Screen name='Profile' component={Profile} />
-			<Drawer.Screen name='Donate' component={Donate} />
 		</Drawer.Navigator>
 	);
 };
@@ -83,33 +93,29 @@ export const DrawerMenu = () => {
 //creating the navigator
 const Stack = createNativeStackNavigator();
 
-// add functionality that
-// checks keychain or local storage
-// for a valid token
-
 export const StackHome = () => {
 	const { isLoggedIn } = useSelector((state) => state.auth);
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
-				screenOptions={{
-					headerShown: false,
+				screenOptions={({ route }) => {
+					console.log('route.name inside stack navigator: ', route);
+					return {
+						headerShown: false,
+					};
 				}}
 			>
 				{isLoggedIn ? (
 					<>
 						<Stack.Screen //This makes it so all the base pages on the can access the drawer nav
-							name='Drawer Home'
-							component={DrawerMenu}
+							name='Root'
+							component={Root}
 						/>
-						<Stack.Screen name='Help' component={Template} />
-						<Stack.Screen name='Dashboard' component={Dashboard} />
-						<Stack.Screen name='Profile' component={Profile} />
-						<Stack.Screen name='Wallet' component={Wallet} />
-						<Stack.Screen name='About' component={About} />
 						<Stack.Screen name='WalletRefill' component={WalletRefill} />
-						<Stack.Screen name='Trail Map' component={Map} />
 						<Stack.Screen name='Trail' component={Trail} />
+						<Stack.Screen name='DonateDollar' component={DonateDollar} />
+						<Stack.Screen name='Donate' component={Donate} />
+						<Stack.Screen name='PaymentSuccess' component={PaymentSuccess} />
 					</>
 				) : (
 					<>

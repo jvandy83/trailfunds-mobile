@@ -13,7 +13,7 @@ const isProtectedRoute = (endpoint) =>
 	!unProtectedRoutesOrRefresh.includes(endpoint);
 
 const baseQuery = fetchBaseQuery({
-	baseUrl: 'https://trailfunds.ngrok.dev/api/v1',
+	baseUrl: 'https://https://p7d3qz2k.ngrok.app/api/v1',
 	prepareHeaders: async (headers, { getState, endpoint }) => {
 		const user = getState().auth.currentUser;
 		const accessToken = await fetchToken('accessToken');

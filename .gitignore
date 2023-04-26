@@ -26,3 +26,7 @@ node_modules/
 .DS_Store
 
 __pycache__
+
+postgres-data
+
+.vscode

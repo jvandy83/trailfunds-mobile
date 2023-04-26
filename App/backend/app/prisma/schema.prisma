@@ -48,12 +48,15 @@ model Trail {
   recent_trails     RecentTrails?   @relation(fields: [recent_trail_id], references: [id])
   favorite_trails   FavoriteTrails? @relation(fields: [favorite_trail_id], references: [id])
   transactions Transactions[]
+  trail_org    TrailOrg @relation(fields: [trail_org_id], references: id)
+  trail_org_id String
 }
 
 model TrailOrg {
   id           String         @id @default(cuid())
   name         String
-  transaction  Transactions[]    
+  transaction  Transactions[]   
+  trail        Trail[]
 }
 
 model Trailbucks {
@@ -65,13 +68,14 @@ model Trailbucks {
 }
 
 model Transactions {
-  id           String    @id @default(cuid())
-  created_at   DateTime  @default(now())
-  amount       Int
-  trail_id     String
-  trail        Trail @relation(fields: [trail_id], references: [id])
-  user_id      String
-  user         User @relation(fields: [user_id], references: [id])
-  trail_org    TrailOrg @relation(fields: [trail_org_id], references: [id])
-  trail_org_id String
+  id                  String    @id @default(cuid())
+  created_at          DateTime  @default(now())
+  amount              Int
+  trail_id            String
+  trail               Trail @relation(fields: [trail_id], references: [id])
+  user_id             String
+  user                User @relation(fields: [user_id], references: [id])
+  trail_org           TrailOrg @relation(fields: [trail_org_id], references: [id])
+  trail_org_id        String
+  confirmation_number String
 }

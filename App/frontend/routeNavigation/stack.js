@@ -31,7 +31,6 @@ import {
 	Map,
 	Trail,
 	Donate,
-	DonateDollar,
 	PaymentSuccess,
 } from '../screens';
 
@@ -51,7 +50,6 @@ export const Root = () => {
 				headerTransparent: true,
 				headerTitle: '',
 				headerLeft: (config) => {
-					console.log('route.name inside drawer navigation: ', route);
 					return (
 						<Pressable
 							style={{ paddingHorizontal: 16 }}
@@ -80,8 +78,8 @@ export const Root = () => {
 				},
 			})}
 		>
-			<Drawer.Screen name='Wallet' component={Wallet} />
 			<Drawer.Screen name='Dashboard' component={Dashboard} />
+			<Drawer.Screen name='Wallet' component={Wallet} />
 			<Drawer.Screen name='TrailMap' component={Map} />
 			<Drawer.Screen name='About' component={About} />
 			<Drawer.Screen name='Help' component={Template} />
@@ -99,7 +97,6 @@ export const StackHome = () => {
 		<NavigationContainer>
 			<Stack.Navigator
 				screenOptions={({ route }) => {
-					console.log('route.name inside stack navigator: ', route);
 					return {
 						headerShown: false,
 					};
@@ -113,7 +110,6 @@ export const StackHome = () => {
 						/>
 						<Stack.Screen name='WalletRefill' component={WalletRefill} />
 						<Stack.Screen name='Trail' component={Trail} />
-						<Stack.Screen name='DonateDollar' component={DonateDollar} />
 						<Stack.Screen name='Donate' component={Donate} />
 						<Stack.Screen name='PaymentSuccess' component={PaymentSuccess} />
 					</>

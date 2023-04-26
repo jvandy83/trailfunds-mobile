@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+    volumes:
+      - ./db/initdb/.:/docker-entrypoint-initdb.d/
+
+  api:
+    build:
+      context: .
+    depends_on:
+      - postgres
+    ports:
+      - '5000:5000'
+
+  ngrok:
+    image: ngrok/ngrok
+    restart: unless-stopped
+    command:
+      - 'start'
+      - '--all'
+      - '--config'
+      - '/etc/ngrok.yml'
+    volumes:
+      - ./ngrok/ngrok.yml:/etc/ngrok.yml
+    ports:
+      - '4040:4040'

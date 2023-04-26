@@ -1,7 +1,11 @@
-
+import os
 import json
 
+print('***cwd***: ', os.getcwd())
+print()
 async def seed_db(Trail):
+
+
   trails = await Trail.find_many()
 
   filtered_trails = []

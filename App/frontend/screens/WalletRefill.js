@@ -211,7 +211,7 @@ export const WalletRefill = ({ navigation }) => {
 	const handleInitiatePaymentIntent = async () => {
 		const donationAmount =
 			amount.customAmount > 5 ? amount.customAmount : amount.selectAmount;
-		const URL = `https://trailfunds.ngrok.dev/api/v1/payment-intents/${donationAmount}`;
+		const URL = `https://p7d3qz2k.ngrok.app/api/v1/payment-intents/${donationAmount}`;
 		const token = await fetchToken('accessToken');
 		try {
 			const response = await axios.get(URL, {

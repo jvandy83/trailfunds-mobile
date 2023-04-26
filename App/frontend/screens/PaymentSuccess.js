@@ -4,6 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
+import { useGetTransactionQuery } from '../services/api';
+
 import {
 	BottomSheetModal,
 	BottomSheetModalProvider,
@@ -14,10 +16,12 @@ import { PrimaryButton } from '../styles/frontendStyles';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-export const PaymentSuccess = () => {
+export const PaymentSuccess = ({ transactionId }) => {
 	const bottomSheetModalRef = useRef(null);
 
 	const navigation = useNavigation();
+
+	const { data, isLoading, error } = useGetTransactionQuery(transactionId);
 
 	const handleSheetChanges = useCallback((index) => {
 		// this keeps modal from closing all the way
@@ -29,6 +33,16 @@ export const PaymentSuccess = () => {
 
 	useFocusEffect(() => bottomSheetModalRef.current?.present());
 
+	if (isLoading) {
+		return <Text>Loading...</Text>;
+	}
+
+	if (error) {
+		JSON.parse(error.data);
+	}
+
+	console.log('***transactionData***: ', data);
+
 	return (
 		<View style={styles.centeredView}>
 			<View style={{ marginBottom: 20 }}>
@@ -38,7 +52,7 @@ export const PaymentSuccess = () => {
 			<Text style={styles.subHeader}>Thank you for your help!</Text>
 			<View style={styles.details}>
 				<Text style={styles.detailHeader}>Confirmation Number:</Text>
-				<Text style={styles.detailText}>5749000045f8f8</Text>
+				<Text style={styles.detailText}>{data.confirmation_number}</Text>
 			</View>
 			<PrimaryButton
 				color='white'
@@ -49,16 +63,16 @@ export const PaymentSuccess = () => {
 			/>
 			<BottomSheetModalProvider>
 				<BottomSheetModal
-					style={{
-						elevation: 5,
-						shadowColor: 'rgba(0, 0, 0, 0.3)',
-						shadowOpacity: 0.8,
-						shadowRadius: 6,
-						shadowOffset: {
-							height: 1,
-							width: 1,
-						},
-					}}
+					// style={{
+					// 	elevation: 5,
+					// 	shadowColor: 'rgba(0, 0, 0, 0.3)',
+					// 	shadowOpacity: 0.8,
+					// 	shadowRadius: 6,
+					// 	shadowOffset: {
+					// 		height: 1,
+					// 		width: 1,
+					// 	},
+					// }}
 					ref={bottomSheetModalRef}
 					index={1}
 					snapPoints={snapPoints}
@@ -85,10 +99,12 @@ export const PaymentSuccess = () => {
 						>
 							<Text style={{ fontWeight: 'bold' }}>Date:</Text>
 							<View style={{ flexDirection: 'row' }}>
-								<Text
-									style={{ paddingRight: 8 }}
-								>{` ${new Date().toLocaleDateString()}`}</Text>
-								<Text>{` ${new Date().toLocaleTimeString()}`}</Text>
+								<Text style={{ paddingRight: 8 }}>{` ${new Date(
+									data.created_at,
+								).toLocaleDateString()}`}</Text>
+								<Text>{` ${new Date(
+									data.created_at,
+								).toLocaleTimeString()}`}</Text>
 							</View>
 						</View>
 						<View
@@ -100,7 +116,7 @@ export const PaymentSuccess = () => {
 							}}
 						>
 							<Text style={{ fontWeight: 'bold' }}>Trail:</Text>
-							<Text>Heatherwood Trail</Text>
+							<Text>{data.trail.name}</Text>
 						</View>
 						<View
 							style={{
@@ -111,7 +127,7 @@ export const PaymentSuccess = () => {
 							}}
 						>
 							<Text style={{ fontWeight: 'bold' }}>Trail Org:</Text>
-							<Text>COPMOBA</Text>
+							<Text>{data.trail_org.name}</Text>
 						</View>
 						<View
 							style={{
@@ -122,7 +138,7 @@ export const PaymentSuccess = () => {
 							}}
 						>
 							<Text style={{ fontWeight: 'bold' }}>Donation Amount</Text>
-							<Text>$2.00</Text>
+							<Text>{`$${data.amount}.00`}</Text>
 						</View>
 						<View
 							style={{
@@ -133,7 +149,7 @@ export const PaymentSuccess = () => {
 							}}
 						>
 							<Text style={{ fontWeight: 'bold' }}>Confirmation Number</Text>
-							<Text>5749000045f8f8</Text>
+							<Text>{data.confirmation_number}</Text>
 						</View>
 					</View>
 				</BottomSheetModal>

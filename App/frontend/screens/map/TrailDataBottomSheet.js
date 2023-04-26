@@ -52,7 +52,7 @@ export const TrailDataBottomSheet = ({
 		setLoadingTrails(true);
 		try {
 			const res = await axios.get(
-				`https://trailfunds.ngrok.dev/api/v1/trails/search-trails?query=${data}`,
+				`https://p7d3qz2k.ngrok.app/api/v1/trails/search-trails?query=${data}`,
 			);
 			setQueryData(res.data);
 			setLoadingTrails(false);

@@ -49,6 +49,8 @@ export const Donate = ({ route }) => {
 		selectAmount: 5,
 	});
 
+	const [transactionId, setTransactionId] = useState();
+
 	// RTK Query
 
 	const {
@@ -59,16 +61,25 @@ export const Donate = ({ route }) => {
 
 	const { data, isLoading, error } = useGetTrailQuery(trailId);
 
-	const [donate, { isSuccess, isUninitialized }] = useDonateMutation();
+	const [donate, { isSuccess }] = useDonateMutation();
 
 	/* ----> EVENT HANDLERS <---- */
 	// modify local state to
 	// control transaction flow
 
-	const handleSubmitDonation = () => {
+	const handleSubmitDonation = async () => {
 		const donationAmount =
 			amount.customAmount > 5 ? amount.customAmount : amount.selectAmount;
-		donate({ userId: userData.id, amount: donationAmount, trailId });
+		try {
+			const transId = await donate({
+				userId: userData.id,
+				amount: donationAmount,
+				trailId,
+			}).unwrap();
+			setTransactionId(transId);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const handleCustomAmountClick = () => {
@@ -108,13 +119,13 @@ export const Donate = ({ route }) => {
 	}
 
 	if (error) {
-		console.error(error);
+		console.error(JSON.parse(error));
 	}
 
 	return (
 		<MainLayout styleProp={defaults.background}>
 			{isSuccess ? (
-				<PaymentSuccess />
+				<PaymentSuccess transactionId={transactionId} />
 			) : (
 				<View style={styles.paymentScreenContainer}>
 					<View

@@ -1,3 +1,4 @@
+import os
 from pydantic import BaseSettings
 
 # fastapi env variable configuration

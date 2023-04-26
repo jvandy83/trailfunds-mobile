@@ -12,7 +12,7 @@ const isProtectedRoute = (endpoint) =>
 	!unProtectedRoutesOrRefreshRoutes.includes(endpoint);
 
 const baseQuery = fetchBaseQuery({
-	baseUrl: 'https://trailfunds.ngrok.dev/api/v1',
+	baseUrl: 'https://p7d3qz2k.ngrok.app/api/v1',
 	prepareHeaders: async (headers, { getState, endpoint }) => {
 		const user = getState().auth.currentUser;
 		const accessToken = await fetchToken('accessToken');
@@ -99,6 +99,12 @@ export const api = createApi({
 				{ type: 'Trailbucks', id: 'CURRENT_BALANCE' },
 			],
 		}),
+		getTransaction: build.query({
+			query: (transactionId) => `transaction/${transactionId}`,
+			providesTags: (result, error) => [
+				{ type: 'Trailbucks', id: 'CURRENT_BALANCE' },
+			],
+		}),
 		addTrailbucks: build.mutation({
 			query: ({ userId, amount }) => {
 				return {
@@ -110,7 +116,7 @@ export const api = createApi({
 			invalidatesTags: [{ type: 'Trailbucks', id: 'CURRENT_BALANCE' }],
 		}),
 		donate: build.mutation({
-			query: ({ userId, amount, trailId }) => {
+			query: ({ userId, amount = 1, trailId }) => {
 				return {
 					url: `donate`,
 					method: 'POST',
@@ -126,6 +132,7 @@ export const {
 	useGetUserQuery,
 	useGetTrailsNearMeQuery,
 	useGetTransactionsQuery,
+	useGetTransactionQuery,
 	useLazySearchTrailsQuery,
 	useGetTrailQuery,
 	useGetCurrentBalanceQuery,

@@ -55,7 +55,9 @@
     "react-redux": "^8.0.5",
     "styled-components": "^5.3.6",
     "supercluster": "^7.1.5",
-    "expo-updates": "~0.16.4"
+    "expo-updates": "~0.16.4",
+    "expo-notifications": "~0.18.1",
+    "expo-device": "~5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

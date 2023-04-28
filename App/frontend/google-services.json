@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1082581271214",
+    "project_id": "trailfundsapp",
+    "storage_bucket": "trailfundsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082581271214:android:724ed9d75b5c9e75b6e33f",
+        "android_client_info": {
+          "package_name": "com.vanthedev.TrailFundsApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1082581271214-f1tujmkpelgmee43545lj1pa0i6gn8ap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDayzldvDRZlNvxTaKoM4MisQ2J6maMBWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1082581271214-f1tujmkpelgmee43545lj1pa0i6gn8ap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

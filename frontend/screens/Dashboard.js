@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import { useSelector } from 'react-redux';
+import { useEffect, useState, useRef } from 'react';
 
 import { View, Text, Image } from 'react-native';
 
@@ -11,6 +9,10 @@ import {
 
 import * as Location from 'expo-location';
 
+import * as Notifications from 'expo-notifications';
+
+import { registerForPushNotificationsAsync } from '../pushNotifications';
+
 import { fetchPushToken } from '../pushNotifications/usePushToken';
 
 import { MainLayout } from '../components/layout/MainLayout';
@@ -20,10 +22,25 @@ import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 
 import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
+// const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+// TaskManager.defineTask(
+// 	BACKGROUND_NOTIFICATION_TASK,
+// 	({ data, error, executionInfo }) => {
+// 		console.log('Received a notification in the background!');
+// 		// Do something with the notification data
+// 	},
+// );
+
+// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
 export const Dashboard = ({ navigation }) => {
 	const [initialLocation, setInitialLocation] = useState({});
 
-	// const { pushToken } = useSelector((state) => state.pushNotification);
+	const [notification, setNotification] = useState(false);
+
+	const notificationListener = useRef();
+	const responseListener = useRef();
 
 	const { data, error, isLoading } = useGetUserQuery({
 		refetchOnMountOrArgChange: true,
@@ -47,6 +64,41 @@ export const Dashboard = ({ navigation }) => {
 			pollingInterval: 10000,
 		},
 	);
+
+	if (notification) {
+		console.log('***notification***: ', notification);
+		console.log('***data***: ', notification.request?.content?.data);
+	}
+
+	useEffect(() => {
+		(async () => {
+			await registerForPushNotificationsAsync();
+
+			notificationListener.current =
+				Notifications.addNotificationReceivedListener((notification) => {
+					setNotification(notification);
+				});
+
+			responseListener.current =
+				Notifications.addNotificationResponseReceivedListener((response) => {
+					console.log('***RESPONSE***: ', response);
+					console.log('***CONTENT***: ', response.notification.request.content);
+					console.log(
+						'***DATA***: ',
+						response.notification.request.content.data.id,
+					);
+					const trailId = response.notification.request.content.data.id;
+					navigation.navigate('Trail', { trailId });
+				});
+
+			return () => {
+				Notifications.removeNotificationSubscription(
+					notificationListener.current,
+				);
+				Notifications.removeNotificationSubscription(responseListener.current);
+			};
+		})();
+	}, []);
 
 	useEffect(() => {
 		(async () => {
@@ -88,9 +140,10 @@ export const Dashboard = ({ navigation }) => {
 		console.error(error);
 	}
 
-	const greeting = data.isNew
-		? `Welcome ${data.firstName}!`
-		: `Welcome back, ${data.firstName}!`;
+	const greeting = () =>
+		data.isNew
+			? `Welcome ${data.firstName}!`
+			: `Welcome back, ${data.firstName}!`;
 
 	return (
 		<View>
@@ -98,7 +151,7 @@ export const Dashboard = ({ navigation }) => {
 				<View style={dashboard.welcomeContainer}>
 					<Text style={dashboard.trailFunds}>Trail Funds</Text>
 					<Image source={TrailFundsLogo} style={dashboard.logo} />
-					<Text style={dashboard.welcomeMessage}>{greeting}</Text>
+					<Text style={dashboard.welcomeMessage}>{greeting()}</Text>
 				</View>
 				<PrimaryButton
 					text='View Profile'

@@ -72,8 +72,6 @@ async def make_payment_intent(amount: str):
 
 @router.post("/trailbucks")
 async def add_trailbucks(data: Trailbucks):
-    print("data inside addTrailbucks: ", data)
-
     existing_trailbucks_account = await TrailbucksModel.find_unique(
         where={"user_id": data.userId}
     )
@@ -106,7 +104,6 @@ async def add_trailbucks(data: Trailbucks):
 
 @router.post("/donate")
 async def donate_trailbucks(data: Donation):
-    print("***data inside donate***: ", data)
     existing_trailbucks_account = await TrailbucksModel.find_unique(
         where={"user_id": data.userId}
     )
@@ -132,7 +129,8 @@ async def donate_trailbucks(data: Donation):
                 "confirmation_number": str(uuid.uuid4())[5:12],
             },
         )
-        # print("******transaction*****: ", transaction.id)
+
+        print("***transaction.id inside Donate endpoint***: ", transaction.id)
 
         return transaction.id
 
@@ -159,10 +157,11 @@ async def get_transactions(user: Annotated[User, Depends(get_auth)]):
 
 @router.get("/transaction/{transactionId}")
 async def get_transaction(transactionId: str):
-    # print("***transactionId inside get transaction request***: ", transactionId)
+    print("***transactionId inside get transaction request***: ", transactionId)
     transaction = await Transaction.find_unique(
         where={"id": transactionId},
         include={"user": True, "trail": True, "trail_org": True},
     )
+    print("***transaction***: ", transaction)
 
     return transaction

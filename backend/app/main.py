@@ -1,4 +1,4 @@
-from src.prisma import prisma, Trail
+from src.prisma import prisma, Trail, TrailOrg
 
 import json
 
@@ -17,28 +17,40 @@ app.include_router(trails.router)
 async def seed_db():
     trails = await Trail.find_many()
 
-    filtered_trails = []
+    print("trail length: ", len(trails))
+
+    # print(trails)
 
     if len(trails) == 0:
+        filtered_trails = []
+
         # Opening JSON file
         with open("TrailData.json", "r") as openfile:
             # Reading from json file
             raw = json.load(openfile)
             trails = raw["features"]
 
+            trail_org = await TrailOrg.create(data=({"name": "COPMOBA"}))
+
+            print("***trail_org***: ", trail_org)
+
             for trail in trails:
-                filtered_trails.append(
-                    {
-                        "longitude": trail["geometry"]["coordinates"][0],
-                        "latitude": trail["geometry"]["coordinates"][1],
-                        "name": trail["properties"]["Name"],
-                        "trail_org_id": "clgpr0tu9000181qk6888h4jo",
-                    }
+                filtered_trail = {
+                    "longitude": trail["geometry"]["coordinates"][0],
+                    "latitude": trail["geometry"]["coordinates"][1],
+                    "name": trail["properties"]["Name"],
+                }
+                updated_trail = await Trail.create(
+                    data={**filtered_trail, "trail_org_id": trail_org.id}
                 )
+
+                print("***updated_trail dict***: ", dict(updated_trail))
+
+                filtered_trails.append(dict(updated_trail))
 
             await Trail.create_many(data=filtered_trails)
 
-            return {"msg": "trails were created"}
+        return {"msg": "trails were created"}
 
     return {"msg": "trails already exist"}
 

@@ -24,31 +24,16 @@ from geopy.distance import geodesic
 
 from src.prisma import prisma, Trail
 
-import os
-import requests
-
-
 settings = Settings()
 
 push_token = jwt.encode(
     {
+        "alg": "ES256",
         "kid": settings.apn_push_key,
         "iss": settings.apn_issuer_key,
         "iat": time.time(),
     },
     settings.apn_push_token_secret,
-)
-
-print("apn_push_token: ", push_token)
-
-session = requests.Session()
-session.headers.update(
-    {
-        "Authorization": f"Bearer {push_token}",
-        "accept": "application/json",
-        "accept-encoding": "gzip, deflate",
-        "content-type": "application/json",
-    }
 )
 
 router = APIRouter(
@@ -76,7 +61,6 @@ async def get_distance_to_trail(
     nearLat: float, nearLon: float, farLat: float, farLon: float
 ):
     # distance is returned in km from geodesic method
-    print("***DISTANCE***: ", geodesic((nearLat, nearLon), (farLat, farLon)).miles)
     return geodesic((nearLat, nearLon), (farLat, farLon)).miles
 
 
@@ -98,11 +82,17 @@ async def get_radius_to_determine_push_notification(
     print("***trails***: ", trails)
 
     if len(trails) > 0:
-        print("***SEND A PUSH NOTIFICATION***")
+        trail = trails[0]
+
+        message = f"It looks like you're using {trail['name']}, today."
 
         def send_notification():
-            return PushClient(session=session).publish(
-                PushMessage(to=token, body=message)
+            return PushClient().publish(
+                PushMessage(
+                    to=token,
+                    body=message,
+                    data=trails[0],
+                )
             )
 
         try:

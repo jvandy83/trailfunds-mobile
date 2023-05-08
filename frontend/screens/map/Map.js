@@ -63,13 +63,18 @@ export const Map = () => {
 	);
 
 	useEffect(() => {
-		(async () => {
+		async () => {
 			try {
 				const { status } = await Location.requestForegroundPermissionsAsync();
 				if (status !== 'granted') return;
 			} catch (error) {
 				console.error(error);
 			}
+		};
+	}, []);
+
+	useEffect(() => {
+		(async () => {
 			try {
 				const { coords } = await Location.getCurrentPositionAsync({
 					accuracy: 6,

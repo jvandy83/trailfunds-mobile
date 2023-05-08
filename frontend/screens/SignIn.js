@@ -22,7 +22,6 @@ import { saveToken, setAuth } from '../reduxStore/features/auth/authSlice';
 
 import {
 	mountains,
-	logo,
 	googleIcon,
 	facebookIcon,
 	appleIcon,
@@ -102,7 +101,7 @@ export const SignIn = () => {
 					fontSize: 30,
 					fontWeight: 'bold',
 					color: '#414d59',
-					top: Platform.OS === 'android' ? 375 : 456,
+					top: Platform.OS === 'android' ? 375 : 515,
 					right: 40,
 					zIndex: 800,
 					textShadowOffset: { width: 2, height: 2 },
@@ -120,7 +119,11 @@ export const SignIn = () => {
 			>
 				<Svg
 					style={{
-						transform: [{ translateY: Platform.OS === 'android' ? 220 : 300 }],
+						transform: [
+							{
+								translateY: Platform.OS === 'android' ? 220 : 350,
+							},
+						],
 					}}
 					width={1024}
 					height={768}
@@ -131,16 +134,16 @@ export const SignIn = () => {
 							id='svg_1'
 							fill='white'
 							stroke='white'
-							d='m0,80q100,-130 200,0t200,0l0,500l-500,0l0,-100l0,770l0,-700l0,-70l0,100l0,-80l0,30l0,-20l0,-20l0,-10z'
+							d='m0,80q100,-130, 200,0t250,0l0,500l-500,0l0,-100l0,770l0,-700l0,-70l0,100l0,-80l0,30l0,-20l0,-20l0,-10z'
 						/>
 					</G>
 				</Svg>
 				<View
 					style={{
 						width: 200,
-						height: 300,
+						height: 350,
 						position: 'absolute',
-						top: Platform.OS === 'android' ? 120 : 200,
+						top: Platform.OS === 'android' ? 120 : 240,
 						left: 15,
 					}}
 				>
@@ -161,7 +164,7 @@ export const SignIn = () => {
 					width: '100%',
 					height: '50%',
 					bottom: -80,
-					bottom: Platform.OS === 'android' ? 0 : -80,
+					bottom: Platform.OS === 'android' ? 0 : -120,
 				}}
 			>
 				{newUser && (

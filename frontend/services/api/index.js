@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { fetchToken } from '../../reduxStore/features/auth/authSlice';
 
+import { baseUrl } from '../../config';
+
 const unProtectedRoutesOrRefreshRoutes = [
 	'user/refresh-token',
 	'user/sign-up',
@@ -12,7 +14,7 @@ const isProtectedRoute = (endpoint) =>
 	!unProtectedRoutesOrRefreshRoutes.includes(endpoint);
 
 const baseQuery = fetchBaseQuery({
-	baseUrl: 'https://p7d3qz2k.ngrok.app/api/v1',
+	baseUrl: baseUrl,
 	prepareHeaders: async (headers, { getState, endpoint }) => {
 		const user = getState().auth.currentUser;
 		const accessToken = await fetchToken('accessToken');

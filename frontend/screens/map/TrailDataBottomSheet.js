@@ -25,6 +25,8 @@ import {
 	BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 
+import { baseUrl } from '../../config';
+
 import { TrailLocation } from './TrailLocation';
 
 import axios from 'axios';
@@ -52,7 +54,7 @@ export const TrailDataBottomSheet = ({
 		setLoadingTrails(true);
 		try {
 			const res = await axios.get(
-				`https://p7d3qz2k.ngrok.app/api/v1/trails/search-trails?query=${data}`,
+				`${baseUrl}/trails/search-trails?query=${data}`,
 			);
 			setQueryData(res.data);
 			setLoadingTrails(false);

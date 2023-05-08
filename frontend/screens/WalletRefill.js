@@ -14,6 +14,8 @@ import { fetchToken } from '../reduxStore/features/auth/authSlice';
 
 import { useAddTrailbucksMutation, useGetUserQuery } from '../services/api';
 
+import { baseUrl } from '../config';
+
 import { CustomInputModal } from '../components/modal/CustomInputModal';
 
 import { MainLayout } from '../components/layout/MainLayout';
@@ -27,8 +29,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
-import { infoIcon } from '../assets/images';
 
 import axios from 'axios';
 
@@ -170,7 +170,28 @@ export const WalletRefill = ({ navigation }) => {
 			alert(`Error: ${error.message}`);
 			return;
 		}
+		addTrailbucks({ userId: data.id, amount: donationAmount });
 		setReady(false);
+		Alert.alert(
+			'Your payment was successful',
+			'Thank you for being a local trail maintainer!',
+			[
+				{
+					text: 'OK',
+					onPress: () => {
+						setReady(true);
+						setSelectedAmount(currentAmounts);
+						setPreselectedAmount({
+							5: 5,
+							10: 0,
+							20: 0,
+							other: '',
+						});
+						navigation.goBack();
+					},
+				},
+			],
+		);
 	};
 
 	const setup = async () => {
@@ -211,7 +232,7 @@ export const WalletRefill = ({ navigation }) => {
 	const handleInitiatePaymentIntent = async () => {
 		const donationAmount =
 			amount.customAmount > 5 ? amount.customAmount : amount.selectAmount;
-		const URL = `https://p7d3qz2k.ngrok.app/api/v1/payment-intents/${donationAmount}`;
+		const URL = `${baseUrl}/payment-intents/${donationAmount}`;
 		const token = await fetchToken('accessToken');
 		try {
 			const response = await axios.get(URL, {

@@ -24,10 +24,6 @@ import { MainLayout } from '../components/layout/MainLayout';
 import uuid from 'react-native-uuid';
 
 export const Wallet = ({ navigation, route }) => {
-	const { params } = route;
-
-	console.log('***params***: ', params);
-
 	const bottomSheetModalRef = useRef(null);
 
 	const { data, error, isLoading } = useGetCurrentBalanceQuery({

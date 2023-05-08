@@ -49,7 +49,7 @@ export const Donate = ({ route }) => {
 		selectAmount: 5,
 	});
 
-	const [transactionId, setTransactionId] = useState();
+	const [transactionId, setTransactionId] = useState(null);
 
 	// RTK Query
 
@@ -61,7 +61,8 @@ export const Donate = ({ route }) => {
 
 	const { data, isLoading, error } = useGetTrailQuery(trailId);
 
-	const [donate, { isSuccess }] = useDonateMutation();
+	const [donate, { isSuccess, isLoading: isDonationLoading, isUninitialized }] =
+		useDonateMutation();
 
 	/* ----> EVENT HANDLERS <---- */
 	// modify local state to
@@ -78,7 +79,7 @@ export const Donate = ({ route }) => {
 			}).unwrap();
 			setTransactionId(transId);
 		} catch (error) {
-			console.error(error);
+			console.error(JSON.parse(error.data));
 		}
 	};
 
@@ -124,7 +125,7 @@ export const Donate = ({ route }) => {
 
 	return (
 		<MainLayout styleProp={defaults.background}>
-			{isSuccess ? (
+			{transactionId ? (
 				<PaymentSuccess transactionId={transactionId} />
 			) : (
 				<View style={styles.paymentScreenContainer}>
@@ -258,7 +259,6 @@ export const Donate = ({ route }) => {
 						/>
 						<View style={{ alignItems: 'center', marginTop: 30 }}>
 							<SecondaryButton
-								color='#59C092'
 								onPress={() => {
 									setTimeout(() => {
 										handleSubmitDonation();

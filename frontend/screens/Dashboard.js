@@ -54,14 +54,14 @@ export const Dashboard = ({ navigation }) => {
 		{
 			lat: initialLocation.latitude,
 			lon: initialLocation.longitude,
-			radius: 1500,
+			radius: 20,
 			message: 'this is a test message',
 			token: fetchPushToken(),
 		},
 		{
 			skip: !initialLocation.latitude || !fetchPushToken(),
 			refetchOnMountOrArgChange: true,
-			pollingInterval: 10000,
+			pollingInterval: 30000,
 		},
 	);
 

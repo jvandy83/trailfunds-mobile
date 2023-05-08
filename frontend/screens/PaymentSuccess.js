@@ -63,16 +63,16 @@ export const PaymentSuccess = ({ transactionId }) => {
 			/>
 			<BottomSheetModalProvider>
 				<BottomSheetModal
-					// style={{
-					// 	elevation: 5,
-					// 	shadowColor: 'rgba(0, 0, 0, 0.3)',
-					// 	shadowOpacity: 0.8,
-					// 	shadowRadius: 6,
-					// 	shadowOffset: {
-					// 		height: 1,
-					// 		width: 1,
-					// 	},
-					// }}
+					style={{
+						elevation: 5,
+						shadowColor: 'rgba(0, 0, 0, 0.3)',
+						shadowOpacity: 0.8,
+						shadowRadius: 6,
+						shadowOffset: {
+							height: 1,
+							width: 1,
+						},
+					}}
 					ref={bottomSheetModalRef}
 					index={1}
 					snapPoints={snapPoints}

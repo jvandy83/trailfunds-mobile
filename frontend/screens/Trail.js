@@ -29,7 +29,7 @@ export const Trail = ({ route }) => {
 
 	const { trailId } = route.params;
 
-	const [transactionId, setTransactionId] = useState();
+	const [transactionId, setTransactionId] = useState(null);
 
 	const { navigate, goBack } = useNavigation();
 
@@ -76,7 +76,7 @@ export const Trail = ({ route }) => {
 	}
 
 	if (error) {
-		console.error(error);
+		console.error(JSON.parse(error.data));
 	}
 
 	const initialLocation = {
@@ -90,7 +90,7 @@ export const Trail = ({ route }) => {
 
 	return (
 		<MainLayout styleProp={defaults.background}>
-			{isSuccess ? (
+			{transactionId ? (
 				<PaymentSuccess transactionId={transactionId} />
 			) : (
 				<>

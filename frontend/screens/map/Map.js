@@ -90,7 +90,13 @@ export const Map = () => {
 
 	if (!initialLocation.latitude || isLoading) {
 		return (
-			<View>
+			<View
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}
+			>
 				<Text>Loading...</Text>
 			</View>
 		);

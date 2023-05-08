@@ -1,4 +1,4 @@
-import mountains from './mountains.avif';
+import mountains from './mountains.jpeg';
 import logo from './TrailFundsLogo.svg';
 import logoBlack from './TrailFundsLogo.png';
 import googleIcon from './googleIcon.png';

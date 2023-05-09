@@ -38,10 +38,8 @@ export const PaymentSuccess = ({ transactionId }) => {
 	}
 
 	if (error) {
-		JSON.parse(error.data);
+		console.error(error.data);
 	}
-
-	console.log('***transactionData***: ', data);
 
 	return (
 		<View style={styles.centeredView}>

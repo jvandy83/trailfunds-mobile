@@ -102,7 +102,6 @@ export const Dashboard = ({ navigation }) => {
 				await Location.requestForegroundPermissionsAsync();
 			if (foregroundStatus === 'granted') {
 				const { coords } = await Location.getCurrentPositionAsync();
-				console.log('***coords***: ', coords);
 				const userRegion = {
 					latitude: coords.latitude,
 					longitude: coords.longitude,
@@ -145,11 +144,7 @@ export const Dashboard = ({ navigation }) => {
 			}
 			if (data) {
 				const { locations } = data;
-				// console.log('***executionInfo***: ', executionInfo);
-				console.log(
-					'***location updates initialized in Dashboard***: ',
-					locations,
-				);
+
 				dispatch(setLocation(locations[0].coords));
 				// do something with the locations captured in the background
 			}

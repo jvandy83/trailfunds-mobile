@@ -37,8 +37,6 @@ export const Map = () => {
 
 	const { initialLocation } = useSelector((state) => state.location);
 
-	console.log('***initialLocation inside Map***: ', initialLocation);
-
 	const { data, error, isLoading } = useGetTrailsNearMeQuery(
 		{
 			lat: initialLocation.latitude,

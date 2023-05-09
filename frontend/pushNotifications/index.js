@@ -19,14 +19,10 @@ export const registerForPushNotificationsAsync = async () => {
 		const { status: existingStatus } =
 			await Notifications.getPermissionsAsync();
 
-		console.log('***EXISTING_STATUS***: ', existingStatus);
-
 		let finalStatus = existingStatus;
 
 		if (existingStatus !== 'granted') {
 			const { status } = await Notifications.requestPermissionsAsync();
-
-			console.log('***STATUS***: ', status);
 
 			finalStatus = status;
 		}
@@ -38,8 +34,6 @@ export const registerForPushNotificationsAsync = async () => {
 		}
 
 		token = (await Notifications.getExpoPushTokenAsync()).data;
-
-		// console.log('***token inside registerForPushNotificationAsync***: ', token);
 	} else {
 		alert('Must use physical device for Push Notifications');
 	}

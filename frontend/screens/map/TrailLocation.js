@@ -7,9 +7,6 @@ import { useGetDistanceFromMeQuery } from '../../services/api';
 export const TrailLocation = ({ trail, onPress }) => {
 	const { location } = useSelector((state) => state.location);
 
-	console.log('location: ', location);
-	console.log('trail: ', trail);
-
 	const { data, error, isLoading } = useGetDistanceFromMeQuery(
 		{
 			nearLat: location.latitude,
@@ -31,8 +28,6 @@ export const TrailLocation = ({ trail, onPress }) => {
 	if (error) {
 		console.error(error.data);
 	}
-
-	console.log('**data***:', data);
 
 	const formattedDistance = Math.round(data * 10) / 10;
 

@@ -225,7 +225,7 @@ export const WalletRefill = ({ navigation }) => {
 				// testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
 			});
 		} catch (error) {
-			console.log(error);
+			console.error(error.data);
 		}
 	};
 

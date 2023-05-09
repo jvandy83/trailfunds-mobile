@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { fetchPushToken } from '../../../pushNotifications/usePushToken';
+import { fetchPushToken } from '../../../api/pushNotifications/usePushToken';
 
 import * as SecureStore from 'expo-secure-store';
 

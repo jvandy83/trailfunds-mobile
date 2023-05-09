@@ -15,9 +15,9 @@ import * as TaskManager from 'expo-task-manager';
 
 import * as Notifications from 'expo-notifications';
 
-import { registerForPushNotificationsAsync } from '../pushNotifications';
+import { registerForPushNotificationsAsync } from '../api/pushNotifications';
 
-import { fetchPushToken } from '../pushNotifications/usePushToken';
+import { fetchPushToken } from '../api/pushNotifications/usePushToken';
 
 import { MainLayout } from '../components/layout/MainLayout';
 

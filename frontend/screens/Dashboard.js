@@ -7,7 +7,11 @@ import {
 	useGetRadiusPushNotificationQuery,
 } from '../services/api';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 import * as Location from 'expo-location';
+
+import * as TaskManager from 'expo-task-manager';
 
 import * as Notifications from 'expo-notifications';
 
@@ -17,32 +21,34 @@ import { fetchPushToken } from '../pushNotifications/usePushToken';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
+import {
+	setLocation,
+	setInitialLocation,
+} from '../reduxStore/features/location/locationSlice';
+
 import dashboard from '../styles/dashboardStyles';
 import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 
 import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
-// const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
-
-// TaskManager.defineTask(
-// 	BACKGROUND_NOTIFICATION_TASK,
-// 	({ data, error, executionInfo }) => {
-// 		console.log('Received a notification in the background!');
-// 		// Do something with the notification data
-// 	},
-// );
-
-// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
+const NOTIFICATION_TASK_NAME = 'BACKGROUND-NOTIFICATION-TASK';
 
 export const Dashboard = ({ navigation }) => {
-	const [initialLocation, setInitialLocation] = useState({});
-
 	const [notification, setNotification] = useState(false);
 
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
-	const { data, error, isLoading } = useGetUserQuery({
+	const { initialLocation, location } = useSelector((state) => state.location);
+
+	const dispatch = useDispatch();
+
+	const {
+		data: userData,
+		error,
+		isLoading,
+	} = useGetUserQuery({
 		refetchOnMountOrArgChange: true,
 	});
 
@@ -52,24 +58,20 @@ export const Dashboard = ({ navigation }) => {
 		error: isNotificationError,
 	} = useGetRadiusPushNotificationQuery(
 		{
-			lat: initialLocation.latitude,
-			lon: initialLocation.longitude,
+			lat: location.latitude,
+			lon: location.longitude,
 			radius: 20,
 			message: 'this is a test message',
 			token: fetchPushToken(),
 		},
 		{
-			skip: !initialLocation.latitude || !fetchPushToken(),
+			skip: !location.latitude || !fetchPushToken(),
 			refetchOnMountOrArgChange: true,
 			pollingInterval: 10000,
 		},
 	);
 
-	if (notification) {
-		console.log('***notification***: ', notification);
-		console.log('***data***: ', notification.request?.content?.data);
-	}
-
+	// request permission to send notifications
 	useEffect(() => {
 		(async () => {
 			await registerForPushNotificationsAsync();
@@ -81,12 +83,6 @@ export const Dashboard = ({ navigation }) => {
 
 			responseListener.current =
 				Notifications.addNotificationResponseReceivedListener((response) => {
-					console.log('***RESPONSE***: ', response);
-					console.log('***CONTENT***: ', response.notification.request.content);
-					console.log(
-						'***DATA***: ',
-						response.notification.request.content.data.id,
-					);
 					const trailId = response.notification.request.content.data.id;
 					navigation.navigate('Trail', { trailId });
 				});
@@ -102,32 +98,65 @@ export const Dashboard = ({ navigation }) => {
 
 	useEffect(() => {
 		(async () => {
-			try {
-				const { status } = await Location.requestForegroundPermissionsAsync();
-				if (status !== 'granted') return;
-			} catch (error) {
-				console.error(error);
-			}
-			try {
-				const { coords } = await Location.getCurrentPositionAsync({
-					accuracy: 6,
-				});
+			const { status: foregroundStatus } =
+				await Location.requestForegroundPermissionsAsync();
+			if (foregroundStatus === 'granted') {
+				const { coords } = await Location.getCurrentPositionAsync();
+				console.log('***coords***: ', coords);
 				const userRegion = {
 					latitude: coords.latitude,
 					longitude: coords.longitude,
 					latitudeDelta: 0.1,
 					longitudeDelta: 0.1,
 				};
-				setInitialLocation(userRegion);
-			} catch (error) {
-				console.error(error);
+				dispatch(setInitialLocation(userRegion));
+				dispatch(setLocation(userRegion));
+				const { status: backgroundStatus } =
+					await Location.requestBackgroundPermissionsAsync();
+				if (backgroundStatus === 'granted') {
+					await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+						accuracy: Location.Accuracy.Balanced,
+					});
+				}
 			}
 		})();
 	}, []);
 
-	if (!isLoadingNotification) {
-		// consoe.log('***notificationData***: ', notificationData);
-	}
+	TaskManager.defineTask(
+		NOTIFICATION_TASK_NAME,
+		({ data, error, executionInfo }) => {
+			if (error) {
+				// Error occurred - check `error.message` for more details.
+				return;
+			}
+			if (data) {
+				// do something with the locations captured in the background
+				console.log(data);
+			}
+		},
+	);
+
+	TaskManager.defineTask(
+		LOCATION_TASK_NAME,
+		({ data, error, executionInfo }) => {
+			if (error) {
+				// Error occurred - check `error.message` for more details.
+				return;
+			}
+			if (data) {
+				const { locations } = data;
+				// console.log('***executionInfo***: ', executionInfo);
+				console.log(
+					'***location updates initialized in Dashboard***: ',
+					locations,
+				);
+				dispatch(setLocation(locations[0].coords));
+				// do something with the locations captured in the background
+			}
+		},
+	);
+
+	Notifications.registerTaskAsync(NOTIFICATION_TASK_NAME);
 
 	if (isLoading) {
 		return (
@@ -141,9 +170,9 @@ export const Dashboard = ({ navigation }) => {
 	}
 
 	const greeting = () =>
-		data.isNew
-			? `Welcome ${data.firstName}!`
-			: `Welcome back, ${data.firstName}!`;
+		userData.isNew
+			? `Welcome ${userData.firstName}!`
+			: `Welcome back, ${userData.firstName}!`;
 
 	return (
 		<View>

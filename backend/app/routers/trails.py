@@ -72,6 +72,8 @@ async def get_radius_to_determine_push_notification(
     token: str,
     message: str,
 ):
+    print(lat)
+    print(lon)
     trails = await prisma.query_raw(
         f"""
         SELECT id, latitude, longitude, name

@@ -7,6 +7,8 @@ import * as Location from 'expo-location';
 import MapView from 'react-native-map-clustering'; // For some reason this must be on it's own line
 import { Marker } from 'react-native-maps';
 
+import { useSelector } from 'react-redux';
+
 import { TrailDataBottomSheet } from './TrailDataBottomSheet';
 
 import { useGetTrailsNearMeQuery } from '../../services/api';
@@ -29,12 +31,13 @@ const INITIAL_REGION = {
 };
 
 export const Map = () => {
-	const [initialLocation, setInitialLocation] = useState({});
 	const [radius, setRadius] = useState('5');
 
-	console.log('***initialLocation***: ', initialLocation);
-
 	const mapRef = useRef(null);
+
+	const { initialLocation } = useSelector((state) => state.location);
+
+	console.log('***initialLocation inside Map***: ', initialLocation);
 
 	const { data, error, isLoading } = useGetTrailsNearMeQuery(
 		{
@@ -42,9 +45,6 @@ export const Map = () => {
 			lon: initialLocation.longitude,
 			radius,
 		},
-		// skip api call until the initial
-		// location has been set
-		{ skip: !initialLocation.latitude },
 		{ refetchOnMountOrArgChange: true },
 	);
 
@@ -63,37 +63,21 @@ export const Map = () => {
 	);
 
 	useEffect(() => {
-		async () => {
-			try {
-				const { status } = await Location.requestForegroundPermissionsAsync();
-				if (status !== 'granted') return;
-			} catch (error) {
-				console.error(error);
-			}
-		};
-	}, []);
-
-	useEffect(() => {
 		(async () => {
 			try {
-				const { coords } = await Location.getCurrentPositionAsync({
-					accuracy: 6,
-				});
-				const userRegion = {
-					latitude: coords.latitude,
-					longitude: coords.longitude,
-					latitudeDelta: 0.1,
-					longitudeDelta: 0.1,
-				};
-				setInitialLocation(userRegion);
-				mapRef.current?.animateToRegion(userRegion);
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status === 'granted') {
+					mapRef.current?.animateToRegion(initialLocation);
+				} else {
+					alert('Permission to access location was denied');
+				}
 			} catch (error) {
 				console.error(error);
 			}
 		})();
 	}, []);
 
-	if (!initialLocation.latitude || isLoading) {
+	if (isLoading) {
 		return (
 			<View
 				style={{
@@ -108,7 +92,7 @@ export const Map = () => {
 	}
 
 	if (error) {
-		console.error(error);
+		console.error(error.data);
 	}
 
 	return (
@@ -133,12 +117,7 @@ export const Map = () => {
 			>
 				{data.trails.map(renderMarker)}
 			</MapView>
-			<TrailDataBottomSheet
-				radius={radius}
-				data={data}
-				initialLocation={initialLocation}
-				setRadius={setRadius}
-			/>
+			<TrailDataBottomSheet radius={radius} data={data} setRadius={setRadius} />
 		</View>
 	);
 };

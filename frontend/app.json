@@ -21,7 +21,7 @@
 			"bundleIdentifier": "com.vanthedev.TrailFundsApp",
 			"runtimeVersion": "1.0.0",
 			"infoPlist": {
-				"UIBackgroundModes": ["remote-notification"]
+				"UIBackgroundModes": ["remote-notification", "location"]
 			}
 		},
 		"android": {

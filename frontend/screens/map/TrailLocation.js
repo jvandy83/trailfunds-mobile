@@ -1,16 +1,23 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import { useSelector } from 'react-redux';
+
 import { useGetDistanceFromMeQuery } from '../../services/api';
 
-export const TrailLocation = ({ trail, initialLoc, onPress }) => {
+export const TrailLocation = ({ trail, onPress }) => {
+	const { location } = useSelector((state) => state.location);
+
+	console.log('location: ', location);
+	console.log('trail: ', trail);
+
 	const { data, error, isLoading } = useGetDistanceFromMeQuery(
 		{
-			nearLat: initialLoc.latitude,
-			nearLon: initialLoc.longitude,
+			nearLat: location.latitude,
+			nearLon: location.longitude,
 			farLat: trail.latitude,
 			farLon: trail.longitude,
 		},
-		{ skip: !initialLoc.latitude },
+		{ skip: !location.latitude, refetchOnMountOrArgChange: true },
 	);
 
 	if (isLoading) {
@@ -22,8 +29,10 @@ export const TrailLocation = ({ trail, initialLoc, onPress }) => {
 	}
 
 	if (error) {
-		console.error(error);
+		console.error(error.data);
 	}
+
+	console.log('**data***:', data);
 
 	const formattedDistance = Math.round(data * 10) / 10;
 

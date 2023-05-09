@@ -4,6 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { api } from '../services/api';
 import authReducer from '../reduxStore/features/auth/authSlice';
 import pushNotificationReducer from '../reduxStore/features/pushNotification/pushNotificationSlice';
+import locationReducer from '../reduxStore/features/location/locationSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
 		[api.reducerPath]: api.reducer,
 		auth: authReducer,
 		pushNotification: pushNotificationReducer,
+		location: locationReducer,
 	},
 	// Adding the api middleware enables caching, invalidation, polling,
 	// and other useful features of `rtk-query`.

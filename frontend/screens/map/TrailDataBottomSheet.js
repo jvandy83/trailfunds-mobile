@@ -18,6 +18,8 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 
+import { useSelector } from 'react-redux';
+
 import { Picker } from '@react-native-picker/picker';
 
 import {
@@ -33,12 +35,7 @@ import axios from 'axios';
 
 import uuid from 'react-native-uuid';
 
-export const TrailDataBottomSheet = ({
-	data,
-	initialLocation,
-	setRadius,
-	radius,
-}) => {
+export const TrailDataBottomSheet = ({ data, setRadius, radius }) => {
 	// ref
 	const bottomSheetModalRef = useRef(null);
 
@@ -78,7 +75,6 @@ export const TrailDataBottomSheet = ({
 			<TrailLocation
 				trail={trail}
 				onPress={() => navigate('Trail', { trailId: trail.id })}
-				initialLoc={initialLocation}
 				key={uuid.v4()}
 			/>
 		),

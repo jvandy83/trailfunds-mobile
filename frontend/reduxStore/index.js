@@ -3,7 +3,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { api } from '../services/api';
 import authReducer from '../reduxStore/features/auth/authSlice';
-import pushNotificationReducer from '../reduxStore/features/pushNotification/pushNotificationSlice';
 import locationReducer from '../reduxStore/features/location/locationSlice';
 
 export const store = configureStore({
@@ -11,7 +10,6 @@ export const store = configureStore({
 		// Add the generated reducer as a specific top-level slice
 		[api.reducerPath]: api.reducer,
 		auth: authReducer,
-		pushNotification: pushNotificationReducer,
 		location: locationReducer,
 	},
 	// Adding the api middleware enables caching, invalidation, polling,

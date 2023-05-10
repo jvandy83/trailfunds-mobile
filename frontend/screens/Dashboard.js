@@ -5,6 +5,7 @@ import { View, Text, Image } from 'react-native';
 import {
 	useGetUserQuery,
 	useGetRadiusPushNotificationQuery,
+	useSetNotificationEnabledMutation,
 } from '../services/api';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -71,19 +72,34 @@ export const Dashboard = ({ navigation }) => {
 		},
 	);
 
+	const [setNotificationEnabled, { isSuccess }] =
+		useSetNotificationEnabledMutation();
+
 	// request permission to send notifications
 	useEffect(() => {
 		(async () => {
 			await registerForPushNotificationsAsync();
 
+			// notification recieved
 			notificationListener.current =
 				Notifications.addNotificationReceivedListener((notification) => {
-					setNotification(notification);
+					console.log(
+						'***notification.data in notification listener***: ',
+						notification.request.content.data,
+					);
 				});
 
+			// notification recieved and with action performed
 			responseListener.current =
 				Notifications.addNotificationResponseReceivedListener((response) => {
 					const trailId = response.notification.request.content.data.id;
+					// eventually add ability to let user
+					// set time offsets between notifications
+					// with Notification Catgories
+					// i.e "Dismiss notification for 24hrs, 1 week..."
+					// const notificationTime = Date.now(response.notification.date);
+					// setNotification(notification.request.content.data.id);
+
 					navigation.navigate('Trail', { trailId });
 				});
 

@@ -48,7 +48,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
 export const api = createApi({
 	baseQuery: baseQueryWithReauth,
-	tagTypes: ['Trailbucks'],
+	tagTypes: ['Trailbucks', 'Notifications'],
 	endpoints: (build) => ({
 		login: build.mutation({
 			query: (body) => ({
@@ -125,6 +125,7 @@ export const api = createApi({
 			},
 			invalidatesTags: [{ type: 'Trailbucks', id: 'CURRENT_BALANCE' }],
 		}),
+
 		donate: build.mutation({
 			query: ({ userId, amount = 1, trailId }) => {
 				return {
@@ -134,6 +135,16 @@ export const api = createApi({
 				};
 			},
 			invalidatesTags: [{ type: 'Trailbucks', id: 'CURRENT_BALANCE' }],
+		}),
+		setNotificationEnabled: build.mutation({
+			query: (trailId) => {
+				return {
+					url: `trail/notification-enabled`,
+					method: 'POST',
+					body: { trailId },
+				};
+			},
+			invalidatesTags: [{ type: 'Notifications' }],
 		}),
 	}),
 });
@@ -152,4 +163,5 @@ export const {
 	useSignUpMutation,
 	useAddTrailbucksMutation,
 	useDonateMutation,
+	useSetNotificationEnabledMutation,
 } = api;

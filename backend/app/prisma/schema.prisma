@@ -50,6 +50,15 @@ model Trail {
   transactions Transactions[]
   trail_org    TrailOrg @relation(fields: [trail_org_id], references: id)
   trail_org_id String
+  notification Notification?
+}
+
+model Notification {
+  id String @id @default(cuid())
+  created_at      DateTime         @default(now())
+  updated_at      DateTime         @updatedAt
+  trail Trail @relation(fields: [trail_id], references: id)
+  trail_id String @unique
 }
 
 model TrailOrg {

@@ -22,7 +22,7 @@ from fastapi import APIRouter
 
 from geopy.distance import geodesic
 
-from src.prisma import prisma, Trail
+from src.prisma import prisma, Trail, Notification
 
 settings = Settings()
 
@@ -164,6 +164,15 @@ async def search_trails(query: str):
 
     else:
         return {"trails": trails}
+
+
+@router.get("/trail/notification-enabled")
+async def enable_trail_notification(trailId: str):
+    notification = await Notification.create(data={"trail_id": trailId})
+
+    print("***notification***: ", notification)
+
+    return {notification: "notification enabled"}
 
 
 @router.get("/get-trail")

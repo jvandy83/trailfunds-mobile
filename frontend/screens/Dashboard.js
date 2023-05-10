@@ -68,7 +68,6 @@ export const Dashboard = ({ navigation }) => {
 		{
 			skip: !location.latitude || !fetchPushToken(),
 			refetchOnMountOrArgChange: true,
-			pollingInterval: 10000,
 		},
 	);
 

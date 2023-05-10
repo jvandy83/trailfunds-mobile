@@ -3,5 +3,4 @@ authtoken: 2NDKmkQupkdbIs3uGgruLnydtPd_6YvPhWJvHmFwpBB3jnzik
 tunnels:
   dev:
     labels:
-      - edge=edghts_2Osey6nqialPGzIhEPh9RhrB2CS
-    addr: http://localhost:5000
+      - edge=edghts_2PTvk09LBIF9Gw5eVL7BXfDBeiU http://localhost:5000

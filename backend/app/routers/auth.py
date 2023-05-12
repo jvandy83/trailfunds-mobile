@@ -80,37 +80,40 @@ async def sign_up(user: UserSignUp):
 async def login(user: UserLogin):
     existing_user = await User.find_first(where={"email": user.email})
 
-    hashed_password = existing_user.password
+    if existing_user:
+        hashed_password = existing_user.password
 
-    if (
-        bcrypt.checkpw(user.password.encode("utf-8"), hashed_password.encode("utf-8"))
-        and existing_user is not None
-    ):
-        # update user.is_new = false
-        updated_user = await User.update(
-            where={
-                "id": existing_user.id,
-            },
-            data={
-                "is_new": {
-                    "set": False,
+        if (
+            bcrypt.checkpw(
+                user.password.encode("utf-8"), hashed_password.encode("utf-8")
+            )
+            and existing_user is not None
+        ):
+            # update user.is_new = false
+            updated_user = await User.update(
+                where={
+                    "id": existing_user.id,
                 },
-            },
-        )
+                data={
+                    "is_new": {
+                        "set": False,
+                    },
+                },
+            )
 
-        access_token = jwt.encode(
-            {"id": updated_user.id, "isNew": updated_user.is_new}, settings.secret
-        )
+            access_token = jwt.encode(
+                {"id": updated_user.id, "isNew": updated_user.is_new}, settings.secret
+            )
 
-        return {
-            "currentUser": {
-                "email": updated_user.email,
-                "firstName": updated_user.first_name,
-                "lastName": updated_user.last_name,
-                "id": updated_user.id,
-            },
-            "accessToken": access_token,
-        }
+            return {
+                "currentUser": {
+                    "email": updated_user.email,
+                    "firstName": updated_user.first_name,
+                    "lastName": updated_user.last_name,
+                    "id": updated_user.id,
+                },
+                "accessToken": access_token,
+            }
 
     else:
         raise HTTPException(status_code=404, detail="Username or password in incorrect")

@@ -60,6 +60,10 @@ async def get_trails_near_me(lat: float, lon: float, radius: int):
 async def get_distance_to_trail(
     nearLat: float, nearLon: float, farLat: float, farLon: float
 ):
+    print(
+        "distance inside distance-from-me: ",
+        geodesic((nearLat, nearLon), (farLat, farLon)).miles,
+    )
     # distance is returned in km from geodesic method
     return geodesic((nearLat, nearLon), (farLat, farLon)).miles
 
@@ -70,10 +74,7 @@ async def get_radius_to_determine_push_notification(
     lon: float,
     radius: int,
     token: str,
-    message: str,
 ):
-    print(lat)
-    print(lon)
     trails = await prisma.query_raw(
         f"""
         SELECT id, latitude, longitude, name

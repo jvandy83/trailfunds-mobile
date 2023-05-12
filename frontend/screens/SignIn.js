@@ -51,8 +51,7 @@ export const SignIn = () => {
 
 	if (error || loginError) {
 		const errorStatus = error || loginError;
-		console.log(errorStatus.status);
-		console.error(JSON.stringify(errorStatus.data));
+		console.log(errorStatus.detail);
 	}
 
 	const handleSubmit = async () => {
@@ -65,10 +64,11 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err));
+				.catch((err) => console.error(err.detail));
 		} else {
 			login({
-				...values,
+				email: 'Vanthedev@gmail.com',
+				password: 'password',
 				isNew: false,
 			})
 				.unwrap()
@@ -76,7 +76,7 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err));
+				.catch((err) => console.error(err.detail));
 		}
 	};
 

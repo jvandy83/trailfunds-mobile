@@ -52,17 +52,3 @@ export const registerForPushNotificationsAsync = async () => {
 
 	setPushToken(token);
 };
-
-export const requestPermissions = async () => {
-	const { status: foregroundStatus } =
-		await Location.requestForegroundPermissionsAsync();
-	if (foregroundStatus === 'granted') {
-		const { status: backgroundStatus } =
-			await Location.requestBackgroundPermissionsAsync();
-		if (backgroundStatus === 'granted') {
-			await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-				accuracy: Location.Accuracy.Balanced,
-			});
-		}
-	}
-};

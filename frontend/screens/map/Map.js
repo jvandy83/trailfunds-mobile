@@ -35,16 +35,15 @@ export const Map = () => {
 
 	const mapRef = useRef(null);
 
-	const { initialLocation } = useSelector((state) => state.location);
+	const { location } = useSelector((state) => state.location);
 
-	const { data, error, isLoading } = useGetTrailsNearMeQuery(
-		{
-			lat: initialLocation.latitude,
-			lon: initialLocation.longitude,
-			radius,
-		},
-		{ refetchOnMountOrArgChange: true },
-	);
+	console.log('***location inside map***: ', location);
+
+	const { data, error, isLoading } = useGetTrailsNearMeQuery({
+		lat: location.latitude,
+		lon: location.longitude,
+		radius,
+	});
 
 	const renderMarker = useCallback(
 		({ latitude, longitude, name }) => (
@@ -65,7 +64,7 @@ export const Map = () => {
 			try {
 				const { status } = await Location.requestForegroundPermissionsAsync();
 				if (status === 'granted') {
-					mapRef.current?.animateToRegion(initialLocation);
+					mapRef.current?.animateToRegion(location);
 				} else {
 					alert('Permission to access location was denied');
 				}
@@ -75,7 +74,7 @@ export const Map = () => {
 		})();
 	}, []);
 
-	if (isLoading) {
+	if (isLoading || !data) {
 		return (
 			<View
 				style={{
@@ -90,8 +89,10 @@ export const Map = () => {
 	}
 
 	if (error) {
-		console.error(error.data);
+		console.error(error.detail);
 	}
+
+	console.log('***data***: ', data);
 
 	return (
 		<View style={{ position: 'relative' }}>
@@ -101,7 +102,7 @@ export const Map = () => {
 				style={mapStyles.map}
 				showsUserLocation={true}
 				// onRegionChangeComplete={setLocation}
-				initialRegion={initialLocation || INITIAL_REGION}
+				initialRegion={location || INITIAL_REGION}
 				loadingEnabled={true}
 				loadingIndicatorColor='#666666'
 				loadingBackgroundColor='#eeeeee'
@@ -115,7 +116,12 @@ export const Map = () => {
 			>
 				{data.trails.map(renderMarker)}
 			</MapView>
-			<TrailDataBottomSheet radius={radius} data={data} setRadius={setRadius} />
+			<TrailDataBottomSheet
+				radius={radius}
+				data={data}
+				setRadius={setRadius}
+				locationData={location}
+			/>
 		</View>
 	);
 };

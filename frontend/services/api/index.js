@@ -4,6 +4,8 @@ import { fetchToken } from '../../reduxStore/features/auth/authSlice';
 
 import { baseUrl } from '../../config';
 
+console.log('baseUrl: ', baseUrl);
+
 const unProtectedRoutesOrRefreshRoutes = [
 	'user/refresh-token',
 	'user/sign-up',

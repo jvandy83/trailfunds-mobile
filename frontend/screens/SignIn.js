@@ -65,7 +65,7 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err));
+				.catch((error) => console.error(error.detail));
 		} else {
 			login({
 				...values,
@@ -76,7 +76,7 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err));
+				.catch((error) => console.error(error.detail));
 		}
 	};
 

@@ -1,7 +1,0 @@
-version: 2
-authtoken: 2NDKmkQupkdbIs3uGgruLnydtPd_6YvPhWJvHmFwpBB3jnzik
-tunnels:
-  my_tunnel_name:
-    labels:
-      - edge=edghts_2PTvk09LBIF9Gw5eVL7BXfDBeiU
-    addr: http://localhost:5000

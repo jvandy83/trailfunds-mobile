@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 
 import { View, Text, Image } from 'react-native';
 
 import {
 	useGetUserQuery,
 	useGetRadiusPushNotificationQuery,
-	useSetNotificationEnabledMutation,
 } from '../services/api';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,26 +31,17 @@ import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 
 import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
-const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
+// const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
 const NOTIFICATION_TASK_NAME = 'BACKGROUND-NOTIFICATION-TASK';
+const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
 
 export const Dashboard = ({ navigation }) => {
-	const [notification, setNotification] = useState(false);
-
 	const notificationListener = useRef();
 	const responseListener = useRef();
 
-	const { initialLocation, location } = useSelector((state) => state.location);
+	const { location } = useSelector((state) => state.location);
 
 	const dispatch = useDispatch();
-
-	const {
-		data: userData,
-		error,
-		isLoading,
-	} = useGetUserQuery({
-		refetchOnMountOrArgChange: true,
-	});
 
 	const {
 		data: notificationData,
@@ -61,18 +51,53 @@ export const Dashboard = ({ navigation }) => {
 		{
 			lat: location.latitude,
 			lon: location.longitude,
-			radius: 20,
-			message: 'this is a test message',
+			radius: 50,
 			token: fetchPushToken(),
 		},
 		{
 			skip: !location.latitude || !fetchPushToken(),
-			refetchOnMountOrArgChange: true,
 		},
 	);
 
-	const [setNotificationEnabled, { isSuccess }] =
-		useSetNotificationEnabledMutation();
+	const { data: userData, error, isLoading } = useGetUserQuery();
+
+	TaskManager.defineTask(
+		NOTIFICATION_TASK_NAME,
+		({ data, error, executionInfo }) => {
+			if (error) {
+				// Error occurred - check `error.message` for more details.
+				return;
+			}
+			if (data) {
+				// do something with the locations captured in the background
+				console.log(data);
+			}
+		},
+	);
+
+	TaskManager.defineTask(
+		LOCATION_TASK_NAME,
+		({ data, error, executionInfo }) => {
+			if (error) {
+				// Error occurred - check `error.message` for more details.
+				return;
+			}
+			if (data) {
+				const { locations } = data;
+				console.log(locations);
+				console.log('***executionInfo***: ', executionInfo);
+				const coords = locations[0].coords;
+				const userRegion = {
+					latitude: coords.latitude,
+					longitude: coords.longitude,
+					latitudeDelta: 0.1,
+					longitudeDelta: 0.1,
+				};
+				dispatch(setLocation(userRegion));
+				// do something with the locations captured in the background
+			}
+		},
+	);
 
 	// request permission to send notifications
 	useEffect(() => {
@@ -111,6 +136,23 @@ export const Dashboard = ({ navigation }) => {
 		})();
 	}, []);
 
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const { status: foregroundStatus } =
+	// 			await Location.requestForegroundPermissionsAsync();
+	// 		if (foregroundStatus === 'granted') {
+	// 			const { coords } = await Location.getCurrentPositionAsync();
+	// 			const userRegion = {
+	// 				latitude: coords.latitude,
+	// 				longitude: coords.longitude,
+	// 				latitudeDelta: 0.1,
+	// 				longitudeDelta: 0.1,
+	// 			};
+	// 			dispatch(setLocation(userRegion));
+	// 		}
+	// 	})();
+	// }, []);
+
 	useEffect(() => {
 		(async () => {
 			const { status: foregroundStatus } =
@@ -123,50 +165,19 @@ export const Dashboard = ({ navigation }) => {
 					latitudeDelta: 0.1,
 					longitudeDelta: 0.1,
 				};
-				dispatch(setInitialLocation(userRegion));
 				dispatch(setLocation(userRegion));
 				const { status: backgroundStatus } =
 					await Location.requestBackgroundPermissionsAsync();
 				if (backgroundStatus === 'granted') {
 					await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
 						accuracy: Location.Accuracy.Balanced,
+						// timeInterval: 10000,
+						distanceInterval: 50,
 					});
 				}
 			}
 		})();
 	}, []);
-
-	TaskManager.defineTask(
-		NOTIFICATION_TASK_NAME,
-		({ data, error, executionInfo }) => {
-			if (error) {
-				// Error occurred - check `error.message` for more details.
-				return;
-			}
-			if (data) {
-				// do something with the locations captured in the background
-				console.log(data);
-			}
-		},
-	);
-
-	TaskManager.defineTask(
-		LOCATION_TASK_NAME,
-		({ data, error, executionInfo }) => {
-			if (error) {
-				// Error occurred - check `error.message` for more details.
-				return;
-			}
-			if (data) {
-				const { locations } = data;
-
-				dispatch(setLocation(locations[0].coords));
-				// do something with the locations captured in the background
-			}
-		},
-	);
-
-	Notifications.registerTaskAsync(NOTIFICATION_TASK_NAME);
 
 	if (isLoading) {
 		return (
@@ -179,10 +190,7 @@ export const Dashboard = ({ navigation }) => {
 		console.error(error);
 	}
 
-	const greeting = () =>
-		userData.isNew
-			? `Welcome ${userData.firstName}!`
-			: `Welcome back, ${userData.firstName}!`;
+	Notifications.registerTaskAsync(NOTIFICATION_TASK_NAME);
 
 	return (
 		<View>
@@ -190,7 +198,11 @@ export const Dashboard = ({ navigation }) => {
 				<View style={dashboard.welcomeContainer}>
 					<Text style={dashboard.trailFunds}>Trail Funds</Text>
 					<Image source={TrailFundsLogo} style={dashboard.logo} />
-					<Text style={dashboard.welcomeMessage}>{greeting()}</Text>
+					<Text style={dashboard.welcomeMessage}>
+						{userData.isNew
+							? `Welcome ${userData.firstName}!`
+							: `Welcome back, ${userData.firstName}!`}
+					</Text>
 				</View>
 				<PrimaryButton
 					text='View Profile'
@@ -208,3 +220,51 @@ export const Dashboard = ({ navigation }) => {
 		</View>
 	);
 };
+
+/*
+
+***NOTIFICATION PAYLOAD***
+
+{
+	"date": 1683236545.8257608, 
+	"request": {
+		"content": {
+			"attachments": [], 
+			"badge": null, 
+			"body": "this is a test message", 
+			"categoryIdentifier": "", 
+			"data": {}, 
+			"launchImageName": "", 
+			"sound": null, 
+			"subtitle": null, 
+			"summaryArgument": null, 
+			"summaryArgumentCount": 0, 
+			"targetContentIdentifier": null, 
+			"threadIdentifier": "", 
+			"title": null
+		}, 
+		"identifier": "E6D71CC5-3899-4C46-AE9D-5A474CDA8EBD", 
+		"trigger": {
+			"class": "UNPushNotificationTrigger", 
+			"payload": {
+				"aps": {
+					"alert": {
+						"body": "this is a test message", 
+						"launch-image": "", 
+						"subtitle": "", 
+						"title": ""
+					}, 
+					"category": "", 
+					"thread-id": ""
+				}, 
+				"body": {}, 
+				"experienceId": "@vanthedev/TrailFundsApp", 
+				"projectId": "08397746-9845-4f6a-8f8b-575a44ae3772", 
+				"scopeKey": "@vanthedev/TrailFundsApp"
+			}, 
+			"type": "push"
+		}
+	}
+}
+
+*/

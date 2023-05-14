@@ -1,35 +1,33 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import { useState } from 'react';
+
 import { useSelector } from 'react-redux';
 
 import { useGetDistanceFromMeQuery } from '../../services/api';
 
-export const TrailLocation = ({ trail, onPress }) => {
-	const { location } = useSelector((state) => state.location);
-
-	const { data, error, isLoading } = useGetDistanceFromMeQuery(
+export const TrailLocation = ({ trail, onPress, locationData }) => {
+	const {
+		data: distance,
+		error,
+		isLoading,
+	} = useGetDistanceFromMeQuery(
 		{
-			nearLat: location.latitude,
-			nearLon: location.longitude,
+			nearLat: locationData.latitude,
+			nearLon: locationData.longitude,
 			farLat: trail.latitude,
 			farLon: trail.longitude,
 		},
-		{ skip: !location.latitude, refetchOnMountOrArgChange: true },
+		{
+			skip: !locationData?.latitude,
+		},
 	);
 
-	if (isLoading) {
-		return (
-			<View>
-				<Text>Loading...</Text>
-			</View>
-		);
-	}
-
 	if (error) {
-		console.error(error.data);
+		console.error(error.detail);
 	}
 
-	const formattedDistance = Math.round(data * 10) / 10;
+	const formattedDistance = Math.round(distance * 10) / 10;
 
 	return (
 		<TouchableOpacity onPress={onPress} style={{ paddingVertical: 10 }}>
@@ -44,7 +42,7 @@ export const TrailLocation = ({ trail, onPress }) => {
 					{trail.name}
 				</Text>
 				<Text style={{ fontWeight: '600', fontSize: 14 }}>
-					{formattedDistance}
+					{isLoading ? <Text></Text> : formattedDistance}
 				</Text>
 			</View>
 		</TouchableOpacity>

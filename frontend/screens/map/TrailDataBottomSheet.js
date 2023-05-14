@@ -18,8 +18,6 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector } from 'react-redux';
-
 import { Picker } from '@react-native-picker/picker';
 
 import {
@@ -35,7 +33,12 @@ import axios from 'axios';
 
 import uuid from 'react-native-uuid';
 
-export const TrailDataBottomSheet = ({ data, setRadius, radius }) => {
+export const TrailDataBottomSheet = ({
+	data,
+	setRadius,
+	radius,
+	locationData,
+}) => {
 	// ref
 	const bottomSheetModalRef = useRef(null);
 
@@ -47,11 +50,11 @@ export const TrailDataBottomSheet = ({ data, setRadius, radius }) => {
 
 	const { navigate } = useNavigation();
 
-	const searchTrails = async (data) => {
+	const searchTrails = async (query) => {
 		setLoadingTrails(true);
 		try {
 			const res = await axios.get(
-				`${baseUrl}/trails/search-trails?query=${data}`,
+				`${baseUrl}/trails/search-trails?query=${query}`,
 			);
 			setQueryData(res.data);
 			setLoadingTrails(false);
@@ -60,8 +63,8 @@ export const TrailDataBottomSheet = ({ data, setRadius, radius }) => {
 		}
 	};
 
-	const handleSearchQuery = (text) => {
-		searchTrails(text);
+	const handleSearchQuery = (query) => {
+		searchTrails(query);
 	};
 
 	const handleSheetChanges = useCallback((index) => {
@@ -73,6 +76,7 @@ export const TrailDataBottomSheet = ({ data, setRadius, radius }) => {
 	const renderTrails = useCallback(
 		(trail) => (
 			<TrailLocation
+				locationData={locationData}
 				trail={trail}
 				onPress={() => navigate('Trail', { trailId: trail.id })}
 				key={uuid.v4()}

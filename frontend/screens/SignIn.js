@@ -51,8 +51,7 @@ export const SignIn = () => {
 
 	if (error || loginError) {
 		const errorStatus = error || loginError;
-		console.log(errorStatus.status);
-		console.error(JSON.stringify(errorStatus.data));
+		console.log(errorStatus.detail);
 	}
 
 	const handleSubmit = async () => {
@@ -68,7 +67,8 @@ export const SignIn = () => {
 				.catch((error) => console.error(error.detail));
 		} else {
 			login({
-				...values,
+				email: 'Vanthedev@gmail.com',
+				password: 'password',
 				isNew: false,
 			})
 				.unwrap()

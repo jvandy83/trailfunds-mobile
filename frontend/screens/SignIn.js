@@ -67,8 +67,7 @@ export const SignIn = () => {
 				.catch((error) => console.error(error.detail));
 		} else {
 			login({
-				email: 'Vanthedev@gmail.com',
-				password: 'password',
+				...values,
 				isNew: false,
 			})
 				.unwrap()

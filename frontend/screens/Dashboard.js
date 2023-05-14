@@ -51,7 +51,7 @@ export const Dashboard = ({ navigation }) => {
 		{
 			lat: location.latitude,
 			lon: location.longitude,
-			radius: 20,
+			radius: 50,
 			token: fetchPushToken(),
 		},
 		{
@@ -171,8 +171,8 @@ export const Dashboard = ({ navigation }) => {
 				if (backgroundStatus === 'granted') {
 					await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
 						accuracy: Location.Accuracy.Balanced,
-						timeInterval: 10000,
-						distanceInterval: 100,
+						// timeInterval: 10000,
+						distanceInterval: 50,
 					});
 				}
 			}

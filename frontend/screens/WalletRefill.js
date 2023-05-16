@@ -174,7 +174,7 @@ export const WalletRefill = ({ navigation }) => {
 		setReady(false);
 		Alert.alert(
 			'Your payment was successful',
-			'Thank you for being a local trail maintainer!',
+			'You can now donate to your favorite trails!',
 			[
 				{
 					text: 'OK',

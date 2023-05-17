@@ -14,7 +14,7 @@ const isProtectedRoute = (endpoint) =>
 	!unProtectedRoutesOrRefreshRoutes.includes(endpoint);
 
 const baseQuery = fetchBaseQuery({
-	baseUrl: 'baseUrl',
+	baseUrl: baseUrl,
 	prepareHeaders: async (headers, { getState, endpoint }) => {
 		const user = getState().auth.currentUser;
 		const accessToken = await fetchToken('accessToken');

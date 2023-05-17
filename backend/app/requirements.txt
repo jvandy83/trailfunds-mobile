@@ -19,3 +19,4 @@ urllib3==1.26.15
 webargs==8.2.0
 Werkzeug==2.2.3
 uvicorn==0.21.1
+exponent-server-sdk==2.0.0

@@ -6,8 +6,6 @@ from exponent_server_sdk import (
     PushTicketError,
 )
 
-from retry.api import retry_call
-
 import time
 
 from config import Settings
@@ -121,7 +119,6 @@ async def get_radius_to_determine_push_notification(
             # Encountered some Connection or HTTP error - retry a few times in
             # case it is transient.
             print(json.dumps({"token": token, "message": message}))
-            retry_call(send_notification, exceptions=Exception, tries=5)
 
         try:
             # We got a response back, but we don't know whether it's an error yet.
@@ -147,7 +144,6 @@ async def get_radius_to_determine_push_notification(
                     }
                 )
             )
-            retry_call(update_token_status, exceptions=Exception, tries=5)
 
         return trails
 

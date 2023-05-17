@@ -76,7 +76,7 @@ export const Trail = ({ route }) => {
 	}
 
 	if (error) {
-		console.error(JSON.parse(error.data));
+		console.error(error.detail);
 	}
 
 	const initialLocation = {

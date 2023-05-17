@@ -76,7 +76,7 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err.detail));
+				.catch((err) => console.error(err));
 		}
 	};
 

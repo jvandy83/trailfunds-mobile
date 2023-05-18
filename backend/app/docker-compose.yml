@@ -19,25 +19,27 @@ services:
       - .env
     depends_on:
       - db
-
+    ports:
+      - 5000:5000
     volumes:
       - .:/code/app
 
-  ngrok:
-    image: ngrok/ngrok:latest
-    restart: unless-stopped
-    links:
-      - api
-    command:
-      - 'start'
-      - '--all'
-      - '--config'
-      - '/etc/ngrok.yml'
-    ports:
-      - 4040:4040
-      - 443:443
-    volumes:
-      - ./ngrok.yml:/etc/ngrok.yml
+  # ngrok:
+  #   image: ngrok/ngrok:latest
+  #   restart: unless-stopped
+  #   links:
+  #     - api
+  #   command:
+  #     - 'start'
+  #     - '--all'
+  #     - '--config'
+  #     - '/etc/ngrok.yml'
+  #   ports:
+  #     - 4040:4040
+  #   environment:
+  #     NGROK_PORT: api:5000
+  #   volumes:
+  #     - ./ngrok.yml:/etc/ngrok.yml
 
 volumes:
   postgres:

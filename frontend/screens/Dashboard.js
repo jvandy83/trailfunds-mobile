@@ -21,17 +21,13 @@ import { fetchPushToken } from '../api/pushNotifications/usePushToken';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
-import {
-	setLocation,
-	setInitialLocation,
-} from '../reduxStore/features/location/locationSlice';
+import { setLocation } from '../reduxStore/features/location/locationSlice';
 
 import dashboard from '../styles/dashboardStyles';
 import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 
 import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 
-// const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
 const NOTIFICATION_TASK_NAME = 'BACKGROUND-NOTIFICATION-TASK';
 const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
 
@@ -51,7 +47,7 @@ export const Dashboard = ({ navigation }) => {
 		{
 			lat: location.latitude,
 			lon: location.longitude,
-			radius: 50,
+			radius: 20,
 			token: fetchPushToken(),
 		},
 		{
@@ -66,6 +62,7 @@ export const Dashboard = ({ navigation }) => {
 		({ data, error, executionInfo }) => {
 			if (error) {
 				// Error occurred - check `error.message` for more details.
+				console.error(error.message);
 				return;
 			}
 			if (data) {
@@ -79,6 +76,7 @@ export const Dashboard = ({ navigation }) => {
 		LOCATION_TASK_NAME,
 		({ data, error, executionInfo }) => {
 			if (error) {
+				console.error(error.message);
 				// Error occurred - check `error.message` for more details.
 				return;
 			}
@@ -172,7 +170,7 @@ export const Dashboard = ({ navigation }) => {
 					await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
 						accuracy: Location.Accuracy.Balanced,
 						// timeInterval: 10000,
-						distanceInterval: 50,
+						distanceInterval: 20,
 					});
 				}
 			}

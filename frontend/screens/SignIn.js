@@ -103,7 +103,8 @@ export const SignIn = () => {
 						fontSize: 30,
 						fontWeight: 'bold',
 						color: '#414d59',
-						top: Platform.OS === 'android' ? 375 : 515,
+						top: '54%',
+						// top: Platform.OS === 'android' ? 375 : 515,
 						right: 40,
 						zIndex: 800,
 						textShadowOffset: { width: 2, height: 2 },
@@ -121,11 +122,12 @@ export const SignIn = () => {
 				>
 					<Svg
 						style={{
-							transform: [
-								{
-									translateY: Platform.OS === 'android' ? 220 : 350,
-								},
-							],
+							// transform: [
+							// 	{
+							// 		translateY: Platform.OS === 'android' ? 220 : 350,
+							// 	},
+							// ],
+							marginTop: '28%',
 						}}
 						width={1024}
 						height={768}
@@ -136,7 +138,7 @@ export const SignIn = () => {
 								id='svg_1'
 								fill='white'
 								stroke='white'
-								d='m0,80q100,-130, 200,0t250,0l0,500l-500,0l0,-100l0,770l0,-700l0,-70l0,100l0,-80l0,30l0,-20l0,-20l0,-10z'
+								d='m0,80q100,-130, 200,0t250,0l0,5000l-500,0l0,-100l0,770l0,-700l0,-70l0,100l0,-80l0,30l0,-20l0,-20l0,-10z'
 							/>
 						</G>
 					</Svg>
@@ -145,7 +147,8 @@ export const SignIn = () => {
 							width: 200,
 							height: 350,
 							position: 'absolute',
-							top: Platform.OS === 'android' ? 120 : 240,
+							top: '20%',
+							// top: Platform.OS === 'android' ? 120 : 240,
 							left: 15,
 						}}
 					>
@@ -166,12 +169,11 @@ export const SignIn = () => {
 						width: '100%',
 						height: '50%',
 						bottom: -80,
-						bottom: Platform.OS === 'android' ? 0 : -120,
 					}}
 				>
 					{newUser && (
 						<View>
-							<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
+							<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
 								<TextInput
 									style={styles.loginInput}
 									placeholder='first name'
@@ -179,7 +181,7 @@ export const SignIn = () => {
 									onChangeText={(text) => handleChange(text, 'firstName')}
 								/>
 							</View>
-							<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
+							<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
 								<TextInput
 									style={styles.loginInput}
 									placeholder='last name'
@@ -189,7 +191,7 @@ export const SignIn = () => {
 							</View>
 						</View>
 					)}
-					<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
+					<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
 						<TextInput
 							style={styles.loginInput}
 							placeholder='E-mail'
@@ -198,7 +200,7 @@ export const SignIn = () => {
 							onChangeText={(text) => handleChange(text, 'email')}
 						/>
 					</View>
-					<View style={{ paddingVertical: 6, paddingHorizontal: 30 }}>
+					<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
 						<TextInput
 							style={styles.loginInput}
 							placeholder='Password'

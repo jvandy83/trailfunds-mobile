@@ -12,6 +12,8 @@ const unProtectedRoutesOrRefreshRoutes = [
 	'user/login',
 ];
 
+console.log('baseUrl: ', baseUrl);
+
 const isProtectedRoute = (endpoint) =>
 	!unProtectedRoutesOrRefreshRoutes.includes(endpoint);
 

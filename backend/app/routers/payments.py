@@ -149,7 +149,9 @@ async def get_current_balance(user: Annotated[User, Depends(get_auth)]):
 @router.get("/transactions")
 async def get_transactions(user: Annotated[User, Depends(get_auth)]):
     transactions_trail_orgs = await Transaction.find_many(
-        include={"trail": True, "trail_org": True}, where={"user_id": user["id"]}
+        order={"created_at": "desc"},
+        include={"trail": True, "trail_org": True},
+        where={"user_id": user["id"]},
     )
 
     return transactions_trail_orgs

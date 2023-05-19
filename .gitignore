@@ -27,6 +27,6 @@ node_modules/
 
 __pycache__
 
-postgres-data
+postgres*
 
 .vscode

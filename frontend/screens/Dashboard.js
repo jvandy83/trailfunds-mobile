@@ -82,7 +82,7 @@ export const Dashboard = ({ navigation }) => {
 			}
 			if (data) {
 				const { locations } = data;
-				console.log(locations);
+				console.log('***locations***: ', locations);
 				console.log('***executionInfo***: ', executionInfo);
 				const coords = locations[0].coords;
 				const userRegion = {
@@ -134,23 +134,6 @@ export const Dashboard = ({ navigation }) => {
 		})();
 	}, []);
 
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const { status: foregroundStatus } =
-	// 			await Location.requestForegroundPermissionsAsync();
-	// 		if (foregroundStatus === 'granted') {
-	// 			const { coords } = await Location.getCurrentPositionAsync();
-	// 			const userRegion = {
-	// 				latitude: coords.latitude,
-	// 				longitude: coords.longitude,
-	// 				latitudeDelta: 0.1,
-	// 				longitudeDelta: 0.1,
-	// 			};
-	// 			dispatch(setLocation(userRegion));
-	// 		}
-	// 	})();
-	// }, []);
-
 	useEffect(() => {
 		(async () => {
 			const { status: foregroundStatus } =
@@ -164,15 +147,21 @@ export const Dashboard = ({ navigation }) => {
 					longitudeDelta: 0.1,
 				};
 				dispatch(setLocation(userRegion));
-				const { status: backgroundStatus } =
-					await Location.requestBackgroundPermissionsAsync();
-				if (backgroundStatus === 'granted') {
-					await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-						accuracy: Location.Accuracy.Balanced,
-						// timeInterval: 10000,
-						distanceInterval: 20,
-					});
-				}
+				await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+					accuracy: Location.Accuracy.Balanced,
+					// timeInterval: 10000,
+					distanceInterval: 20,
+				});
+				// const { status: backgroundStatus } =
+				// 	await Location.requestBackgroundPermissionsAsync();
+				// if (backgroundStatus === 'granted') {
+				// 	await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+				// 		accuracy: Location.Accuracy.Balanced,
+				// 		// timeInterval: 10000,
+				// 		distanceInterval: 20,
+				// 	});
+				// 	console.log('Background permission is granted');
+				// }
 			}
 		})();
 	}, []);

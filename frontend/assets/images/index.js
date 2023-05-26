@@ -7,6 +7,7 @@ import appleIcon from './appleIcon.png';
 import profilePic from './profile-pic.png';
 import forrestService from './forrestService.png';
 import infoIcon from './infoIcon.png';
+import bwGreenhat from './bw_greenhat.jpg';
 
 export {
 	mountains,
@@ -18,4 +19,5 @@ export {
 	profilePic,
 	forrestService,
 	infoIcon,
+	bwGreenhat,
 };

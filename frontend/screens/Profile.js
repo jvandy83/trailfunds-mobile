@@ -5,71 +5,58 @@ import {
 	Image,
 	ScrollView,
 	TouchableOpacity,
-	Button,
 	Alert,
+	Button,
 } from 'react-native';
 
 import profile from '../styles/profileStyles';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
-import ProfilePic from '../assets/images/profile-pic.jpeg';
+import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { bwGreenhat } from '../assets/images';
+
+import { MaterialIcons } from '@expo/vector-icons';
 
 export const Profile = () => {
 	return (
 		<MainLayout styleProp={profile.background}>
-			<ScrollView showsVerticalScrollIndicator={false}>
-				<View>
-					<View style={profile.titleBar}>
-						<Ionicons
-							none='ios-arrow-back'
-							size={24}
-							color='#52575D'
-						></Ionicons>
-						<Ionicons none='md-more' size={24} color='#52575D'></Ionicons>
+			<View style={{ justifyContent: 'center', flex: 1 }}>
+				<View
+					style={{
+						alignItems: 'center',
+						position: 'relative',
+					}}
+				>
+					<View style={profile.profileImage}>
+						<Image
+							source={bwGreenhat}
+							style={profile.image}
+							resize='center'
+						></Image>
 					</View>
 
-					<View style={{ alignSelf: 'center' }}>
-						<View style={profile.profileImage}>
-							<Image
-								source={ProfilePic}
-								style={profile.image}
-								resize='center'
-							></Image>
-						</View>
-
-						<View style={profile.dm}>
-							<MaterialIcons
-								name='chat'
-								size={18}
-								color='#DFD8C8'
-							></MaterialIcons>
-						</View>
-
-						<View style={profile.active}></View>
-
-						<View style={profile.add}>
-							<Ionicons
-								name='ios-add'
-								size={48}
-								color='#DFD8C8'
-								style={{ marginTop: 6, marginLeft: 2 }}
-							></Ionicons>
-						</View>
-					</View>
-
-					<View style={profile.infoContainer}>
-						<Text style={[profile.text, { fontWeight: '300', fontSize: 36 }]}>
-							Hello
-						</Text>
-					</View>
-
-					<View style={profile.infoContainer}>
-						<Text style={[profile.text, { fontWeight: '200', fontSize: 36 }]}>
-							Maeve Hungerford
-						</Text>
+					<View
+						style={{
+							backgroundColor: '#41444B',
+							position: 'absolute',
+							top: 20,
+							width: 40,
+							height: 40,
+							borderRadius: 100,
+							alignItems: 'center',
+							justifyContent: 'center',
+							position: 'absolute',
+							top: 0,
+							left: 100,
+						}}
+					>
+						<MaterialIcons
+							name='chat'
+							size={18}
+							color='#DFD8C8'
+						></MaterialIcons>
 					</View>
 				</View>
 
@@ -89,43 +76,33 @@ export const Profile = () => {
 					</View>
 				</View>
 
-				<TouchableOpacity>
-					<View style={profile.paymentButton}>
-						<Button
-							style={profile.textUse}
-							title='Payment Info'
-							color='black'
-							onPress={() =>
-								Alert.alert('This button takes you to payment information')
-							}
-						/>
-					</View>
-				</TouchableOpacity>
+				<View style={{ alignItems: 'center' }}>
+					<PrimaryButton
+						style={profile.textUse}
+						text='Payment Info'
+						color='white'
+						onPress={() =>
+							Alert.alert('This button takes you to payment information')
+						}
+					/>
 
-				<TouchableOpacity>
-					<View style={profile.profileButton}>
-						<Button
-							title='Edit Profile'
-							color='black'
-							onPress={() =>
-								Alert.alert('This button takes you to edit your profile')
-							}
-						/>
-					</View>
-				</TouchableOpacity>
+					<PrimaryButton
+						text='Edit Profile'
+						color='white'
+						onPress={() =>
+							Alert.alert('This button takes you to edit your profile')
+						}
+					/>
 
-				<TouchableOpacity>
-					<View style={profile.learnButton}>
-						<Button
-							title='Learn More'
-							color='white'
-							onPress={() =>
-								Alert.alert('This button takes you to learn more about our app')
-							}
-						/>
-					</View>
-				</TouchableOpacity>
-			</ScrollView>
+					<SecondaryButton
+						text='Learn More'
+						color='white'
+						onPress={() =>
+							Alert.alert('This button takes you to learn more about our app')
+						}
+					/>
+				</View>
+			</View>
 		</MainLayout>
 	);
 };

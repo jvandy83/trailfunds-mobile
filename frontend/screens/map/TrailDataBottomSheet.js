@@ -97,7 +97,7 @@ export const TrailDataBottomSheet = ({
 		));
 	};
 
-	const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
+	const snapPoints = useMemo(() => ['10%', '50%', '75%'], []);
 
 	useEffect(() => {
 		bottomSheetModalRef.current?.present();
@@ -114,7 +114,7 @@ export const TrailDataBottomSheet = ({
 					onChange={handleSheetChanges}
 				>
 					<ScrollView style={{ flexGrow: 1 }}>
-						<View style={{ paddingTop: 40, paddingHorizontal: 30 }}>
+						<View style={{ paddingTop: 30, paddingHorizontal: 30 }}>
 							<Text
 								style={{
 									fontSize: 30,

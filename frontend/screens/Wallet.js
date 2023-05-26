@@ -76,7 +76,7 @@ export const Wallet = ({ navigation, route }) => {
 		bottomSheetModalRef.current?.present();
 	}, []);
 
-	const snapPoints = useMemo(() => ['5%', '30%', '60%']);
+	const snapPoints = useMemo(() => ['2%', '30%', '60%']);
 
 	if (error) {
 		console.error('error.data: ', error.data);
@@ -101,7 +101,7 @@ export const Wallet = ({ navigation, route }) => {
 			<View style={{ position: 'relative' }}>
 				<View
 					style={{
-						paddingTop: 180,
+						paddingTop: '30%',
 						width: '100%',
 						height: '100%',
 						alignItems: 'center',

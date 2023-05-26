@@ -76,7 +76,7 @@ export const Wallet = ({ navigation, route }) => {
 		bottomSheetModalRef.current?.present();
 	}, []);
 
-	const snapPoints = useMemo(() => ['25%', '30%', '60%']);
+	const snapPoints = useMemo(() => ['5%', '30%', '60%']);
 
 	if (error) {
 		console.error('error.data: ', error.data);

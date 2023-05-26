@@ -1,92 +1,41 @@
 # Trailfunds v1 Setup and Install
 
-- Inside of this folder, create a virtual environment
+## Start Services in development
 
-      python3 -m venv venv
+### Make sure Docker is installed on your machine
 
-- Activate your virtual environment
+- With Homebrew:
 
-      source venv/bin/activate.bash
+      brew install docker
 
-- Install dependencies
+- Or from Docker website for Mac:
+  https://docs.docker.com/desktop/install/mac-install/
 
-      pip install -r requirements.txt
+- Or from Docker website for Windows:
+  https://docs.docker.com/desktop/install/windows-install/
 
-## Set up tools
+- Start Docker server
 
-### Install ngrok
+### Start Backend Service
 
-- Go to: https://ngrok.com/download
-- The instructions are very clear on their website on what install you need for
-  your machine
-- After installation, add this token by pasting this command in your terminal
+First time (this will build AND run containers):
 
-      ngrok config add-authtoken 2NDKmkQupkdbIs3uGgruLnydtPd_6YvPhWJvHmFwpBB3jnzik
+      docker compose up --build
 
-- This will add a token to a .yaml file in your home directory
+### Run ngrok
 
-  Note: **_I have a paid account that let's us use a reserved endpoint. If you
-  use your own token then you won't be able to use the endpoint available in the
-  current iteration of Trailfunds_**
+      ngrok start dev --config ngrok.yml
 
-- This way, we don't have to use a randomly generated url every time we create
-  an **ngrok** tunnel
+## Stop Services
 
-- Start ngrok server
+To stop all conainers:
 
-      ngrok http --domain=trailfunds.ngrok.dev 5000
+      docker compose down
 
-### Install PostgreSQL
+Subsequent start ups, run:
 
-- If you have postgreSQL installed already, go to 'create username and password'
+      docker compose up
 
-- Open a new terminal and run
+Stop Ngrok server:
 
-      brew install postgresql@14
-
-- Start postgreSQL server
-
-      brew services start postgresql@14
-
-- If you want to the stop postgreSQL server
-
-      brew services stop postgresql@14
-
-- With your postgreSQL instance running on your local machine, create a username
-  and password
-
-- To access your postgreSQL instance in your terminal
-
-      psql postgres
-
-- Now you're inside the default DB 'postgres'
-- Create a username and password
-
-      CREATE USER <your-username> WITH PASSWORD <your-password>;
-
-- Create database
-
-      CREATE DATABASE trailfunds.db;
-
-### Prisma (database ORM)
-
-- Run your first Prisma migration
-
-  - First, create a new .env file
-
-        cp env .env
-
-  - Add your newly created username and password to the postgreSQL connection
-    string assigned to the DATABASE_URL key inside .env
-
-  - Run your migration
-
-        prisma db push
-
-  - This will run your schema.prisma file inside the schema folder and create
-    your postgreSQL tables and columns
-  - Run this command anytime you make changes to schema.prisma
-
-Run FastApi server
-
-      uvicorn main:app --reload --port 5000
+      ctl + c

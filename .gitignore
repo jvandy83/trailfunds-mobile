@@ -14,19 +14,10 @@ npm-debug.*
 *.orig.*
 web-build/
 
-# Expo
-.expo/
-*/.expo
-.expo/*
-
-# Node Modules
-node_modules/
+postgres*
+__pycache__
 
 # macOS
 .DS_Store
-
-__pycache__
-
-postgres*
 
 .vscode

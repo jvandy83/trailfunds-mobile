@@ -193,14 +193,17 @@ export const Dashboard = ({ navigation }) => {
 				</View>
 				<PrimaryButton
 					text='View Profile'
+					color='white'
 					onPress={() => navigation.navigate('Profile')}
 				/>
 				<PrimaryButton
 					text='My Wallet'
+					color='white'
 					onPress={() => navigation.navigate('Wallet')}
 				/>
 				<PrimaryButton
 					text='Recent Donations'
+					color='white'
 					//onPress={() => navigation.navigate("Donations")}
 				/>
 			</MainLayout>

@@ -19,8 +19,7 @@ export const About = ({ navigation }) => {
 		>
 			<View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
 				<Text style={{ textAlign: 'center', marginBottom: 40 }}>
-					This page will contain the information to contact TrailFunds and
-					general information about the organization.
+					This page will contain general information about Trailfunds.
 				</Text>
 				<PrimaryButton text={'test'} />
 				<StatusBar style='auto' />

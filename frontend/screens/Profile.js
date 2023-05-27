@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-	Text,
-	View,
-	Image,
-	ScrollView,
-	TouchableOpacity,
-	Alert,
-	Button,
-} from 'react-native';
+import { Text, View, Image, Alert } from 'react-native';
 
 import profile from '../styles/profileStyles';
 
@@ -17,8 +9,6 @@ import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 
 import { bwGreenhat } from '../assets/images';
 
-import { MaterialIcons } from '@expo/vector-icons';
-
 export const Profile = () => {
 	return (
 		<MainLayout styleProp={profile.background}>
@@ -26,52 +16,29 @@ export const Profile = () => {
 				<View
 					style={{
 						alignItems: 'center',
-						position: 'relative',
 					}}
 				>
-					<View style={profile.profileImage}>
-						<Image
-							source={bwGreenhat}
-							style={profile.image}
-							resize='center'
-						></Image>
-					</View>
-
-					<View
+					<Image
+						source={bwGreenhat}
 						style={{
-							backgroundColor: '#41444B',
-							position: 'absolute',
-							top: 20,
-							width: 40,
-							height: 40,
+							width: 200,
+							height: 200,
 							borderRadius: 100,
-							alignItems: 'center',
-							justifyContent: 'center',
-							position: 'absolute',
-							top: 0,
-							left: 100,
+							overflow: 'hidden',
 						}}
-					>
-						<MaterialIcons
-							name='chat'
-							size={18}
-							color='#DFD8C8'
-						></MaterialIcons>
-					</View>
+						resize='center'
+					></Image>
 				</View>
-
 				<View style={profile.statsContainer}>
-					<View
-						style={[
-							profile.statsBox,
-							{
-								borderColor: '#DFD8C8',
-								borderLeftWidth: 1,
-								borderRightWidth: 1,
-							},
-						]}
-					>
-						<Text style={[profile.text, { fontSize: 30 }]}>12</Text>
+					<View style={profile.statsBox}>
+						<Text
+							style={[
+								profile.text,
+								{ fontSize: 30, fontWeight: 'bold', paddingVertical: 8 },
+							]}
+						>
+							12
+						</Text>
 						<Text style={[profile.text, profile.subText]}>Donations Made</Text>
 					</View>
 				</View>

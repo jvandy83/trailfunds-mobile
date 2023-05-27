@@ -8,7 +8,7 @@ import { useGetUserQuery } from '../../services/api';
 
 import { PrimaryButton } from '../../styles/frontendStyles';
 
-import { profilePic } from '../../assets/images/profile-pic.png';
+import { bwGreenhat } from '../../assets/images';
 
 export const CustomDrawerContent = (props) => {
 	const dispatch = useDispatch();
@@ -29,11 +29,23 @@ export const CustomDrawerContent = (props) => {
 		<View style={styles.customContentContainer}>
 			<View style={styles.header}>
 				<View>
-					<Image
-						borderRadius={100}
-						style={styles.headerImage}
-						source={profilePic}
-					/>
+					<View
+						style={{
+							alignItems: 'center',
+							paddingTop: 40,
+						}}
+					>
+						<Image
+							source={bwGreenhat}
+							style={{
+								width: 150,
+								height: 150,
+								borderRadius: 100,
+								overflow: 'hidden',
+							}}
+							resize='center'
+						></Image>
+					</View>
 					<Text style={styles.headerText}>{data.firstName}</Text>
 				</View>
 			</View>
@@ -100,7 +112,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	header: {
-		paddingVertical: 50,
+		paddingVertical: 40,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#59C092',

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Text, View, Image, Alert } from 'react-native';
 
+import { useGetTransactionsQuery } from '../services/api';
+
 import profile from '../styles/profileStyles';
 
 import { MainLayout } from '../components/layout/MainLayout';
@@ -10,6 +12,18 @@ import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 import { bwGreenhat } from '../assets/images';
 
 export const Profile = () => {
+	const { data: transactionData, isLoading, error } = useGetTransactionsQuery();
+
+	if (isLoading) {
+		return <Text>Loading...</Text>;
+	}
+
+	if (error) {
+		console.error(error.detail);
+	}
+
+	console.log('transactionData: ', transactionData);
+
 	return (
 		<MainLayout styleProp={profile.background}>
 			<View style={{ justifyContent: 'center', flex: 1 }}>
@@ -37,7 +51,7 @@ export const Profile = () => {
 								{ fontSize: 30, fontWeight: 'bold', paddingVertical: 8 },
 							]}
 						>
-							12
+							{transactionData.length}
 						</Text>
 						<Text style={[profile.text, profile.subText]}>Donations Made</Text>
 					</View>

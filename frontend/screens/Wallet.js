@@ -76,7 +76,7 @@ export const Wallet = ({ navigation, route }) => {
 		bottomSheetModalRef.current?.present();
 	}, []);
 
-	const snapPoints = useMemo(() => ['2%', '30%', '60%']);
+	const snapPoints = useMemo(() => ['12%', '30%', '60%']);
 
 	if (error) {
 		console.error('error.data: ', error.data);
@@ -218,7 +218,8 @@ export const Wallet = ({ navigation, route }) => {
 const styles = StyleSheet.create({
 	contentContainer: {
 		paddingHorizontal: 30,
-		paddingVertical: 30,
+		paddingTop: 20,
+		paddingBottom: 30,
 	},
 	itemContainer: {
 		flexDirection: 'row',

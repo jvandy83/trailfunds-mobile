@@ -29,7 +29,7 @@ export const PaymentSuccess = ({ transactionId }) => {
 		bottomSheetModalRef.current?.present();
 	}, []);
 
-	const snapPoints = useMemo(() => ['5%', '30%', '60%']);
+	const snapPoints = useMemo(() => ['12%', '30%', '60%']);
 
 	useFocusEffect(() => bottomSheetModalRef.current?.present());
 

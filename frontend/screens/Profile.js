@@ -3,6 +3,8 @@ import { Text, View, Image, Alert } from 'react-native';
 
 import { useGetTransactionsQuery } from '../services/api';
 
+import { useNavigation } from '@react-navigation/native';
+
 import profile from '../styles/profileStyles';
 
 import { MainLayout } from '../components/layout/MainLayout';
@@ -12,6 +14,8 @@ import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 import { bwGreenhat } from '../assets/images';
 
 export const Profile = () => {
+	const { navigate } = useNavigation();
+
 	const { data: transactionData, isLoading, error } = useGetTransactionsQuery();
 
 	if (isLoading) {
@@ -21,8 +25,6 @@ export const Profile = () => {
 	if (error) {
 		console.error(error.detail);
 	}
-
-	console.log('transactionData: ', transactionData);
 
 	return (
 		<MainLayout styleProp={profile.background}>
@@ -78,9 +80,7 @@ export const Profile = () => {
 					<SecondaryButton
 						text='Learn More'
 						color='white'
-						onPress={() =>
-							Alert.alert('This button takes you to learn more about our app')
-						}
+						onPress={() => navigate('About')}
 					/>
 				</View>
 			</View>

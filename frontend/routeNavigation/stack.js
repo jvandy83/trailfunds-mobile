@@ -112,6 +112,7 @@ export const StackHome = () => {
 						<Stack.Screen name='Trail' component={Trail} />
 						<Stack.Screen name='Donate' component={Donate} />
 						<Stack.Screen name='PaymentSuccess' component={PaymentSuccess} />
+						<Stack.Screen name='About' component={About} />
 					</>
 				) : (
 					<>

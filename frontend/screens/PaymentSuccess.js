@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 export const PaymentSuccess = ({ transactionId }) => {
 	const bottomSheetModalRef = useRef(null);
 
-	const navigation = useNavigation();
+	const { navigate } = useNavigation();
 
 	const { data, isLoading, error } = useGetTransactionQuery(transactionId);
 
@@ -54,9 +54,7 @@ export const PaymentSuccess = ({ transactionId }) => {
 			</View>
 			<PrimaryButton
 				color='white'
-				onPress={() =>
-					navigation.navigate('Wallet', { fromScreen: 'PaymentSuccess' })
-				}
+				onPress={() => navigate('Wallet', { fromScreen: 'PaymentSuccess' })}
 				text='Done'
 			/>
 			<BottomSheetModalProvider>

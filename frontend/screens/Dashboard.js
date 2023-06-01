@@ -23,6 +23,8 @@ import { MainLayout } from '../components/layout/MainLayout';
 
 import { setLocation } from '../reduxStore/features/location/locationSlice';
 
+import { useNavigation } from '@react-navigation/native';
+
 import dashboard from '../styles/dashboardStyles';
 import { defaults, PrimaryButton } from '../styles/frontendStyles.js';
 
@@ -31,7 +33,9 @@ import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 const NOTIFICATION_TASK_NAME = 'BACKGROUND-NOTIFICATION-TASK';
 const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
 
-export const Dashboard = ({ navigation }) => {
+export const Dashboard = () => {
+	const navigation = useNavigation();
+
 	const notificationListener = useRef();
 	const responseListener = useRef();
 

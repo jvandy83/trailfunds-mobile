@@ -55,7 +55,7 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err.detail));
+				.catch((error) => console.error(error.detail));
 		} else {
 			login({
 				email: 'bryan@bryanwachs.com',
@@ -67,7 +67,7 @@ export const SignIn = () => {
 					saveToken('accessToken', accessToken);
 					dispatch(setAuth({ token: accessToken, currentUser }));
 				})
-				.catch((err) => console.error(err.detail));
+				.catch((error) => console.error(error.detail));
 		}
 	};
 

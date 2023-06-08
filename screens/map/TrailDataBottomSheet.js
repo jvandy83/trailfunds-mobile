@@ -57,6 +57,7 @@ export const TrailDataBottomSheet = ({
 				`${baseUrl}/trails/search-trails?query=${query}`,
 			);
 			setQueryData(res.data);
+			console.log('searched trails: ', res.data);
 			setLoadingTrails(false);
 		} catch (error) {
 			console.error(error);

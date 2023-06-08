@@ -2,10 +2,7 @@ import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { MainLayout } from '../components/layout/MainLayout';
 
-export const About = ({ navigation }) => {
-	navigateToScreen = () => {
-		navigation.navigate('First');
-	};
+export const About = () => {
 	return (
 		<MainLayout
 			styleProp={{

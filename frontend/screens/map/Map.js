@@ -17,12 +17,6 @@ import uuid from 'react-native-uuid';
 
 import { mapStyles } from '../../styles/mapStyles';
 
-// if you don't set your coordinates
-// in your ios/android simulator
-// to return your location from
-// Location.getCurrentPositionAsync
-// INITIAL_REGION will be used
-
 const INITIAL_REGION = {
 	latitude: 39.081311,
 	longitude: -108.55511,
@@ -36,8 +30,6 @@ export const Map = () => {
 	const mapRef = useRef(null);
 
 	const { location } = useSelector((state) => state.location);
-
-	console.log('***location inside map***: ', location);
 
 	const { data, error, isLoading } = useGetTrailsNearMeQuery({
 		lat: location.latitude,
@@ -91,8 +83,6 @@ export const Map = () => {
 	if (error) {
 		console.error(error.detail);
 	}
-
-	console.log('***data***: ', data);
 
 	return (
 		<View style={{ position: 'relative' }}>

@@ -22,8 +22,6 @@ export const Profile = () => {
 		console.error(error.detail);
 	}
 
-	console.log('transactionData: ', transactionData);
-
 	return (
 		<MainLayout styleProp={profile.background}>
 			<View style={{ justifyContent: 'center', flex: 1 }}>

@@ -82,8 +82,6 @@ export const Dashboard = ({ navigation }) => {
 			}
 			if (data) {
 				const { locations } = data;
-				console.log('***locations***: ', locations);
-				console.log('***executionInfo***: ', executionInfo);
 				const coords = locations[0].coords;
 				const userRegion = {
 					latitude: coords.latitude,
@@ -97,12 +95,10 @@ export const Dashboard = ({ navigation }) => {
 		},
 	);
 
-	// request permission to send notifications
 	useEffect(() => {
 		(async () => {
 			await registerForPushNotificationsAsync();
 
-			// notification recieved
 			notificationListener.current =
 				Notifications.addNotificationReceivedListener((notification) => {
 					console.log(
@@ -111,16 +107,9 @@ export const Dashboard = ({ navigation }) => {
 					);
 				});
 
-			// notification recieved and with action performed
 			responseListener.current =
 				Notifications.addNotificationResponseReceivedListener((response) => {
 					const trailId = response.notification.request.content.data.id;
-					// eventually add ability to let user
-					// set time offsets between notifications
-					// with Notification Catgories
-					// i.e "Dismiss notification for 24hrs, 1 week..."
-					// const notificationTime = Date.now(response.notification.date);
-					// setNotification(notification.request.content.data.id);
 
 					navigation.navigate('Trail', { trailId });
 				});
@@ -152,16 +141,6 @@ export const Dashboard = ({ navigation }) => {
 					// timeInterval: 10000,
 					distanceInterval: 20,
 				});
-				// const { status: backgroundStatus } =
-				// 	await Location.requestBackgroundPermissionsAsync();
-				// if (backgroundStatus === 'granted') {
-				// 	await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-				// 		accuracy: Location.Accuracy.Balanced,
-				// 		// timeInterval: 10000,
-				// 		distanceInterval: 20,
-				// 	});
-				// 	console.log('Background permission is granted');
-				// }
 			}
 		})();
 	}, []);
@@ -210,51 +189,3 @@ export const Dashboard = ({ navigation }) => {
 		</View>
 	);
 };
-
-/*
-
-***NOTIFICATION PAYLOAD***
-
-{
-	"date": 1683236545.8257608, 
-	"request": {
-		"content": {
-			"attachments": [], 
-			"badge": null, 
-			"body": "this is a test message", 
-			"categoryIdentifier": "", 
-			"data": {}, 
-			"launchImageName": "", 
-			"sound": null, 
-			"subtitle": null, 
-			"summaryArgument": null, 
-			"summaryArgumentCount": 0, 
-			"targetContentIdentifier": null, 
-			"threadIdentifier": "", 
-			"title": null
-		}, 
-		"identifier": "E6D71CC5-3899-4C46-AE9D-5A474CDA8EBD", 
-		"trigger": {
-			"class": "UNPushNotificationTrigger", 
-			"payload": {
-				"aps": {
-					"alert": {
-						"body": "this is a test message", 
-						"launch-image": "", 
-						"subtitle": "", 
-						"title": ""
-					}, 
-					"category": "", 
-					"thread-id": ""
-				}, 
-				"body": {}, 
-				"experienceId": "@vanthedev/TrailFundsApp", 
-				"projectId": "08397746-9845-4f6a-8f8b-575a44ae3772", 
-				"scopeKey": "@vanthedev/TrailFundsApp"
-			}, 
-			"type": "push"
-		}
-	}
-}
-
-*/

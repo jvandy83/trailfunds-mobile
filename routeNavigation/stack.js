@@ -80,7 +80,7 @@ export const Root = () => {
 		>
 			<Drawer.Screen name='Dashboard' component={Dashboard} />
 			<Drawer.Screen name='Wallet' component={Wallet} />
-			<Drawer.Screen name='TrailMap' component={Map} />
+			<Drawer.Screen name='Map' component={Map} />
 			<Drawer.Screen name='About' component={About} />
 			<Drawer.Screen name='Help' component={Template} />
 			<Drawer.Screen name='Profile' component={Profile} />

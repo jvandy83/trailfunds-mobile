@@ -89,20 +89,19 @@ export const Trail = ({ route }) => {
 	mapRef.current?.animateToRegion(initialLocation);
 
 	return (
-		<MainLayout styleProp={defaults.background}>
+		<>
 			{transactionId ? (
 				<PaymentSuccess transactionId={transactionId} />
 			) : (
 				<>
 					<View
 						style={{
-							width: 250,
-							height: 250,
-							borderRadius: 100,
+							width: '100%',
+							height: '50%',
 							marginBottom: 20,
 						}}
 					>
-						<View style={{ borderRadius: 100, overflow: 'hidden' }}>
+						<View style={{ overflow: 'hidden' }}>
 							<MapView
 								provider={MapView.PROVIDER_GOOGLE}
 								ref={mapRef}
@@ -131,7 +130,7 @@ export const Trail = ({ route }) => {
 							</MapView>
 						</View>
 					</View>
-					<View style={{ alignItems: 'center', width: '90%' }}>
+					<View style={{ alignItems: 'center', paddingHorizontal: 10 }}>
 						<Text
 							style={{
 								fontWeight: 'bold',
@@ -172,6 +171,6 @@ export const Trail = ({ route }) => {
 					</View>
 				</>
 			)}
-		</MainLayout>
+		</>
 	);
 };

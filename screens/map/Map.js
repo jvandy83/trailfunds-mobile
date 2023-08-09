@@ -43,8 +43,6 @@ export const Map = () => {
 
 	const navigation = useNavigation();
 
-	console.log('***location inside map***: ', location);
-
 	const { data, error, isLoading } = useGetTrailsNearMeQuery({
 		lat: location.latitude,
 		lon: location.longitude,

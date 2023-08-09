@@ -120,7 +120,7 @@ export function SecondaryButton({
 					paddingVertical: 14,
 					top: 0.5,
 					bottom: 0.5,
-					margin: 10,
+					margin: 5,
 					width: 223,
 					height: 48,
 					backgroundColor,

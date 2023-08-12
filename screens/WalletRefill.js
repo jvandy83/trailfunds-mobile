@@ -45,7 +45,7 @@ const currentAmounts = {
 };
 
 export const WalletRefill = ({ navigation }) => {
-	const { goBack } = useNavigation();
+	const { navigate } = useNavigation();
 
 	/* ----> LOCAL STATE <---- */
 
@@ -444,7 +444,7 @@ export const WalletRefill = ({ navigation }) => {
 							color='white'
 						/>
 						<SecondaryButton
-							onPress={() => goBack()}
+							onPress={() => navigate('Wallet')}
 							text='Go Back'
 							color='black'
 							backgroundColor='transparent'

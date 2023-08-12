@@ -22,7 +22,7 @@ import { logoBlack } from '../assets/images';
 //pages
 import {
 	Profile,
-	Dashboard,
+	Home,
 	Template,
 	About,
 	Wallet,
@@ -78,12 +78,15 @@ export const Root = () => {
 				},
 			})}
 		>
-			<Drawer.Screen name='Dashboard' component={Dashboard} />
+			<Drawer.Screen name='Home' component={Home} />
 			<Drawer.Screen name='Wallet' component={Wallet} />
+			<Stack.Screen name='Trail' component={Trail} />
+			<Drawer.Screen name='Add Funds' component={WalletRefill} />
 			<Drawer.Screen name='Map' component={Map} />
 			<Drawer.Screen name='About' component={About} />
 			<Drawer.Screen name='Help' component={Template} />
 			<Drawer.Screen name='Profile' component={Profile} />
+			<Stack.Screen name='Success' component={PaymentSuccess} />
 		</Drawer.Navigator>
 	);
 };
@@ -108,10 +111,9 @@ export const StackHome = () => {
 							name='Root'
 							component={Root}
 						/>
-						<Stack.Screen name='WalletRefill' component={WalletRefill} />
+						<Stack.Screen name='Add Funds' component={WalletRefill} />
 						<Stack.Screen name='Trail' component={Trail} />
 						<Stack.Screen name='Donate' component={Donate} />
-						<Stack.Screen name='PaymentSuccess' component={PaymentSuccess} />
 						<Stack.Screen name='About' component={About} />
 					</>
 				) : (

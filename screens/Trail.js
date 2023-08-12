@@ -14,13 +14,9 @@ import {
 	useDonateMutation,
 } from '../services/api';
 
-import { MainLayout } from '../components/layout/MainLayout';
-
 import { PaymentSuccess } from './PaymentSuccess';
 
 import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
-
-import { defaults } from '../styles/frontendStyles';
 
 import { mapStyles } from '../styles/mapStyles';
 
@@ -31,7 +27,7 @@ export const Trail = ({ route }) => {
 
 	const [transactionId, setTransactionId] = useState(null);
 
-	const { navigate, goBack } = useNavigation();
+	const { navigate } = useNavigation();
 
 	const {
 		data: userData,
@@ -67,6 +63,10 @@ export const Trail = ({ route }) => {
 		})();
 	}, []);
 
+	useEffect(() => {
+		navigate('Success', { transactionId });
+	}, [transactionId]);
+
 	if (isLoading) {
 		return (
 			<View>
@@ -90,87 +90,79 @@ export const Trail = ({ route }) => {
 
 	return (
 		<>
-			{transactionId ? (
-				<PaymentSuccess transactionId={transactionId} />
-			) : (
-				<>
-					<View
-						style={{
-							width: '100%',
-							height: '50%',
-							marginBottom: 20,
-						}}
+			<View
+				style={{
+					width: '100%',
+					height: '50%',
+					marginBottom: 20,
+				}}
+			>
+				<View style={{ overflow: 'hidden' }}>
+					<MapView
+						provider={MapView.PROVIDER_GOOGLE}
+						ref={mapRef}
+						style={mapStyles.map}
+						showsUserLocation={true}
+						// onRegionChangeComplete={setLocation}
+						initialRegion={initialLocation}
+						loadingEnabled={true}
+						loadingIndicatorColor='#666666'
+						loadingBackgroundColor='#eeeeee'
+						moveOnMarkerPress={false}
+						showsCompass={true}
+						showsPointsOfInterest={false}
+						customMapStyle={[
+							{ featureType: 'poi', stylers: [{ visibility: 'off' }] },
+							{ featureType: 'transit', stylers: [{ visibility: 'off' }] },
+						]}
 					>
-						<View style={{ overflow: 'hidden' }}>
-							<MapView
-								provider={MapView.PROVIDER_GOOGLE}
-								ref={mapRef}
-								style={mapStyles.map}
-								showsUserLocation={true}
-								// onRegionChangeComplete={setLocation}
-								initialRegion={initialLocation}
-								loadingEnabled={true}
-								loadingIndicatorColor='#666666'
-								loadingBackgroundColor='#eeeeee'
-								moveOnMarkerPress={false}
-								showsCompass={true}
-								showsPointsOfInterest={false}
-								customMapStyle={[
-									{ featureType: 'poi', stylers: [{ visibility: 'off' }] },
-									{ featureType: 'transit', stylers: [{ visibility: 'off' }] },
-								]}
-							>
-								<Marker
-									coordinate={{
-										latitude: data.trail.latitude,
-										longitude: data.trail.longitude,
-									}}
-									title={data.trail.name}
-								/>
-							</MapView>
-						</View>
-					</View>
-					<View style={{ alignItems: 'center', paddingHorizontal: 10 }}>
-						<Text
-							style={{
-								fontWeight: 'bold',
-								fontSize: 30,
-								paddingVertical: 20,
-								color: '#59C092',
-								textAlign: 'center',
+						<Marker
+							coordinate={{
+								latitude: data.trail.latitude,
+								longitude: data.trail.longitude,
 							}}
-						>
-							{data.trail.name}
-						</Text>
-						<Text>
-							<Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-								Trail Org:
-							</Text>
-							<Text style={{ fontSize: 16 }}> COPMOBA</Text>
-						</Text>
-					</View>
-					<View style={{ alignItems: 'center', marginTop: 30 }}>
-						<PrimaryButton
-							text='Donate $1'
-							color='white'
-							onPress={handleSubmitDollarDonation}
+							title={data.trail.name}
 						/>
-					</View>
-					<View style={{ alignItems: 'center' }}>
-						<SecondaryButton
-							text='Custom Amount'
-							color='white'
-							onPress={() => navigate('Donate', { trailId: data.trail.id })}
-						/>
-						<SecondaryButton
-							text='Go Back'
-							color='black'
-							backgroundColor='transparent'
-							onPress={() => goBack()}
-						/>
-					</View>
-				</>
-			)}
+					</MapView>
+				</View>
+			</View>
+			<View style={{ alignItems: 'center', paddingHorizontal: 10 }}>
+				<Text
+					style={{
+						fontWeight: 'bold',
+						fontSize: 30,
+						paddingVertical: 20,
+						color: '#59C092',
+						textAlign: 'center',
+					}}
+				>
+					{data.trail.name}
+				</Text>
+				<Text>
+					<Text style={{ fontWeight: 'bold', fontSize: 16 }}>Trail Org:</Text>
+					<Text style={{ fontSize: 16 }}> COPMOBA</Text>
+				</Text>
+			</View>
+			<View style={{ alignItems: 'center', marginTop: 30 }}>
+				<PrimaryButton
+					text='Donate $1'
+					color='white'
+					onPress={handleSubmitDollarDonation}
+				/>
+			</View>
+			<View style={{ alignItems: 'center' }}>
+				<SecondaryButton
+					text='Custom Amount'
+					color='white'
+					onPress={() => navigate('Donate', { trailId: data.trail.id })}
+				/>
+				<SecondaryButton
+					text='Go Back'
+					color='black'
+					backgroundColor='transparent'
+					onPress={() => navigate('Map')}
+				/>
+			</View>
 		</>
 	);
 };

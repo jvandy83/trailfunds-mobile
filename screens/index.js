@@ -1,4 +1,4 @@
-import { Dashboard } from './Dashboard';
+import { Home } from './Home';
 import { Wallet } from './Wallet';
 import { WalletRefill } from './WalletRefill';
 import { Profile } from './Profile';
@@ -11,7 +11,7 @@ import { PaymentSuccess } from './PaymentSuccess';
 import { Map } from './map/Map';
 
 export {
-	Dashboard,
+	Home,
 	Wallet,
 	WalletRefill,
 	Profile,

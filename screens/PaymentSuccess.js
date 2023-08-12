@@ -16,8 +16,10 @@ import { PrimaryButton } from '../styles/frontendStyles';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-export const PaymentSuccess = ({ transactionId }) => {
+export const PaymentSuccess = ({ route }) => {
 	const bottomSheetModalRef = useRef(null);
+
+	const { transactionId } = route.params;
 
 	const { navigate } = useNavigation();
 

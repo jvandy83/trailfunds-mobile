@@ -147,7 +147,7 @@ export const Wallet = ({ navigation, route }) => {
 						}}
 					>
 						<TouchableOpacity
-							onPress={() => navigation.navigate('WalletRefill')}
+							onPress={() => navigation.navigate('Add Funds')}
 							style={{
 								alignItems: 'center',
 								borderRadius: 100,

@@ -268,7 +268,7 @@ export const SignIn = () => {
 							<View style={{ marginTop: -20 }}>
 								<View
 									style={{
-										paddingVertical: '1.5%',
+										paddingVertical: '1%',
 										paddingHorizontal: 30,
 									}}
 								>
@@ -317,9 +317,7 @@ export const SignIn = () => {
 										onChangeText={(text) => handleChange(text, 'firstName')}
 									/>
 								</View>
-								<View
-									style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}
-								>
+								<View style={{ paddingVertical: '1%', paddingHorizontal: 30 }}>
 									<TextInput
 										style={{
 											...styles.loginInput,
@@ -335,7 +333,7 @@ export const SignIn = () => {
 								</View>
 							</View>
 						)}
-						<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
+						<View style={{ paddingVertical: '1%', paddingHorizontal: 30 }}>
 							<TextInput
 								style={{
 									...styles.loginInput,
@@ -348,7 +346,7 @@ export const SignIn = () => {
 								onChangeText={(text) => handleChange(text, 'email')}
 							/>
 						</View>
-						<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
+						<View style={{ paddingVertical: '1%', paddingHorizontal: 30 }}>
 							<TextInput
 								style={{
 									...styles.loginInput,
@@ -372,7 +370,9 @@ export const SignIn = () => {
 							/>
 							{newUser && (
 								<Pressable onPress={() => setNewUser(false)}>
-									<Text style={{ fontWeight: 'bold' }}>Log In</Text>
+									<Text style={{ fontWeight: 'bold', paddingTop: '1%' }}>
+										I already have an account
+									</Text>
 								</Pressable>
 							)}
 							{!newUser && (
@@ -390,7 +390,7 @@ export const SignIn = () => {
 											}}
 										>
 											<View style={{ alignItems: 'center' }}>
-												<Text>New User</Text>
+												<Text>Sign up</Text>
 											</View>
 										</Pressable>
 										<Pressable

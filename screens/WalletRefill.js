@@ -128,7 +128,7 @@ export const WalletRefill = ({ navigation }) => {
 							20: 0,
 							other: '',
 						});
-						navigation.goBack();
+						navigation.navigate('Wallet');
 					},
 				},
 			],

@@ -14,8 +14,6 @@ import {
 	useDonateMutation,
 } from '../services/api';
 
-import { PaymentSuccess } from './PaymentSuccess';
-
 import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 
 import { mapStyles } from '../styles/mapStyles';
@@ -64,7 +62,7 @@ export const Trail = ({ route }) => {
 	}, []);
 
 	useEffect(() => {
-		navigate('Success', { transactionId });
+		transactionId && navigate('Success', { transactionId });
 	}, [transactionId]);
 
 	if (isLoading) {

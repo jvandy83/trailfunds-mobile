@@ -24,7 +24,6 @@ export const CustomInputModal = React.forwardRef(
 				animationType='fade'
 				visible={showModal}
 				onRequestClose={() => {
-					Alert.alert('Modal has been closed.');
 					setShowModal(!showModal);
 				}}
 			>
@@ -32,16 +31,36 @@ export const CustomInputModal = React.forwardRef(
 					<View style={styles.centeredView}>
 						<View style={styles.modalView}>
 							<Text style={styles.modalText}>Enter a custom amount</Text>
-							<TextInput
-								ref={ref}
-								onChangeText={(value) =>
-									onSelectedAmount((prev) => ({
-										...prev,
-										customAmount: value,
-									}))
-								}
-								style={styles.input}
-							/>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									position: 'relative',
+								}}
+							>
+								<Text
+									style={{
+										position: 'absolute',
+										fontSize: 18,
+										top: 28,
+										right: 75,
+										fontWeight: '600',
+									}}
+								>
+									$
+								</Text>
+								<TextInput
+									ref={ref}
+									keyboardType='numeric'
+									onChangeText={(value) =>
+										onSelectedAmount((prev) => ({
+											...prev,
+											customAmount: value,
+										}))
+									}
+									style={styles.input}
+								/>
+							</View>
 							<Pressable
 								style={[styles.button, styles.buttonClose]}
 								onPress={handleInitiatePaymentIntent}
@@ -58,8 +77,8 @@ export const CustomInputModal = React.forwardRef(
 
 const styles = StyleSheet.create({
 	input: {
-		width: 50,
-		height: 44,
+		textAlign: 'center',
+		width: 70,
 		padding: 10,
 		marginTop: 20,
 		marginBottom: 10,

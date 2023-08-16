@@ -10,11 +10,11 @@ import {
 } from '../services/api';
 
 import { CustomInputModal } from '../components/modal/CustomInputModal';
-import { PaymentSuccess } from './PaymentSuccess';
 
 import { MainLayout } from '../components/layout/MainLayout';
 
 import { defaults, SecondaryButton } from '../styles/frontendStyles';
+import { formatCurrency } from '../utils/currencyFormatter';
 
 const preselectedInputs = {
 	5: 0,
@@ -64,6 +64,17 @@ export const Donate = ({ route }) => {
 	const [donate, { isSuccess, isLoading: isDonationLoading, isUninitialized }] =
 		useDonateMutation();
 
+	// helper function
+	//
+	const normalizeCurrency = () => {
+		const currency =
+			amount.customAmount > amount.selectAmount
+				? amount.customAmount
+				: amount.selectAmount;
+		const { parsedForUI, convertToPennies } = formatCurrency(currency);
+		return { parsedForUI, convertToPennies };
+	};
+
 	/* ----> EVENT HANDLERS <---- */
 	// modify local state to
 	// control transaction flow
@@ -74,7 +85,7 @@ export const Donate = ({ route }) => {
 		try {
 			const transId = await donate({
 				userId: userData.id,
-				amount: donationAmount,
+				amount: normalizeCurrency(donationAmount).convertToPennies,
 				trailId,
 			}).unwrap();
 			setTransactionId(transId);
@@ -159,11 +170,9 @@ export const Donate = ({ route }) => {
 								textShadowColor: 'rgba(0, 0, 0, 0.2)',
 								textShadowRadius: 10,
 							}}
-						>{`$${
-							amount.customAmount > amount.selectAmount
-								? amount.customAmount
-								: amount.selectAmount
-						}.00`}</Text>
+						>
+							{normalizeCurrency().parsedForUI}
+						</Text>
 					</View>
 
 					<View style={styles.donationTabs}>
@@ -259,11 +268,7 @@ export const Donate = ({ route }) => {
 					<View style={{ alignItems: 'center', marginTop: 30 }}>
 						<SecondaryButton
 							onPress={handleSubmitDonation}
-							text={`Donate $${
-								amount.customAmount > amount.selectAmount
-									? amount.customAmount
-									: amount.selectAmount
-							}`}
+							text={`Donate ${normalizeCurrency().parsedForUI}`}
 						/>
 					</View>
 					<View>

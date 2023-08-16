@@ -16,6 +16,8 @@ import { useAddTrailbucksMutation, useGetUserQuery } from '../services/api';
 
 import { baseUrl } from '../config';
 
+import { formatCurrency } from '../utils/currencyFormatter';
+
 import { CustomInputModal } from '../components/modal/CustomInputModal';
 
 import { MainLayout } from '../components/layout/MainLayout';
@@ -89,6 +91,20 @@ export const WalletRefill = ({ navigation }) => {
 
 	const { isPlatformPaySupported, confirmPlatformPayPayment } =
 		usePlatformPay();
+
+	// helper util function
+	// TODO:
+	// 	- move this function to util
+	// 		folder since it's being used
+	// 		in Donation screen
+	const normalizeCurrency = () => {
+		const currency =
+			amount.customAmount > amount.selectAmount
+				? amount.customAmount
+				: amount.selectAmount;
+		const { parsedForUI, convertToPennies } = formatCurrency(currency);
+		return { parsedForUI, convertToPennies };
+	};
 
 	const buyWithApplePay = async () => {
 		setReady(false);
@@ -320,11 +336,7 @@ export const WalletRefill = ({ navigation }) => {
 								textShadowColor: 'rgba(0, 0, 0, 0.2)',
 								textShadowRadius: 10,
 							}}
-						>{`$${
-							amount.customAmount > amount.selectAmount
-								? amount.customAmount
-								: amount.selectAmount
-						}.00`}</Text>
+						>{`${normalizeCurrency().parsedForUI}`}</Text>
 					</View>
 					<View style={{ flexDirection: 'row', paddingVertical: 10 }}>
 						<Text

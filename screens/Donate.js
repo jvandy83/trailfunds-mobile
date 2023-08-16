@@ -139,7 +139,13 @@ export const Donate = ({ route }) => {
 	}
 
 	return (
-		<MainLayout styleProp={defaults.background}>
+		<MainLayout
+			styleProp={{
+				width: '100%',
+				height: '100%',
+				alignItems: 'center',
+			}}
+		>
 			<View style={styles.paymentScreenContainer}>
 				<View
 					style={{
@@ -287,7 +293,7 @@ export const Donate = ({ route }) => {
 
 const styles = StyleSheet.create({
 	paymentScreenContainer: {
-		alignItems: 'center',
+		paddingTop: '20%',
 	},
 	payButton: {
 		borderRadius: 100,

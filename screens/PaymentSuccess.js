@@ -15,6 +15,7 @@ import { PrimaryButton } from '../styles/frontendStyles';
 
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { formatCurrency } from '../utils/currencyFormatter';
 
 export const PaymentSuccess = ({ route }) => {
 	const bottomSheetModalRef = useRef(null);
@@ -136,7 +137,7 @@ export const PaymentSuccess = ({ route }) => {
 							}}
 						>
 							<Text style={{ fontWeight: 'bold' }}>Donation Amount</Text>
-							<Text>{`$${data.amount / 100}.00`}</Text>
+							<Text>{`${formatCurrency(data.amount / 100).parsedForUI}`}</Text>
 						</View>
 						<View
 							style={{

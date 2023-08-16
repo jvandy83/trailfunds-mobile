@@ -14,6 +14,8 @@ import {
 
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
+import { formatCurrency } from '../utils/currencyFormatter';
+
 import {
 	BottomSheetModal,
 	BottomSheetModalProvider,
@@ -29,6 +31,8 @@ export const Wallet = ({ navigation, route }) => {
 	const { data, error, isLoading } = useGetCurrentBalanceQuery({
 		skip: !useIsFocused(),
 	});
+
+	console.log('TRAILBUCKS_DATA: ', data);
 
 	const {
 		data: transactionData,
@@ -63,7 +67,7 @@ export const Wallet = ({ navigation, route }) => {
 						color: '#59C092',
 					}}
 				>
-					{`$${item.amount}`}
+					{`${formatCurrency(item.amount / 100).parsedForUI}`}
 				</Text>
 			</View>
 		);
@@ -133,7 +137,7 @@ export const Wallet = ({ navigation, route }) => {
 								fontWeight: 'bold',
 							}}
 						>
-							{isLoading ? '' : `$${data}.00`}
+							{isLoading ? '' : `${formatCurrency(data).parsedForUI}`}
 						</Text>
 					</View>
 
@@ -147,7 +151,7 @@ export const Wallet = ({ navigation, route }) => {
 						}}
 					>
 						<TouchableOpacity
-							onPress={() => navigation.navigate('WalletRefill')}
+							onPress={() => navigation.navigate('Add Funds')}
 							style={{
 								alignItems: 'center',
 								borderRadius: 100,

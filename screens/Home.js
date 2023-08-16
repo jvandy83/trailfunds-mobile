@@ -33,7 +33,7 @@ import TrailFundsLogo from '../assets/images/TrailFundsLogo.png';
 const NOTIFICATION_TASK_NAME = 'BACKGROUND-NOTIFICATION-TASK';
 const LOCATION_TASK_NAME = 'BACKGROUND-LOCATION-TASK';
 
-export const Dashboard = () => {
+export const Home = () => {
 	const navigation = useNavigation();
 
 	const notificationListener = useRef();

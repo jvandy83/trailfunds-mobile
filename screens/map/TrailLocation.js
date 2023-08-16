@@ -1,9 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 
-import { useState } from 'react';
-
-import { useSelector } from 'react-redux';
-
 import { useGetDistanceFromMeQuery } from '../../services/api';
 
 export const TrailLocation = ({ trail, onPress, locationData }) => {

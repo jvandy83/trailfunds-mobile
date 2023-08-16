@@ -15,9 +15,12 @@ import { PrimaryButton } from '../styles/frontendStyles';
 
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { formatCurrency } from '../utils/currencyFormatter';
 
-export const PaymentSuccess = ({ transactionId }) => {
+export const PaymentSuccess = ({ route }) => {
 	const bottomSheetModalRef = useRef(null);
+
+	const { transactionId } = route.params;
 
 	const { navigate } = useNavigation();
 
@@ -49,7 +52,7 @@ export const PaymentSuccess = ({ transactionId }) => {
 			<Text style={styles.header}>Payment Successful</Text>
 			<Text style={styles.subHeader}>Thank you for your help!</Text>
 			<View style={styles.details}>
-				<Text style={styles.detailHeader}>Confirmation Number:</Text>
+				<Text style={styles.detailTitle}>Confirmation Number:</Text>
 				<Text style={styles.detailText}>{data.confirmation_number}</Text>
 			</View>
 			<PrimaryButton
@@ -134,7 +137,7 @@ export const PaymentSuccess = ({ transactionId }) => {
 							}}
 						>
 							<Text style={{ fontWeight: 'bold' }}>Donation Amount</Text>
-							<Text>{`$${data.amount}.00`}</Text>
+							<Text>{`${formatCurrency(data.amount / 100).parsedForUI}`}</Text>
 						</View>
 						<View
 							style={{
@@ -156,36 +159,29 @@ export const PaymentSuccess = ({ transactionId }) => {
 
 const styles = StyleSheet.create({
 	contentContainer: {
-		paddingVertical: 30,
-		paddingHorizontal: 30,
-	},
-	itemContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 10,
-		marginVertical: 10,
+		paddingVertical: '5%',
+		paddingHorizontal: '10%',
 	},
 	centeredView: {
-		paddingTop: 180,
+		paddingTop: '40%',
 		width: '100%',
 		height: '100%',
 		alignItems: 'center',
 		flexGrow: 1,
 	},
 	header: {
-		marginBottom: 15,
+		marginBottom: '5%',
 		fontSize: 32,
 		fontWeight: 'bold',
 	},
 	subHeader: {
-		marginBottom: 60,
+		marginBottom: '10%',
 		textAlign: 'center',
 		color: '#59C092',
 		fontWeight: '600',
 		fontSize: 18,
 	},
 	details: { alignItems: 'center' },
-	detailHeader: { fontWeight: 'bold', marginBottom: 8 },
-	detailText: { marginBottom: 15 },
+	detailTitle: { fontWeight: 'bold', marginBottom: '3%' },
+	detailText: { marginBottom: '5%' },
 });

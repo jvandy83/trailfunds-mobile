@@ -12,13 +12,18 @@ import {
 	Platform,
 	KeyboardAvoidingView,
 	Keyboard,
+	Alert,
 } from 'react-native';
 
 import { saveToken, setAuth } from '../reduxStore/features/auth/authSlice';
 
 import { Svg, Path, G } from 'react-native-svg';
 
+import uuid from 'react-native-uuid';
+
 import { useSignUpMutation, useLoginMutation } from '../services/api';
+
+import { useInputValidation } from '../hooks/useInputValidation';
 
 import { HideKeyboard } from '../components/hideKeyboard';
 
@@ -33,7 +38,14 @@ import {
 
 export const SignIn = () => {
 	const [newUser, setNewUser] = useState(false);
-	const [values, setValues] = useState({});
+	const [values, setValues] = useState({
+		firstName: '',
+		lastName: '',
+		email: '',
+		password: '',
+	});
+	const [errors, setErrors] = useState({});
+	const [serverSideErrors, setServerSideErrors] = useState([]);
 
 	const [keyboardIsShowing, setKeyboardIsShowing] = useState(false);
 
@@ -46,28 +58,76 @@ export const SignIn = () => {
 	const dispatch = useDispatch();
 
 	const handleSubmit = async () => {
+		const { errorResults } = useInputValidation(values);
+		console.log('new user: ', newUser);
+		console.log('errorResults: ', errorResults);
+		setErrors(errorResults);
 		if (newUser) {
+			for (let potentialError in errorResults) {
+				if (errorResults[potentialError].length > 0) {
+					return;
+				}
+			}
 			// calling unwrap makes the return
 			// value available ready immediately
 			signUp({ ...values, isNew: true })
 				.unwrap()
-				.then(({ currentUser, accessToken }) => {
-					saveToken('accessToken', accessToken);
-					dispatch(setAuth({ token: accessToken, currentUser }));
+				.then((res) => {
+					if (res.status_code >= 200 && res.status_code < 400) {
+						console.log('res success signin: ', res);
+						const { currentUser, accessToken } = res;
+						saveToken('accessToken', accessToken);
+						dispatch(setAuth({ token: accessToken, currentUser }));
+					} else {
+						console.log('res inside signup error: ', res);
+						const { error } = res;
+						const errorSet = new Set();
+						// check to see if same error message is added if
+						// a user hits submit multiple times
+						// without changing form values
+						errorSet.add(error.message);
+						setServerSideErrors(Array.from(errorSet));
+					}
 				})
-				.catch((error) => console.error(error.detail));
+				.catch((error) => {
+					//	error = {"data": {"detail": "Not authenticated"}, "status": 401}
+					const { data } = error;
+					console.log(data);
+					setServerSideErrors([data?.detail || 'Something went wrong']);
+				});
 		} else {
-			login({
-				email: 'bryan@bryanwachs.com',
-				password: '1234',
-				isNew: false,
-			})
+			if (
+				errorResults['email'].length > 0 ||
+				errorResults['password'].length > 0
+			) {
+				return;
+			}
+			login({ ...values, isNew: false })
+				// login({ ...values, isNew: false })
 				.unwrap()
-				.then(({ currentUser, accessToken }) => {
-					saveToken('accessToken', accessToken);
-					dispatch(setAuth({ token: accessToken, currentUser }));
+				.then((res) => {
+					if (res.status_code >= 200 && res.status_code < 400) {
+						console.log('res success login: ', res);
+						const { currentUser, accessToken } = res;
+						saveToken('accessToken', accessToken);
+						dispatch(setAuth({ token: accessToken, currentUser }));
+					} else {
+						console.log('res inside login error: ', res);
+						const { error } = res;
+						console.log('error inside else block: ', error);
+						const errorSet = new Set();
+						// check to see if same error message is added if
+						// a user hits submit multiple times
+						// without changing form values
+						errorSet.add(error.message);
+						setServerSideErrors(Array.from(errorSet));
+					}
 				})
-				.catch((error) => console.error(error.detail));
+				.catch((error) => {
+					const { data } = error;
+					console.log('error inside catch block: ', data);
+					setServerSideErrors([data?.detail || 'Something went wrong']);
+				});
 		}
 	};
 
@@ -202,29 +262,71 @@ export const SignIn = () => {
 							zIndex: 500,
 							width: '100%',
 							height: '50%',
-							bottom: -80,
+							bottom: -60,
 						}}
 					>
 						{newUser && (
-							<View>
+							<View style={{ marginTop: -20 }}>
 								<View
 									style={{
-										paddingVertical: '1.5%',
+										paddingVertical: '1%',
 										paddingHorizontal: 30,
 									}}
 								>
+									<View
+										style={{
+											paddingBottom: 8,
+											paddingLeft: 8,
+										}}
+									>
+										<Text>
+											{values.password?.length > 1 &&
+												errors.password &&
+												errors.password?.map((e) => (
+													<View>
+														<Text
+															key={uuid.v4()}
+															style={{ color: '#f67172', fontWeight: 'bold' }}
+														>
+															{e}
+														</Text>
+													</View>
+												))}
+										</Text>
+										<Text>
+											{serverSideErrors.length > 0 &&
+												serverSideErrors?.map((e) => (
+													<Text
+														key={uuid.v4()}
+														style={{ color: '#f67172', fontWeight: 'bold' }}
+													>
+														{e}
+													</Text>
+												))}
+										</Text>
+									</View>
 									<TextInput
-										style={styles.loginInput}
+										style={{
+											...styles.loginInput,
+											borderColor:
+												errors['first name']?.length > 0
+													? '#f67172'
+													: 'rgba(0, 0, 0, 0.2)',
+										}}
 										placeholder='first name'
 										value={values.firstName || ''}
 										onChangeText={(text) => handleChange(text, 'firstName')}
 									/>
 								</View>
-								<View
-									style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}
-								>
+								<View style={{ paddingVertical: '1%', paddingHorizontal: 30 }}>
 									<TextInput
-										style={styles.loginInput}
+										style={{
+											...styles.loginInput,
+											borderColor:
+												errors['last name']?.length > 0
+													? '#f67172'
+													: 'rgba(0, 0, 0, 0.2)',
+										}}
 										placeholder='last name'
 										value={values.lastName || ''}
 										onChangeText={(text) => handleChange(text, 'lastName')}
@@ -232,18 +334,28 @@ export const SignIn = () => {
 								</View>
 							</View>
 						)}
-						<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
+						<View style={{ paddingVertical: '1%', paddingHorizontal: 30 }}>
 							<TextInput
-								style={styles.loginInput}
+								style={{
+									...styles.loginInput,
+									borderColor:
+										errors.email?.length > 0 ? '#f67172' : 'rgba(0, 0, 0, 0.2)',
+								}}
 								placeholder='E-mail'
 								value={values.email || ''}
 								autoComplete='email'
 								onChangeText={(text) => handleChange(text, 'email')}
 							/>
 						</View>
-						<View style={{ paddingVertical: '1.5%', paddingHorizontal: 30 }}>
+						<View style={{ paddingVertical: '1%', paddingHorizontal: 30 }}>
 							<TextInput
-								style={styles.loginInput}
+								style={{
+									...styles.loginInput,
+									borderColor:
+										errors.password?.length > 0
+											? '#f67172'
+											: 'rgba(0, 0, 0, 0.2)',
+								}}
 								placeholder='Password'
 								value={values.password || ''}
 								autoComplete='password-new'
@@ -259,7 +371,9 @@ export const SignIn = () => {
 							/>
 							{newUser && (
 								<Pressable onPress={() => setNewUser(false)}>
-									<Text style={{ fontWeight: 'bold' }}>Log In</Text>
+									<Text style={{ fontWeight: 'bold', paddingTop: '1%' }}>
+										I already have an account
+									</Text>
 								</Pressable>
 							)}
 							{!newUser && (
@@ -277,7 +391,7 @@ export const SignIn = () => {
 											}}
 										>
 											<View style={{ alignItems: 'center' }}>
-												<Text>New User</Text>
+												<Text>Sign up</Text>
 											</View>
 										</Pressable>
 										<Pressable

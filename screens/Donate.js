@@ -68,9 +68,7 @@ export const Donate = ({ route }) => {
 	//
 	const normalizeCurrency = () => {
 		const currency =
-			amount.customAmount > amount.selectAmount
-				? amount.customAmount
-				: amount.selectAmount;
+			amount.customAmount > 0 ? amount.customAmount : amount.selectAmount;
 		const { parsedForUI, convertToPennies } = formatCurrency(currency);
 		return { parsedForUI, convertToPennies };
 	};
@@ -81,7 +79,7 @@ export const Donate = ({ route }) => {
 
 	const handleSubmitDonation = async () => {
 		const donationAmount =
-			amount.customAmount > 5 ? amount.customAmount : amount.selectAmount;
+			amount.customAmount > 0 ? amount.customAmount : amount.selectAmount;
 		try {
 			const transId = await donate({
 				userId: userData.id,

@@ -256,6 +256,17 @@ export const SignIn = () => {
 							bottom: -60,
 						}}
 					>
+						<Text style={{ paddingLeft: '10%', paddingBottom: '1%' }}>
+							{serverSideErrors.length > 0 &&
+								serverSideErrors?.map((e) => (
+									<Text
+										key={uuid.v4()}
+										style={{ color: '#f67172', fontWeight: 'bold' }}
+									>
+										{e}
+									</Text>
+								))}
+						</Text>
 						{newUser && (
 							<View style={{ marginTop: -20 }}>
 								<View
@@ -282,17 +293,6 @@ export const SignIn = () => {
 															{e}
 														</Text>
 													</View>
-												))}
-										</Text>
-										<Text>
-											{serverSideErrors.length > 0 &&
-												serverSideErrors?.map((e) => (
-													<Text
-														key={uuid.v4()}
-														style={{ color: '#f67172', fontWeight: 'bold' }}
-													>
-														{e}
-													</Text>
 												))}
 										</Text>
 									</View>

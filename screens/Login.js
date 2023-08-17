@@ -36,7 +36,7 @@ import {
 	appleIcon,
 } from '../assets/images';
 
-export const SignIn = () => {
+export const Login = () => {
 	const [newUser, setNewUser] = useState(false);
 	const [values, setValues] = useState({
 		firstName: '',
@@ -56,6 +56,12 @@ export const SignIn = () => {
 		useLoginMutation();
 
 	const dispatch = useDispatch();
+
+	const clearInputs = () => {
+		setErrors({});
+		setServerSideErrors([]);
+		setValues({ firstName: '', lastName: '', email: '', password: '' });
+	};
 
 	const handleSubmit = async () => {
 		const { errorResults } = useInputValidation(values);
@@ -256,7 +262,7 @@ export const SignIn = () => {
 							bottom: -60,
 						}}
 					>
-						<Text style={{ paddingLeft: '10%', paddingBottom: '1%' }}>
+						<Text style={{ paddingBottom: '1%', paddingLeft: '10%' }}>
 							{serverSideErrors.length > 0 &&
 								serverSideErrors?.map((e) => (
 									<Text
@@ -275,27 +281,20 @@ export const SignIn = () => {
 										paddingHorizontal: 30,
 									}}
 								>
-									<View
-										style={{
-											paddingBottom: 8,
-											paddingLeft: 8,
-										}}
-									>
-										<Text>
-											{values.password?.length > 1 &&
-												errors.password &&
-												errors.password?.map((e) => (
-													<View>
-														<Text
-															key={uuid.v4()}
-															style={{ color: '#f67172', fontWeight: 'bold' }}
-														>
-															{e}
-														</Text>
-													</View>
-												))}
-										</Text>
-									</View>
+									<Text>
+										{values.password?.length > 1 &&
+											errors.password &&
+											errors.password?.map((e) => (
+												<View>
+													<Text
+														key={uuid.v4()}
+														style={{ color: '#f67172', fontWeight: 'bold' }}
+													>
+														{e}
+													</Text>
+												</View>
+											))}
+									</Text>
 									<TextInput
 										style={{
 											...styles.loginInput,
@@ -361,7 +360,12 @@ export const SignIn = () => {
 								color='white'
 							/>
 							{newUser && (
-								<Pressable onPress={() => setNewUser(false)}>
+								<Pressable
+									onPress={() => {
+										setNewUser(false);
+										clearInputs();
+									}}
+								>
 									<Text style={{ fontWeight: 'bold', paddingTop: '1%' }}>
 										I already have an account
 									</Text>
@@ -371,7 +375,10 @@ export const SignIn = () => {
 								<View style={{ alignItems: 'center' }}>
 									<View style={{ flexDirection: 'row' }}>
 										<Pressable
-											onPress={() => setNewUser(true)}
+											onPress={() => {
+												clearInputs();
+												setNewUser(true);
+											}}
 											style={{
 												borderRadius: 100,
 												paddingVertical: 10,

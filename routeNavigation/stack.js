@@ -27,7 +27,7 @@ import {
 	About,
 	Wallet,
 	WalletRefill,
-	SignIn,
+	Login,
 	Map,
 	Trail,
 	Donate,
@@ -118,7 +118,7 @@ export const StackHome = () => {
 					</>
 				) : (
 					<>
-						<Stack.Screen name='Login' component={SignIn} />
+						<Stack.Screen name='Login' component={Login} />
 					</>
 				)}
 			</Stack.Navigator>

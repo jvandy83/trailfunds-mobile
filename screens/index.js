@@ -2,7 +2,7 @@ import { Home } from './Home';
 import { Wallet } from './Wallet';
 import { WalletRefill } from './WalletRefill';
 import { Profile } from './Profile';
-import { SignIn } from './SignIn';
+import { Login } from './Login';
 import { Template } from './Template';
 import { About } from './About';
 import { Trail } from './Trail';
@@ -15,7 +15,7 @@ export {
 	Wallet,
 	WalletRefill,
 	Profile,
-	SignIn,
+	Login,
 	Template,
 	About,
 	Trail,

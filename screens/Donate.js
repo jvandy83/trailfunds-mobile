@@ -279,7 +279,7 @@ export const Donate = ({ route }) => {
 						<SecondaryButton
 							backgroundColor='transparent'
 							color='black'
-							onPress={() => goBack()}
+							onPress={() => navigate('Trail', { trailId })}
 							text='Go Back'
 						/>
 					</View>

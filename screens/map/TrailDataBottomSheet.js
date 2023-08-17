@@ -14,6 +14,7 @@ import {
 	Pressable,
 	ScrollView,
 	SafeAreaView,
+	ActivityIndicator,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -42,6 +43,8 @@ export const TrailDataBottomSheet = ({
 	// ref
 	const bottomSheetModalRef = useRef(null);
 
+	const [searchTerm, setSearchTerm] = useState('');
+
 	const [queryData, setQueryData] = useState([]);
 
 	const [loadingTrails, setLoadingTrails] = useState(false);
@@ -49,23 +52,6 @@ export const TrailDataBottomSheet = ({
 	const [selectedRadiusValue, setSelectedRadiusValue] = useState(radius);
 
 	const { navigate } = useNavigation();
-
-	const searchTrails = async (query) => {
-		setLoadingTrails(true);
-		try {
-			const res = await axios.get(
-				`${baseUrl}/trails/search-trails?query=${query}`,
-			);
-			setQueryData(res.data);
-			setLoadingTrails(false);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const handleSearchQuery = (query) => {
-		searchTrails(query);
-	};
 
 	const handleSheetChanges = useCallback((index) => {
 		// this keeps modal from closing all the way
@@ -100,6 +86,20 @@ export const TrailDataBottomSheet = ({
 	const snapPoints = useMemo(() => ['18%', '50%', '75%'], []);
 
 	useEffect(() => {
+		setLoadingTrails(true);
+		const debounceSearchFn = setTimeout(() => {
+			axios
+				.get(`${baseUrl}/trails/search-trails?query=${searchTerm}`)
+				.then((res) => {
+					setQueryData(res.data);
+					setLoadingTrails(false);
+				})
+				.catch((error) => console.error(error));
+		}, 1100);
+		return () => clearTimeout(debounceSearchFn);
+	}, [searchTerm]);
+
+	useEffect(() => {
 		bottomSheetModalRef.current?.present();
 	}, []);
 
@@ -132,7 +132,7 @@ export const TrailDataBottomSheet = ({
 							</Text>
 							<TextInput
 								placeholder='Search'
-								onChangeText={(text) => handleSearchQuery(text)}
+								onChangeText={(text) => setSearchTerm(text)}
 								style={{
 									marginVertical: 15,
 									paddingVertical: 10,
@@ -144,7 +144,7 @@ export const TrailDataBottomSheet = ({
 							/>
 							<View>
 								{loadingTrails ? (
-									<Text>Loading...</Text>
+									<ActivityIndicator color='fff' />
 								) : (
 									queryData.trails?.map(renderTrails)
 								)}

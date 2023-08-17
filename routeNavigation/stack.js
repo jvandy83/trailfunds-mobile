@@ -27,7 +27,7 @@ import {
 	About,
 	Wallet,
 	WalletRefill,
-	SignIn,
+	Login,
 	Map,
 	Trail,
 	Donate,
@@ -87,6 +87,7 @@ export const Root = () => {
 			<Drawer.Screen name='Help' component={Template} />
 			<Drawer.Screen name='Profile' component={Profile} />
 			<Stack.Screen name='Success' component={PaymentSuccess} />
+			<Stack.Screen name='Donate' component={Donate} />
 		</Drawer.Navigator>
 	);
 };
@@ -118,7 +119,7 @@ export const StackHome = () => {
 					</>
 				) : (
 					<>
-						<Stack.Screen name='Login' component={SignIn} />
+						<Stack.Screen name='Login' component={Login} />
 					</>
 				)}
 			</Stack.Navigator>

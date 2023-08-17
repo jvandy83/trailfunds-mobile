@@ -59,8 +59,6 @@ export const SignIn = () => {
 
 	const handleSubmit = async () => {
 		const { errorResults } = useInputValidation(values);
-		console.log('new user: ', newUser);
-		console.log('errorResults: ', errorResults);
 		setErrors(errorResults);
 		if (newUser) {
 			for (let potentialError in errorResults) {
@@ -74,12 +72,10 @@ export const SignIn = () => {
 				.unwrap()
 				.then((res) => {
 					if (res.status_code >= 200 && res.status_code < 400) {
-						console.log('res success signin: ', res);
 						const { currentUser, accessToken } = res;
 						saveToken('accessToken', accessToken);
 						dispatch(setAuth({ token: accessToken, currentUser }));
 					} else {
-						console.log('res inside signup error: ', res);
 						const { error } = res;
 						const errorSet = new Set();
 						// check to see if same error message is added if
@@ -92,7 +88,6 @@ export const SignIn = () => {
 				.catch((error) => {
 					//	error = {"data": {"detail": "Not authenticated"}, "status": 401}
 					const { data } = error;
-					console.log(data);
 					setServerSideErrors([data?.detail || 'Something went wrong']);
 				});
 		} else {
@@ -107,14 +102,11 @@ export const SignIn = () => {
 				.unwrap()
 				.then((res) => {
 					if (res.status_code >= 200 && res.status_code < 400) {
-						console.log('res success login: ', res);
 						const { currentUser, accessToken } = res;
 						saveToken('accessToken', accessToken);
 						dispatch(setAuth({ token: accessToken, currentUser }));
 					} else {
-						console.log('res inside login error: ', res);
 						const { error } = res;
-						console.log('error inside else block: ', error);
 						const errorSet = new Set();
 						// check to see if same error message is added if
 						// a user hits submit multiple times
@@ -125,7 +117,6 @@ export const SignIn = () => {
 				})
 				.catch((error) => {
 					const { data } = error;
-					console.log('error inside catch block: ', data);
 					setServerSideErrors([data?.detail || 'Something went wrong']);
 				});
 		}

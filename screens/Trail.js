@@ -41,7 +41,9 @@ export const Trail = ({ route }) => {
 		try {
 			const transId = await donate({
 				userId: userData.id,
-				amount: 1,
+				// amount must be converted
+				// to pennies for Stripe
+				amount: 100,
 				trailId,
 			}).unwrap();
 			setTransactionId(transId);

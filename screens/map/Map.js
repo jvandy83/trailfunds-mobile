@@ -106,8 +106,6 @@ export const Map = () => {
 		console.error(error.detail);
 	}
 
-	console.log('***data***: ', data);
-
 	return (
 		<View style={{ position: 'relative' }}>
 			<MapView

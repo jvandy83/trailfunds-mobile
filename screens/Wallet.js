@@ -32,8 +32,6 @@ export const Wallet = ({ navigation, route }) => {
 		skip: !useIsFocused(),
 	});
 
-	console.log('TRAILBUCKS_DATA: ', data);
-
 	const {
 		data: transactionData,
 		error: transactionError,

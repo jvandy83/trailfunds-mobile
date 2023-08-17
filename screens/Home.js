@@ -86,8 +86,6 @@ export const Home = () => {
 			}
 			if (data) {
 				const { locations } = data;
-				console.log('***locations***: ', locations);
-				console.log('***executionInfo***: ', executionInfo);
 				const coords = locations[0].coords;
 				const userRegion = {
 					latitude: coords.latitude,

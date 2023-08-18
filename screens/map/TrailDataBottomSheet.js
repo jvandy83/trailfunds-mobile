@@ -14,6 +14,7 @@ import {
 	Pressable,
 	ScrollView,
 	SafeAreaView,
+	ActivityIndicator,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -43,6 +44,8 @@ export const TrailDataBottomSheet = ({
 	const bottomSheetModalRef = useRef(null);
 
 	const [queryData, setQueryData] = useState([]);
+
+	const [searchItem, setSearchItem] = useState('');
 
 	const [loadingTrails, setLoadingTrails] = useState(false);
 
@@ -103,6 +106,20 @@ export const TrailDataBottomSheet = ({
 		bottomSheetModalRef.current?.present();
 	}, []);
 
+	useEffect(() => {
+		setLoadingTrails(true);
+		const delaySearchFn = setTimeout(() => {
+			axios
+				.get(`${baseUrl}/trails/search-trails?query=${searchItem}`)
+				.then((res) => {
+					setQueryData(res.data);
+					setLoadingTrails(false);
+				})
+				.catch((error) => console.error(error));
+		}, 1100);
+		return () => clearTimeout(delaySearchFn);
+	}, [searchItem]);
+
 	// renders
 	return (
 		<BottomSheetModalProvider>
@@ -132,7 +149,7 @@ export const TrailDataBottomSheet = ({
 							</Text>
 							<TextInput
 								placeholder='Search'
-								onChangeText={(text) => handleSearchQuery(text)}
+								onChangeText={(text) => setSearchItem(text)}
 								style={{
 									marginVertical: 15,
 									paddingVertical: 10,
@@ -144,7 +161,7 @@ export const TrailDataBottomSheet = ({
 							/>
 							<View>
 								{loadingTrails ? (
-									<Text>Loading...</Text>
+									<ActivityIndicator />
 								) : (
 									queryData.trails?.map(renderTrails)
 								)}

@@ -4,6 +4,7 @@
 		"slug": "TrailFundsApp",
 		"version": "1.0.0",
 		"orientation": "portrait",
+		"scheme": "trailfunds",
 		"icon": "./assets/images/tfLogo.png",
 		"userInterfaceStyle": "light",
 		"splash": {

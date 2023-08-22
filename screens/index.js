@@ -8,6 +8,8 @@ import { About } from './About';
 import { Trail } from './Trail';
 import { Donate } from './Donate';
 import { PaymentSuccess } from './PaymentSuccess';
+import { CheckoutSuccess } from './CheckoutSuccess';
+import { Subscription } from './Subscription';
 import { Map } from './map/Map';
 
 export {
@@ -22,4 +24,6 @@ export {
 	Map,
 	Donate,
 	PaymentSuccess,
+	CheckoutSuccess,
+	Subscription
 };

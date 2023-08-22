@@ -157,6 +157,12 @@ export const Trail = ({ route }) => {
 					onPress={() => navigate('Donate', { trailId: data.trail.id })}
 				/>
 				<SecondaryButton
+					text='Create Subscription'
+					color='black'
+					backgroundColor='#D2B48C'
+					onPress={() => navigate('Subscription', { trailId: data.trail.id })}
+				/>
+				<SecondaryButton
 					text='Go Back'
 					color='black'
 					backgroundColor='transparent'

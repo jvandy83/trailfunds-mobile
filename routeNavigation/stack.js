@@ -11,6 +11,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useWindowDimensions } from 'react-native';
 
+import * as Linking from 'expo-linking';
+
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { faNavicon } from '@fortawesome/free-solid-svg-icons';
@@ -32,9 +34,13 @@ import {
 	Trail,
 	Donate,
 	PaymentSuccess,
+	CheckoutSuccess,
+	Subscription,
 } from '../screens';
 
 import { CustomDrawerContent } from '../components/drawer/DrawerContent';
+
+const prefix = Linking.createURL('/');
 
 const Drawer = createDrawerNavigator();
 
@@ -52,7 +58,9 @@ export const Root = () => {
 				headerLeft: (config) => {
 					return (
 						<Pressable
-							style={{ paddingHorizontal: 16 }}
+							style={{
+								paddingLeft: 16,
+							}}
 							onPress={navigation.toggleDrawer}
 						>
 							<FontAwesomeIcon size={24} icon={faNavicon} />
@@ -63,15 +71,20 @@ export const Root = () => {
 					return (
 						<View
 							style={{
-								paddingRight: 10,
+								marginLeft: '-100%',
 								flexDirection: 'row',
 								alignItems: 'center',
+								paddingRight: '3%',
 							}}
 						>
-							<Text style={{ fontSize: 24, paddingRight: 6, fontWeight: 600 }}>
+							<Text style={{ fontSize: 24, fontWeight: 600 }}>
 								{route.name}
 							</Text>
-							<Text style={{ fontSize: 30, marginBottom: 4 }}>|</Text>
+							<Text
+								style={{ fontSize: 30, marginBottom: 4, paddingLeft: '2%' }}
+							>
+								|
+							</Text>
 							<Image source={logoBlack} style={{ height: 30, width: 30 }} />
 						</View>
 					);
@@ -87,6 +100,8 @@ export const Root = () => {
 			<Drawer.Screen name='Help' component={Template} />
 			<Drawer.Screen name='Profile' component={Profile} />
 			<Stack.Screen name='Success' component={PaymentSuccess} />
+			<Stack.Screen name='Subscription' component={Subscription} />
+			<Stack.Screen name='Checkout Success' component={CheckoutSuccess} />
 		</Drawer.Navigator>
 	);
 };
@@ -96,8 +111,13 @@ const Stack = createNativeStackNavigator();
 
 export const StackHome = () => {
 	const { isLoggedIn } = useSelector((state) => state.auth);
+	const url = Linking.useURL();
+	console.log('***URL*** ', url);
+	const linking = {
+		prefixes: [prefix],
+	};
 	return (
-		<NavigationContainer>
+		<NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
 			<Stack.Navigator
 				screenOptions={({ route }) => {
 					return {

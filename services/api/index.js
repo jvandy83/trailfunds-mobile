@@ -146,6 +146,26 @@ export const api = createApi({
 			},
 			invalidatesTags: [{ type: 'Notifications' }],
 		}),
+		addSubscription: build.mutation({
+			//...
+			query: (productId) => {
+				return {
+					url: `create-checkout-session`,
+					method: 'POST',
+					body: { productId },
+				};
+			},
+		}),
+		createPortalSession: build.mutation({
+			//...
+			query: (sessionId) => {
+				return {
+					url: `create-portal-session`,
+					method: 'POST',
+					body: { sessionId },
+				};
+			},
+		}),
 	}),
 });
 
@@ -161,6 +181,8 @@ export const {
 	useGetDistanceFromMeQuery,
 	useLoginMutation,
 	useSignUpMutation,
+	useAddSubscriptionMutation,
+	useCreatePortalSessionMutation,
 	useAddTrailbucksMutation,
 	useDonateMutation,
 	useSetNotificationEnabledMutation,

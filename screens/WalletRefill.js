@@ -256,6 +256,7 @@ export const WalletRefill = ({ navigation }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			console.log('***RESPONSE DATA***: ', response.data);
 			const { paymentIntent, customer, ephemeralKey } = response.data;
 
 			setPaymentIntent(paymentIntent);

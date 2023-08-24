@@ -1,37 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Linking } from 'react-native';
+import { Text, View } from 'react-native';
+import * as Linking from 'expo-linking';
 import { useNavigation } from '@react-navigation/native';
 import { useAddSubscriptionMutation } from '../services/api';
 import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 import { MainLayout } from '../components/layout/MainLayout';
 
+const SUBSCRIPTION_PLAN = {
+	basic: 'prod_OTpYhdZkemNTI0',
+	premium: 'prod_OTpY3ruCpktlQL',
+};
+
 export const Subscription = ({ route }) => {
-	const { trailId } = route.params;
-	const [subscriptionPlan, setSubscriptionPlan] = useState({
-		basic: 'prod_OTpYhdZkemNTI0',
-		premium: 'prod_OTpY3ruCpktlQL',
-	});
-	const [sessionId, setSessionId] = useState('');
+	const { trailId, sessionId } = route.params;
+
+	console.log('sessionId: ', sessionId);
+
+	const [url, setUrl] = useState(null);
+
+	const [processing, setProcessing] = useState(true);
+
 	const [checkoutSuccess, setCheckoutSuccess] = useState({
 		success: false,
 		url: '',
+		sessionId: null,
 	});
+
 	const { navigate } = useNavigation();
+
 	const [addSubscription, { isSuccess }] = useAddSubscriptionMutation();
+
 	const handleSubscriptionClick = async (productId) => {
 		try {
 			const { data } = await addSubscription(productId);
-			setSessionId(data.session_id);
 			setCheckoutSuccess((prev) => ({
 				...prev,
 				success: true,
 				url: data.url,
+				sessionId: data.session_id,
 			}));
-			console.log('data in subscription: ', data);
+			console.log('data from checkout session: ', data);
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
 	useEffect(() => {
 		checkoutSuccess.success &&
 			Linking.openURL(checkoutSuccess.url).catch((err) =>
@@ -39,6 +52,9 @@ export const Subscription = ({ route }) => {
 			);
 		() => setCheckoutSuccess(false);
 	}, [checkoutSuccess]);
+
+	
+
 	return (
 		<MainLayout
 			styleProp={{
@@ -58,7 +74,7 @@ export const Subscription = ({ route }) => {
 					</View>
 					{/* Add a hidden field with the lookup_key of your Price */}
 					<PrimaryButton
-						onPress={() => handleSubscriptionClick(subscriptionPlan.basic)}
+						onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.basic)}
 						text='Checkout'
 						color='white'
 					/>
@@ -72,7 +88,7 @@ export const Subscription = ({ route }) => {
 					</View>
 					{/* Add a hidden field with the lookup_key of your Price */}
 					<PrimaryButton
-						onPress={() => handleSubscriptionClick(subscriptionPlan.premium)}
+						onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.premium)}
 						text='Checkout'
 						color='white'
 					/>

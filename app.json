@@ -8,7 +8,7 @@
 		"icon": "./assets/images/tfLogo.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/images/splash.png",
+			"image": "./assets/images/tfLogo.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},

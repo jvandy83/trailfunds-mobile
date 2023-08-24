@@ -42,6 +42,21 @@ import { CustomDrawerContent } from '../components/drawer/DrawerContent';
 
 const prefix = Linking.createURL('/');
 
+const linking = {
+	prefixes: [prefix],
+	config: {
+		screens: {
+			Home: 'home',
+			CheckoutSuccess: {
+				path: 'checkout-success/:sessionId',
+				parse: {
+					sessionId: (id) => id,
+				},
+			},
+		},
+	},
+};
+
 const Drawer = createDrawerNavigator();
 
 export const Root = () => {
@@ -100,7 +115,6 @@ export const Root = () => {
 			<Drawer.Screen name='Help' component={Template} />
 			<Drawer.Screen name='Profile' component={Profile} />
 			<Stack.Screen name='Success' component={PaymentSuccess} />
-			<Stack.Screen name='Subscription' component={Subscription} />
 			<Stack.Screen name='Checkout Success' component={CheckoutSuccess} />
 		</Drawer.Navigator>
 	);
@@ -111,11 +125,7 @@ const Stack = createNativeStackNavigator();
 
 export const StackHome = () => {
 	const { isLoggedIn } = useSelector((state) => state.auth);
-	const url = Linking.useURL();
-	console.log('***URL*** ', url);
-	const linking = {
-		prefixes: [prefix],
-	};
+
 	return (
 		<NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
 			<Stack.Navigator
@@ -135,6 +145,8 @@ export const StackHome = () => {
 						<Stack.Screen name='Trail' component={Trail} />
 						<Stack.Screen name='Donate' component={Donate} />
 						<Stack.Screen name='About' component={About} />
+						<Stack.Screen name='Subscription' component={Subscription} />
+						<Stack.Screen name='Checkout Success' component={CheckoutSuccess} />
 					</>
 				) : (
 					<>

@@ -46,12 +46,9 @@ const linking = {
 	prefixes: [prefix],
 	config: {
 		screens: {
-			Home: 'home',
+			Home: 'home/:sessionId',
 			CheckoutSuccess: {
 				path: 'checkout-success/:sessionId',
-				parse: {
-					sessionId: (id) => id,
-				},
 			},
 		},
 	},

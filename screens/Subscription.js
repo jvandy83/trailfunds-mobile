@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import * as Linking from 'expo-linking';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useAddSubscriptionMutation } from '../services/api';
 import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
 import { MainLayout } from '../components/layout/MainLayout';
@@ -13,6 +13,8 @@ const SUBSCRIPTION_PLAN = {
 
 export const Subscription = ({ route }) => {
 	const { trailId, sessionId } = route.params;
+
+	console.log('ROUTE: ', route);
 
 	console.log('sessionId: ', sessionId);
 
@@ -53,7 +55,30 @@ export const Subscription = ({ route }) => {
 		() => setCheckoutSuccess(false);
 	}, [checkoutSuccess]);
 
-	
+	useEffect(() => {
+		const getUrlAsync = async () => {
+			// Get the deep link used to open the app
+			// const initialUrl = await Linking.getInitialURL();
+			let parsedInitialUrl = null;
+			let initialUrl = null;
+			try {
+				parsedInitialUrl = await Linking.parseInitialURLAsync();
+				initialUrl = await Linking.getInitialURL();
+				console.log('***PARSED_URL*** ', parsedInitialUrl);
+				console.log('***INITIAL_URL*** ', initialUrl);
+			} catch (error) {
+				console.error(error);
+			}
+
+			// The setTimeout is just for testing purpose
+			setTimeout(() => {
+				setUrl(initialUrl);
+				setProcessing(false);
+			}, 1000);
+		};
+
+		getUrlAsync();
+	});
 
 	return (
 		<MainLayout

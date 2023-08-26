@@ -5,7 +5,7 @@
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"scheme": "trailfunds",
-		"icon": "./assets/images/tfLogo.png",
+		"icon": "./assets/images/tfLogo_1.png",
 		"userInterfaceStyle": "light",
 		"splash": {
 			"image": "./assets/images/TrailfundsLogo.png",

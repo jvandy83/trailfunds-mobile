@@ -1,5 +1,5 @@
-import { BASE_URL_DEV } from '@env';
+import { EXPO_PUBLIC_BASE_URL_DEV } from '@env';
 
-const baseUrl = BASE_URL_DEV;
+const baseUrl = EXPO_PUBLIC_BASE_URL_DEV;
 
 export { baseUrl };

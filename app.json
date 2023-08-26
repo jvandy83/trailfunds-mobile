@@ -8,7 +8,7 @@
 		"icon": "./assets/images/tfLogo.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/images/tfLogo.png",
+			"image": "./assets/images/TrailfundsLogo.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},

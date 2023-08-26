@@ -46,7 +46,7 @@ const linking = {
 	prefixes: [prefix],
 	config: {
 		screens: {
-			Home: 'home/:sessionId',
+			Home: 'home',
 			CheckoutSuccess: {
 				path: 'checkout-success/:sessionId',
 			},

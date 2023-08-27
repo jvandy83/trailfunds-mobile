@@ -47,9 +47,9 @@ const linking = {
 	config: {
 		screens: {
 			Home: 'home',
-			CheckoutSuccess: {
-				path: 'checkout-success/:sessionId',
-			},
+			'Checkout Success': 'checkout-success/:sessionId',
+			'Checkout Canceled': 'checkout-canceled/:sessionId',
+			Subscription: 'subscription',
 		},
 	},
 };
@@ -113,6 +113,7 @@ export const Root = () => {
 			<Drawer.Screen name='Profile' component={Profile} />
 			<Stack.Screen name='Success' component={PaymentSuccess} />
 			<Stack.Screen name='Checkout Success' component={CheckoutSuccess} />
+			<Stack.Screen name='Checkout Canceled' component={CheckoutCanceled} />
 		</Drawer.Navigator>
 	);
 };
@@ -138,12 +139,17 @@ export const StackHome = () => {
 							name='Root'
 							component={Root}
 						/>
+						<Stack.Screen name='Home' component={Home} />
 						<Stack.Screen name='Add Funds' component={WalletRefill} />
 						<Stack.Screen name='Trail' component={Trail} />
 						<Stack.Screen name='Donate' component={Donate} />
 						<Stack.Screen name='About' component={About} />
 						<Stack.Screen name='Subscription' component={Subscription} />
 						<Stack.Screen name='Checkout Success' component={CheckoutSuccess} />
+						<Stack.Screen
+							name='Checkout Canceled'
+							component={CheckoutCanceled}
+						/>
 					</>
 				) : (
 					<>

@@ -8,7 +8,7 @@
 		"icon": "./assets/images/tfLogo_1.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/images/TrailfundsLogo.png",
+			"image": "./assets/images/trailfunds_splash_icon.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -20,7 +20,9 @@
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.vanthedev.TrailFundsApp",
-			"runtimeVersion": "1.0.0",
+			"runtimeVersion": {
+				"policy": "sdkVersion"
+			},
 			"infoPlist": {
 				"UIBackgroundModes": ["remote-notification", "location"]
 			}

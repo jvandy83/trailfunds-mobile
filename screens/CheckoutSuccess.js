@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { View, Text, Pressable } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+
+import * as Linking from 'expo-linking';
 
 import { useCreatePortalSessionMutation } from '../services/api';
 
@@ -9,17 +13,23 @@ import { MainLayout } from '../components/layout';
 export const CheckoutSuccess = ({ route }) => {
 	const { sessionId } = route.params;
 
-	// const [createPortalSession, { isSuccess }] = useCreatePortalSessionMutation();
+	const [url, setUrl] = useState('');
+	const [processing, setProcessing] = useState(false);
 
-	// const handleManageBillingClick = async ({route}) => {
-	// 	console.log('sessionId: ', sessionId);
-	// 	try {
-	// 		const { data } = await createPortalSession(sessionId);
-	// 		console.log('data about portal session: ', data);
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// };
+	const { navigate } = useNavigation();
+
+	const [createPortalSession, { isSuccess }] = useCreatePortalSessionMutation();
+
+	const handleManageBillingClick = async () => {
+		console.log('sessionId: ', sessionId);
+		try {
+			const { portal_session } = await createPortalSession(sessionId).unwrap();
+			console.log(portal_session);
+			setUrl(portal_session.url);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	useEffect(() => {
 		const getUrlAsync = async () => {
@@ -46,6 +56,12 @@ export const CheckoutSuccess = ({ route }) => {
 		getUrlAsync();
 	}, []);
 
+	useEffect(() => {
+		console.log('isSuccess: ', isSuccess);
+		console.log('url: ', url);
+		isSuccess && url && Linking.openURL(url);
+	}, [isSuccess, url]);
+
 	return (
 		<MainLayout
 			styleProp={{
@@ -57,12 +73,15 @@ export const CheckoutSuccess = ({ route }) => {
 		>
 			<View style={{ alignItems: 'center', paddingHorizontal: 30 }}>
 				<Text style={{ textAlign: 'center', marginBottom: 40 }}>
-					{sessionId}
+					Subscription to plan successful!
 				</Text>
 				<Pressable onPress={handleManageBillingClick}>
 					<Text style={{ fontWeight: 'bold' }}>
-						Manage your billing subscription
+						Manage your billing information
 					</Text>
+				</Pressable>
+				<Pressable onPress={() => navigate('Home')}>
+					<Text style={{ fontWeight: 'bold' }}>Go Home</Text>
 				</Pressable>
 			</View>
 		</MainLayout>

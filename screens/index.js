@@ -25,5 +25,5 @@ export {
 	Donate,
 	PaymentSuccess,
 	CheckoutSuccess,
-	Subscription
+	Subscription,
 };

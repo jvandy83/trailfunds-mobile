@@ -1,132 +1,132 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View } from 'react-native';
-import * as Linking from 'expo-linking';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { useAddSubscriptionMutation } from '../services/api';
-import { PrimaryButton, SecondaryButton } from '../styles/frontendStyles';
-import { MainLayout } from '../components/layout/MainLayout';
+import React, { useState, useEffect } from "react";
+import { Text, View } from "react-native";
+import * as Linking from "expo-linking";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useAddSubscriptionMutation } from "../services/api";
+import { PrimaryButton, SecondaryButton } from "../styles/frontendStyles";
+import { MainLayout } from "../components/layout/MainLayout";
 
 const SUBSCRIPTION_PLAN = {
-	basic: 'prod_OTpYhdZkemNTI0',
-	premium: 'prod_OTpY3ruCpktlQL',
+  basic: "prod_OTpYhdZkemNTI0",
+  premium: "prod_OTpY3ruCpktlQL",
 };
 
 export const Subscription = ({ route }) => {
-	const { trailId, sessionId } = route.params;
+  const { trailId, sessionId } = route.params;
 
-	console.log('ROUTE: ', route);
+  console.log("ROUTE: ", route);
 
-	console.log('sessionId: ', sessionId);
+  console.log("sessionId: ", sessionId);
 
-	const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState(null);
 
-	const [processing, setProcessing] = useState(true);
+  const [processing, setProcessing] = useState(true);
 
-	const [checkoutSuccess, setCheckoutSuccess] = useState({
-		success: false,
-		url: '',
-		sessionId: null,
-	});
+  const [checkoutSuccess, setCheckoutSuccess] = useState({
+    success: false,
+    url: "",
+    sessionId: null,
+  });
 
-	const { navigate } = useNavigation();
+  const { navigate } = useNavigation();
 
-	const [addSubscription, { isSuccess }] = useAddSubscriptionMutation();
+  const [addSubscription, { isSuccess }] = useAddSubscriptionMutation();
 
-	const handleSubscriptionClick = async (productId) => {
-		try {
-			const { data } = await addSubscription(productId);
-			setCheckoutSuccess((prev) => ({
-				...prev,
-				success: true,
-				url: data.url,
-				sessionId: data.session_id,
-			}));
-			console.log('data from checkout session: ', data);
-		} catch (error) {
-			console.error(error);
-		}
-	};
+  const handleSubscriptionClick = async (productId) => {
+    try {
+      const { data } = await addSubscription(productId);
+      setCheckoutSuccess((prev) => ({
+        ...prev,
+        success: true,
+        url: data.url,
+        sessionId: data.session_id,
+      }));
+      console.log("data from checkout session: ", data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-	useEffect(() => {
-		checkoutSuccess.success &&
-			Linking.openURL(checkoutSuccess.url).catch((err) =>
-				console.error('An error occurred', err),
-			);
-		() => setCheckoutSuccess(false);
-	}, [checkoutSuccess]);
+  useEffect(() => {
+    checkoutSuccess.success &&
+      Linking.openURL(checkoutSuccess.url).catch((err) =>
+        console.error("An error occurred", err)
+      );
+    () => setCheckoutSuccess(false);
+  }, [checkoutSuccess]);
 
-	useEffect(() => {
-		const getUrlAsync = async () => {
-			// Get the deep link used to open the app
-			// const initialUrl = await Linking.getInitialURL();
-			let parsedInitialUrl = null;
-			let initialUrl = null;
-			try {
-				parsedInitialUrl = await Linking.parseInitialURLAsync();
-				initialUrl = await Linking.getInitialURL();
-				console.log('***PARSED_URL*** ', parsedInitialUrl);
-				console.log('***INITIAL_URL*** ', initialUrl);
-			} catch (error) {
-				console.error(error);
-			}
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      // Get the deep link used to open the app
+      // const initialUrl = await Linking.getInitialURL();
+      let parsedInitialUrl = null;
+      let initialUrl = null;
+      try {
+        parsedInitialUrl = await Linking.parseInitialURLAsync();
+        initialUrl = await Linking.getInitialURL();
+        console.log("***PARSED_URL*** ", parsedInitialUrl);
+        console.log("***INITIAL_URL*** ", initialUrl);
+      } catch (error) {
+        console.error(error);
+      }
 
-			// The setTimeout is just for testing purpose
-			setTimeout(() => {
-				setUrl(initialUrl);
-				setProcessing(false);
-			}, 1000);
-		};
+      // The setTimeout is just for testing purpose
+      setTimeout(() => {
+        setUrl(initialUrl);
+        setProcessing(false);
+      }, 1000);
+    };
 
-		getUrlAsync();
-	});
+    getUrlAsync();
+  }, []);
 
-	return (
-		<MainLayout
-			styleProp={{
-				height: '100%',
-				width: '100%',
-				alignItems: 'center',
-				justifyContent: 'center',
-			}}
-		>
-			<View style={{ alignItems: 'center', paddingHorizontal: 30 }}>
-				<View>
-					<View>
-						<View>
-							<Text>Basic plan</Text>
-							<Text>$5.00 / month</Text>
-						</View>
-					</View>
-					{/* Add a hidden field with the lookup_key of your Price */}
-					<PrimaryButton
-						onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.basic)}
-						text='Checkout'
-						color='white'
-					/>
-				</View>
-				<View>
-					<View>
-						<View>
-							<Text>Premium plan</Text>
-							<Text>$20.00 / month</Text>
-						</View>
-					</View>
-					{/* Add a hidden field with the lookup_key of your Price */}
-					<PrimaryButton
-						onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.premium)}
-						text='Checkout'
-						color='white'
-					/>
-				</View>
-				<SecondaryButton
-					text='Go Back'
-					color='black'
-					backgroundColor='transparent'
-					onPress={() => navigate('Trail', { trailId })}
-				/>
-			</View>
-		</MainLayout>
-	);
+  return (
+    <MainLayout
+      styleProp={{
+        height: "100%",
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <View style={{ alignItems: "center", paddingHorizontal: 30 }}>
+        <View>
+          <View>
+            <View>
+              <Text>Basic plan</Text>
+              <Text>$5.00 / month</Text>
+            </View>
+          </View>
+          {/* Add a hidden field with the lookup_key of your Price */}
+          <PrimaryButton
+            onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.basic)}
+            text="Checkout"
+            color="white"
+          />
+        </View>
+        <View>
+          <View>
+            <View>
+              <Text>Premium plan</Text>
+              <Text>$20.00 / month</Text>
+            </View>
+          </View>
+          {/* Add a hidden field with the lookup_key of your Price */}
+          <PrimaryButton
+            onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.premium)}
+            text="Checkout"
+            color="white"
+          />
+        </View>
+        <SecondaryButton
+          text="Go Back"
+          color="black"
+          backgroundColor="transparent"
+          onPress={() => navigate("Trail", { trailId })}
+        />
+      </View>
+    </MainLayout>
+  );
 };
 
 // import React, { useState, useEffect } from 'react';

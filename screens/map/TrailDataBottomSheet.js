@@ -111,7 +111,9 @@ export const TrailDataBottomSheet = ({
     setLoadingTrails(true);
     const delaySearchFn = setTimeout(() => {
       axios
-        .get(`${baseUrl}/trails/search-trails?query=${searchItem}`)
+        .get(
+          `https://sharing-genuinely-locust.ngrok-free.app/api/v1/trails/search-trails?query=${searchItem}`
+        )
         .then((res) => {
           setQueryData(res.data);
           setLoadingTrails(false);

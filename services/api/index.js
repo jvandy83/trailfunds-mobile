@@ -13,10 +13,8 @@ const unProtectedRoutesOrRefreshRoutes = [
 const isProtectedRoute = (endpoint) =>
   !unProtectedRoutesOrRefreshRoutes.includes(endpoint);
 
-console.log(process.env.EXPO_PUBLIC_BASE_URL_DEV);
-
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.EXPO_PUBLIC_BASE_URL_DEV,
+  baseUrl,
   prepareHeaders: async (headers, { getState, endpoint }) => {
     const user = getState().auth.currentUser;
     const accessToken = await fetchToken("accessToken");

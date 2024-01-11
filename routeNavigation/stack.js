@@ -65,6 +65,7 @@ export const Root = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation, route }) => ({
         drawerType: dimensions.width >= 768 ? "permanent" : "front",
+        title: "",
         headerShown: true,
         headerTransparent: true,
         headerLeft: (config) => {

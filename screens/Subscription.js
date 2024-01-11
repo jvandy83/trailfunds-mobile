@@ -1,84 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
-import * as Linking from "expo-linking";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import React from "react";
+import { Text, View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useAddSubscriptionMutation } from "../services/api";
 import { PrimaryButton, SecondaryButton } from "../styles/frontendStyles";
 import { MainLayout } from "../components/layout/MainLayout";
 
+import { useStripe } from "@stripe/stripe-react-native";
+
 const SUBSCRIPTION_PLAN = {
-  basic: "prod_OTpYhdZkemNTI0",
-  premium: "prod_OTpY3ruCpktlQL",
+  basic: "price_1NgrtELlNRWolhfPBIKCwb1a",
+  premium: "price_1NgrtYLlNRWolhfPO902U58n",
 };
 
 export const Subscription = ({ route }) => {
-  const { trailId, sessionId } = route.params;
+  const { trailId } = route.params;
 
-  console.log("ROUTE: ", route);
-
-  console.log("sessionId: ", sessionId);
-
-  const [url, setUrl] = useState(null);
-
-  const [processing, setProcessing] = useState(true);
-
-  const [checkoutSuccess, setCheckoutSuccess] = useState({
-    success: false,
-    url: "",
-    sessionId: null,
-  });
+  const { presentPaymentSheet, initPaymentSheet } = useStripe();
 
   const { navigate } = useNavigation();
 
   const [addSubscription, { isSuccess }] = useAddSubscriptionMutation();
 
-  const handleSubscriptionClick = async (productId) => {
+  const initializePaymentSheet = async (paymentIntent) => {
     try {
-      const { data } = await addSubscription(productId);
-      setCheckoutSuccess((prev) => ({
-        ...prev,
-        success: true,
-        url: data.url,
-        sessionId: data.session_id,
-      }));
-      console.log("data from checkout session: ", data);
+      const { error, paymentOption } = await initPaymentSheet({
+        paymentIntentClientSecret: paymentIntent,
+        merchantDisplayName: "Trailfunds",
+        style: "alwaysDark", // If darkMode
+        googlePay: true, // If implementing googlePay
+        applePay: true, // If implementing applePay
+        merchantCountryCode: "US", // Countrycode of the merchant
+        // testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
+      });
     } catch (error) {
-      console.error(error);
+      console.error(error.data);
     }
   };
 
-  useEffect(() => {
-    checkoutSuccess.success &&
-      Linking.openURL(checkoutSuccess.url).catch((err) =>
-        console.error("An error occurred", err)
-      );
-    () => setCheckoutSuccess(false);
-  }, [checkoutSuccess]);
-
-  useEffect(() => {
-    const getUrlAsync = async () => {
-      // Get the deep link used to open the app
-      // const initialUrl = await Linking.getInitialURL();
-      let parsedInitialUrl = null;
-      let initialUrl = null;
-      try {
-        parsedInitialUrl = await Linking.parseInitialURLAsync();
-        initialUrl = await Linking.getInitialURL();
-        console.log("***PARSED_URL*** ", parsedInitialUrl);
-        console.log("***INITIAL_URL*** ", initialUrl);
-      } catch (error) {
-        console.error(error);
-      }
-
-      // The setTimeout is just for testing purpose
-      setTimeout(() => {
-        setUrl(initialUrl);
-        setProcessing(false);
-      }, 1000);
-    };
-
-    getUrlAsync();
-  }, []);
+  const handleMakeSubscriptionPayment = async (productId) => {
+    try {
+      const { data } = await addSubscription(productId);
+      await initializePaymentSheet(data.clientSecret);
+    } catch (error) {
+      console.error(error);
+    }
+    const { error, paymentOption } = await presentPaymentSheet({
+      confirmPayment: false,
+    });
+    if (error) {
+      alert(`Error: ${error.message}`);
+      return;
+    }
+    Alert.alert(
+      "Your payment was successful",
+      "You can now donate to your favorite trails!",
+      [
+        {
+          text: "OK",
+          onPress: () => {
+            setReady(true);
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <MainLayout
@@ -89,34 +74,37 @@ export const Subscription = ({ route }) => {
         justifyContent: "center",
       }}
     >
-      <View style={{ alignItems: "center", paddingHorizontal: 30 }}>
-        <View>
-          <View>
-            <View>
-              <Text>Basic plan</Text>
-              <Text>$5.00 / month</Text>
-            </View>
+      <View
+        style={{ alignItems: "center", paddingHorizontal: 30, width: "100%" }}
+      >
+        <View style={styles.card}>
+          <View
+            onPress={() =>
+              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.premium)
+            }
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              Basic plan
+            </Text>
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              $5.00 / month
+            </Text>
           </View>
-          {/* Add a hidden field with the lookup_key of your Price */}
-          <PrimaryButton
-            onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.basic)}
-            text="Checkout"
-            color="white"
-          />
         </View>
-        <View>
-          <View>
-            <View>
-              <Text>Premium plan</Text>
-              <Text>$20.00 / month</Text>
-            </View>
+        <View style={styles.card}>
+          <View
+            onPress={() =>
+              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.premium)
+            }
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              Premium plan
+            </Text>
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              $20.00 / month
+            </Text>
           </View>
           {/* Add a hidden field with the lookup_key of your Price */}
-          <PrimaryButton
-            onPress={() => handleSubscriptionClick(SUBSCRIPTION_PLAN.premium)}
-            text="Checkout"
-            color="white"
-          />
         </View>
         <SecondaryButton
           text="Go Back"
@@ -129,110 +117,16 @@ export const Subscription = ({ route }) => {
   );
 };
 
-// import React, { useState, useEffect } from 'react';
-// import './App.css';
-
-// const ProductDisplay = () => (
-// 	<section>
-// 		<div className='product'>
-// 			<Logo />
-// 			<div className='description'>
-// 				<h3>Starter plan</h3>
-// 				<h5>$20.00 / month</h5>
-// 			</div>
-// 		</div>
-// 		<form action='/create-checkout-session' method='POST'>
-// 			{/* Add a hidden field with the lookup_key of your Price */}
-// 			<input type='hidden' name='lookup_key' value='{{PRICE_LOOKUP_KEY}}' />
-// 			<button id='checkout-and-portal-button' type='submit'>
-// 				Checkout
-// 			</button>
-// 		</form>
-// 	</section>
-// );
-
-// const SuccessDisplay = ({ sessionId }) => {
-// 	return (
-// 		<section>
-// 			<div className='product Box-root'>
-// 				<Logo />
-// 				<div className='description Box-root'>
-// 					<h3>Subscription to starter plan successful!</h3>
-// 				</div>
-// 			</div>
-// 			<form action='/create-portal-session' method='POST'>
-// 				<input
-// 					type='hidden'
-// 					id='session-id'
-// 					name='session_id'
-// 					value={sessionId}
-// 				/>
-// 				<button id='checkout-and-portal-button' type='submit'>
-// 					Manage your billing information
-// 				</button>
-// 			</form>
-// 		</section>
-// 	);
-// };
-
-// const Message = ({ message }) => (
-// 	<section>
-// 		<p>{message}</p>
-// 	</section>
-// );
-
-// export default function App() {
-// 	let [message, setMessage] = useState('');
-// 	let [success, setSuccess] = useState(false);
-// 	let [sessionId, setSessionId] = useState('');
-
-// 	useEffect(() => {
-// 		// Check to see if this is a redirect back from Checkout
-// 		const query = new URLSearchParams(window.location.search);
-
-// 		if (query.get('success')) {
-// 			setSuccess(true);
-// 			setSessionId(query.get('session_id'));
-// 		}
-
-// 		if (query.get('canceled')) {
-// 			setSuccess(false);
-// 			setMessage(
-// 				"Order canceled -- continue to shop around and checkout when you're ready.",
-// 			);
-// 		}
-// 	}, [sessionId]);
-
-// 	if (!success && message === '') {
-// 		return <ProductDisplay />;
-// 	} else if (success && sessionId !== '') {
-// 		return <SuccessDisplay sessionId={sessionId} />;
-// 	} else {
-// 		return <Message message={message} />;
-// 	}
-// }
-
-// const Logo = () => (
-// 	<svg
-// 		xmlns='http://www.w3.org/2000/svg'
-// 		xmlnsXlink='http://www.w3.org/1999/xlink'
-// 		width='14px'
-// 		height='16px'
-// 		viewBox='0 0 14 16'
-// 		version='1.1'
-// 	>
-// 		<defs />
-// 		<g id='Flow' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
-// 			<g
-// 				id='0-Default'
-// 				transform='translate(-121.000000, -40.000000)'
-// 				fill='#E184DF'
-// 			>
-// 				<path
-// 					d='M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z'
-// 					id='Pilcrow'
-// 				/>
-// 			</g>
-// 		</g>
-// 	</svg>
-// );
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "#59C092",
+    borderColor: "#59C092",
+    border: "none",
+    borderWidth: 1,
+    borderRadius: 5,
+    width: "80%",
+    alignItems: "center",
+    paddingVertical: 10,
+    marginVertical: 10,
+  },
+});

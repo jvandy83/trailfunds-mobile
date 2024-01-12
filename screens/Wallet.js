@@ -31,7 +31,6 @@ export const Wallet = ({ navigation, route }) => {
   const { data, error, isLoading } = useGetCurrentBalanceQuery({
     skip: !useIsFocused(),
   });
-  console.log("BALANCE: ", data);
 
   const {
     data: transactionData,
@@ -209,7 +208,7 @@ export const Wallet = ({ navigation, route }) => {
                   Transactions
                 </Text>
               </View>
-              <View>{transactionData.map(renderItem)}</View>
+              <View>{transactionData?.map(renderItem)}</View>
             </ScrollView>
           </BottomSheetModal>
         </BottomSheetModalProvider>

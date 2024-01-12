@@ -75,8 +75,6 @@ export const WalletRefill = ({ navigation }) => {
     selectAmount: 5,
   });
 
-  console.log("CUSTOM AMOUNT: ", amount);
-
   const [addTrailbucks, { isLoading, isUpdating }] = useAddTrailbucksMutation();
 
   const {
@@ -104,8 +102,9 @@ export const WalletRefill = ({ navigation }) => {
       parseFloat(amount.customAmount) > amount.selectAmount
         ? parseFloat(amount.customAmount)
         : amount.selectAmount;
-    const { parsedForUI, convertToPennies } = formatCurrency(currency);
-    return { parsedForUI, convertToPennies };
+    const { parsedForUI, convertToPennies, amountPlusFee } =
+      formatCurrency(currency);
+    return { parsedForUI, convertToPennies, amountPlusFee };
   };
 
   const buyWithApplePay = async () => {
@@ -114,7 +113,7 @@ export const WalletRefill = ({ navigation }) => {
       applePay: {
         cartItems: [
           {
-            amount: String(donationAmount),
+            amount: String(normalizeCurrency().amountPlusFee),
             paymentType: PlatformPay.PaymentType.Immediate,
           },
         ],
@@ -242,7 +241,6 @@ export const WalletRefill = ({ navigation }) => {
   };
 
   const handleInitiatePaymentIntent = async () => {
-    console.log("handleInitiatePaymentIntent is running!!!!!!");
     const donationAmount =
       amount.customAmount > 5 ? amount.customAmount : amount.selectAmount;
     const URL = `${baseUrl}/payment-intents/${donationAmount}`;
@@ -253,10 +251,7 @@ export const WalletRefill = ({ navigation }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(
-        "RESPONSE DATA FROM PAYMENT INTENTS ENDPOINT: ",
-        response.data
-      );
+
       const { paymentIntent } = response.data;
 
       setPaymentIntent(paymentIntent.client_secret);
@@ -279,7 +274,6 @@ export const WalletRefill = ({ navigation }) => {
   // modify local state to
   // control transaction flow
   const handleCustomAmountClick = () => {
-    console.log("INSIDE HANDLE CUSTOM AMOUNT");
     setPreselectedAmount({ ...preselectedInputs, other: "other" });
     setSelectedAmount({ selectAmount: 5, customAmount: 0 });
 
@@ -308,7 +302,6 @@ export const WalletRefill = ({ navigation }) => {
 
   useEffect(() => {
     verifyPaymentAmount && handleInitiatePaymentIntent();
-    console.log("AMOUNT: ", amount);
     setInitPaymentSheetStarted(true);
     return () => setVerifiedPaymentAmount(false);
   }, [verifyPaymentAmount]);

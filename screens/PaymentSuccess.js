@@ -41,7 +41,6 @@ export const PaymentSuccess = ({ route }) => {
   }
 
   if (error) {
-    console.log(error);
     console.error(error.data);
   }
 

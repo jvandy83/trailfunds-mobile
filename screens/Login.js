@@ -94,7 +94,6 @@ export const Login = () => {
         .catch((error) => {
           //	error = {"data": {"detail": "Not authenticated"}, "status": 401}
           const { data } = error;
-          console.log(data);
           setServerSideErrors([data?.detail || "Something went wrong"]);
         });
     } else {

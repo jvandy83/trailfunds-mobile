@@ -11,8 +11,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useWindowDimensions } from "react-native";
 
-import * as Linking from "expo-linking";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { faNavicon } from "@fortawesome/free-solid-svg-icons";
@@ -34,26 +32,10 @@ import {
   Trail,
   Donate,
   PaymentSuccess,
-  CheckoutSuccess,
-  // CheckoutCanceled,
   Subscription,
 } from "../screens";
 
 import { CustomDrawerContent } from "../components/drawer/DrawerContent";
-
-const prefix = Linking.createURL("/");
-
-const linking = {
-  prefixes: [prefix],
-  config: {
-    screens: {
-      Home: "home",
-      "Checkout Success": "checkout-success/:sessionId",
-      "Checkout Canceled": "checkout-canceled/:sessionId",
-      Subscription: "subscription",
-    },
-  },
-};
 
 const Drawer = createDrawerNavigator();
 
@@ -113,8 +95,6 @@ export const Root = () => {
       <Drawer.Screen name="Help" component={Template} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Success" component={PaymentSuccess} />
-      <Stack.Screen name="Checkout Success" component={CheckoutSuccess} />
-      {/* <Stack.Screen name="Checkout Canceled" component={CheckoutCanceled} /> */}
     </Drawer.Navigator>
   );
 };
@@ -126,7 +106,7 @@ export const StackHome = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
 
   return (
-    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+    <NavigationContainer fallback={<Text>Loading...</Text>}>
       <Stack.Navigator
         screenOptions={({ route }) => {
           return {
@@ -146,11 +126,6 @@ export const StackHome = () => {
             <Stack.Screen name="Donate" component={Donate} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="Subscription" component={Subscription} />
-            <Stack.Screen name="Checkout Success" component={CheckoutSuccess} />
-            {/* <Stack.Screen
-              name="Checkout Canceled"
-              component={CheckoutCanceled}
-            /> */}
           </>
         ) : (
           <>

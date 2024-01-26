@@ -28,7 +28,7 @@ import { useNavigation } from "@react-navigation/native";
 import dashboard from "../styles/dashboardStyles";
 import { defaults, PrimaryButton } from "../styles/frontendStyles.js";
 
-import TrailFundsLogo from "../assets/images/TrailFundsLogo.png";
+import { trailfundsLogo } from "../assets/images";
 
 const NOTIFICATION_TASK_NAME = "BACKGROUND-NOTIFICATION-TASK";
 const LOCATION_TASK_NAME = "BACKGROUND-LOCATION-TASK";
@@ -186,7 +186,7 @@ export const Home = () => {
       <MainLayout styleProp={defaults.background}>
         <View style={dashboard.welcomeContainer}>
           <Text style={dashboard.trailFunds}>Trail Funds</Text>
-          <Image source={TrailFundsLogo} style={dashboard.logo} />
+          <Image source={trailfundsLogo} style={dashboard.logo} />
           <Text style={dashboard.welcomeMessage}>
             {userData.isNew
               ? `Welcome ${userData.firstName}!`

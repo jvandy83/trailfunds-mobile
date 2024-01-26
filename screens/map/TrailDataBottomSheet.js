@@ -26,13 +26,13 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 
-import { baseUrl } from "../../config";
-
 import { TrailLocation } from "./TrailLocation";
 
 import axios from "axios";
 
 import uuid from "react-native-uuid";
+
+const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 export const TrailDataBottomSheet = ({
   data,
@@ -136,112 +136,112 @@ export const TrailDataBottomSheet = ({
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <ScrollView style={{ flexGrow: 1 }}>
-            <View
+          <View
+            style={{
+              paddingTop: 20,
+              paddingHorizontal: 30,
+            }}
+          >
+            <Text
               style={{
-                paddingTop: 20,
-                paddingHorizontal: 30,
+                fontSize: 30,
+                fontWeight: "bold",
+                color: "#59C092",
+                paddingBottom: 20,
               }}
             >
-              <Text
+              Find A Trail
+            </Text>
+            <TextInput
+              placeholder="Search"
+              onChangeText={(text) => setSearchItem(text)}
+              style={{
+                marginVertical: 15,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderWidth: 1,
+                borderColor: "rgba(0, 0, 0, 0.2)",
+                borderRadius: 100,
+              }}
+            />
+            <View>
+              {loadingTrails ? (
+                <ActivityIndicator />
+              ) : (
+                queryData.trails?.map(renderTrails)
+              )}
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                paddingVertical: 20,
+              }}
+            >
+              <Pressable
                 style={{
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  color: "#59C092",
-                  paddingBottom: 20,
-                }}
-              >
-                Find A Trail
-              </Text>
-              <TextInput
-                placeholder="Search"
-                onChangeText={(text) => setSearchItem(text)}
-                style={{
-                  marginVertical: 15,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderWidth: 1,
-                  borderColor: "rgba(0, 0, 0, 0.2)",
-                  borderRadius: 100,
-                }}
-              />
-              <View>
-                {loadingTrails ? (
-                  <ActivityIndicator />
-                ) : (
-                  queryData.trails?.map(renderTrails)
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  paddingVertical: 20,
-                }}
-              >
-                <Pressable
-                  style={{
-                    borderBottomColor: "#59C092",
-                    borderBottomWidth: 2,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "#59C092",
-                    }}
-                  >
-                    Favorite
-                  </Text>
-                </Pressable>
-                <Pressable>
-                  <Text style={{ fontSize: 16 }}>Recent</Text>
-                </Pressable>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 40,
-                  height: 60,
-                  overflow: "hidden",
+                  borderBottomColor: "#59C092",
+                  borderBottomWidth: 2,
                 }}
               >
                 <Text
                   style={{
-                    fontSize: 20,
-                    fontWeight: "bold",
+                    fontSize: 16,
                     color: "#59C092",
                   }}
                 >
-                  Trails Near Me
+                  Favorite
                 </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
+              </Pressable>
+              <Pressable>
+                <Text style={{ fontSize: 16 }}>Recent</Text>
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 40,
+                height: 60,
+                overflow: "hidden",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  color: "#59C092",
+                }}
+              >
+                Trails Near Me
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Picker
+                  style={{ width: "50%" }}
+                  selectedValue={selectedRadiusValue}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setSelectedRadiusValue(itemValue);
+                    setRadius(itemValue);
                   }}
                 >
-                  <Picker
-                    style={{ width: "50%" }}
-                    selectedValue={selectedRadiusValue}
-                    onValueChange={(itemValue, itemIndex) => {
-                      setSelectedRadiusValue(itemValue);
-                      setRadius(itemValue);
-                    }}
-                  >
-                    {renderPicker()}
-                  </Picker>
-                  <Text style={{ fontSize: 16 }}>mi</Text>
-                </View>
+                  {renderPicker()}
+                </Picker>
+                <Text style={{ fontSize: 16 }}>mi</Text>
               </View>
+            </View>
+            <ScrollView style={{ flexGrow: 1 }}>
               <SafeAreaView>
                 <View>{data.trails.map(renderTrails)}</View>
               </SafeAreaView>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         </BottomSheetModal>
       </View>
     </BottomSheetModalProvider>

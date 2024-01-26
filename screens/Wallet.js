@@ -81,12 +81,14 @@ export const Wallet = ({ navigation, route }) => {
   const snapPoints = useMemo(() => ["12%", "30%", "60%"]);
 
   if (error) {
-    console.error("error.data: ", error.data);
+    console.error(error);
   }
 
   if (transactionError) {
-    console.error("transactionError.data: ", transactionError.data);
+    console.error("transactionError.data: ", error);
   }
+
+  console.log("CURRENT BALANCE DATA: ", data);
 
   useFocusEffect(() => bottomSheetModalRef.current?.present());
 

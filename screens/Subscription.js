@@ -1,19 +1,22 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, Pressable, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAddSubscriptionMutation } from "../services/api";
-import { PrimaryButton, SecondaryButton } from "../styles/frontendStyles";
+import { SecondaryButton } from "../styles/frontendStyles";
 import { MainLayout } from "../components/layout/MainLayout";
 
 import { useStripe } from "@stripe/stripe-react-native";
 
 const SUBSCRIPTION_PLAN = {
-  basic: "price_1NgrtELlNRWolhfPBIKCwb1a",
-  premium: "price_1NgrtYLlNRWolhfPO902U58n",
+  BASIC: "price_1Ocrf0LlNRWolhfPpMAYczdk",
+  WEEKEND_WARRIOR: "price_1OcrZrLlNRWolhfPKldIUPn7",
+  TRAIL_BUILDER: "price_1OcrXTLlNRWolhfPgDv5R0qC",
 };
 
 export const Subscription = ({ route }) => {
   const { trailId } = route.params;
+
+  const [ready, setReady] = useState(true);
 
   const { presentPaymentSheet, initPaymentSheet } = useStripe();
 
@@ -53,7 +56,7 @@ export const Subscription = ({ route }) => {
     }
     Alert.alert(
       "Your payment was successful",
-      "You can now donate to your favorite trails!",
+      "You may cancel your subscription at anytime",
       [
         {
           text: "OK",
@@ -78,32 +81,53 @@ export const Subscription = ({ route }) => {
         style={{ alignItems: "center", paddingHorizontal: 30, width: "100%" }}
       >
         <View style={styles.card}>
-          <View
+          <Pressable
             onPress={() =>
-              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.premium)
+              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.BASIC)
             }
           >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              Basic plan
-            </Text>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              $5.00 / month
-            </Text>
-          </View>
+            <View>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Basic Plan
+              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                $5.00 / month
+              </Text>
+            </View>
+          </Pressable>
         </View>
         <View style={styles.card}>
-          <View
+          <Pressable
             onPress={() =>
-              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.premium)
+              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.WEEKEND_WARRIOR)
             }
           >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              Premium plan
-            </Text>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              $20.00 / month
-            </Text>
-          </View>
+            <View>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Weekend Warrior
+              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                $10.00 / month
+              </Text>
+            </View>
+          </Pressable>
+          {/* Add a hidden field with the lookup_key of your Price */}
+        </View>
+        <View style={styles.card}>
+          <Pressable
+            onPress={() =>
+              handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.TRAIL_BUILDER)
+            }
+          >
+            <View>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Trail Builder
+              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                $20.00 / month
+              </Text>
+            </View>
+          </Pressable>
           {/* Add a hidden field with the lookup_key of your Price */}
         </View>
         <SecondaryButton

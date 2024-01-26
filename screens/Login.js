@@ -15,6 +15,8 @@ import {
   Alert,
 } from "react-native";
 
+import Ionicons from "@expo/vector-icons/Ionicons";
+
 import { saveToken, setAuth } from "../reduxStore/features/auth/authSlice";
 
 import { Svg, Path, G } from "react-native-svg";
@@ -49,6 +51,8 @@ export const Login = () => {
 
   const [keyboardIsShowing, setKeyboardIsShowing] = useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [signUp, { isLoading, error }] = useSignUpMutation();
   // create alias due to multiple mutations
   // being called in the same module
@@ -82,7 +86,8 @@ export const Login = () => {
             saveToken("accessToken", accessToken);
             dispatch(setAuth({ token: accessToken, currentUser }));
           } else {
-            const { error } = res;
+            const { error } = res.data;
+            console.log("ERROR ON SIGN UP: ", error);
             const errorSet = new Set();
             // check to see if same error message is added if
             // a user hits submit multiple times
@@ -126,6 +131,10 @@ export const Login = () => {
           setServerSideErrors([data?.detail || "Something went wrong"]);
         });
     }
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   const handleChange = (text, inputType) => {
@@ -206,7 +215,7 @@ export const Login = () => {
               textShadowRadius: 5,
             }}
           >
-            {`${newUser ? "Sign Up" : "Log In"}`}
+            {`${newUser ? "Sign Up" : "Sign In"}`}
           </Text>
           {!keyboardIsShowing && (
             <View
@@ -262,7 +271,7 @@ export const Login = () => {
               bottom: -60,
             }}
           >
-            <Text style={{ paddingBottom: "1%", paddingLeft: "10%" }}>
+            <Text style={{ paddingBottom: "1%", paddingHorizontal: "10%" }}>
               {serverSideErrors.length > 0 &&
                 serverSideErrors?.map((e) => (
                   <Text
@@ -331,6 +340,7 @@ export const Login = () => {
                   borderColor:
                     errors.email?.length > 0 ? "#f67172" : "rgba(0, 0, 0, 0.2)",
                 }}
+                autoCapitalize="none"
                 placeholder="E-mail"
                 value={values.email || ""}
                 autoComplete="email"
@@ -346,17 +356,26 @@ export const Login = () => {
                       ? "#f67172"
                       : "rgba(0, 0, 0, 0.2)",
                 }}
+                autoCapitalize="none"
                 placeholder="Password"
                 value={values.password || ""}
-                autoComplete="password-new"
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
                 onChangeText={(text) => handleChange(text, "password")}
               />
+              <View className="items-end">
+                <View className="absolute bottom-2 right-4">
+                  <Ionicons
+                    onPress={handleShowPassword}
+                    name={`${showPassword ? "eye" : "eye-off"}`}
+                    size={20}
+                  />
+                </View>
+              </View>
             </View>
             <View style={{ alignItems: "center" }}>
               <PrimaryButton
                 onPress={handleSubmit}
-                text={`${!newUser ? "Log in" : "Sign up"}`}
+                text={`${!newUser ? "Sign in" : "Sign up"}`}
                 color="white"
               />
               {newUser && (

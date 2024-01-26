@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setAuth } from "../../reduxStore/features/auth/authSlice";
 
 import { fetchToken, save } from "../../reduxStore/features/auth/authSlice";
 
@@ -8,6 +7,8 @@ const unProtectedRoutesOrRefresh = [
   "user/sign-up",
   "user/login",
 ];
+
+const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 const isProtectedRoute = (endpoint) =>
   !unProtectedRoutesOrRefresh.includes(endpoint);

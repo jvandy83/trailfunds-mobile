@@ -41,7 +41,8 @@ export const PaymentSuccess = ({ route }) => {
   }
 
   if (error) {
-    console.error(error.data);
+    console.log("****** THERE WAS AN ERROR ON THE SUCCESS SCREEN ****** ");
+    console.error(error);
   }
 
   return (

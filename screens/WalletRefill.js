@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable, Alert, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 
@@ -14,13 +14,13 @@ import { fetchToken } from "../reduxStore/features/auth/authSlice";
 
 import { useAddTrailbucksMutation, useGetUserQuery } from "../services/api";
 
-import { baseUrl } from "../config";
-
 import { formatCurrency } from "../utils/currencyFormatter";
 
 import { CustomInputModal } from "../components/modal/CustomInputModal";
 
 import { MainLayout } from "../components/layout/MainLayout";
+
+import { BottomSheetModalComponent } from "../components/bottomSheet/BottomSheetModalComponent";
 
 import {
   PrimaryButton,
@@ -45,6 +45,8 @@ const currentAmounts = {
   customAmount: 0,
   selectAmount: 5,
 };
+
+const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 export const WalletRefill = ({ navigation }) => {
   const { navigate } = useNavigation();
@@ -74,6 +76,10 @@ export const WalletRefill = ({ navigation }) => {
     customAmount: 0,
     selectAmount: 5,
   });
+
+  const [showInfoIcon, setShowInfoIcon] = useState(false);
+
+  /* ----> REDUX HOOKS <---- */
 
   const [addTrailbucks, { isLoading, isUpdating }] = useAddTrailbucksMutation();
 
@@ -128,7 +134,7 @@ export const WalletRefill = ({ navigation }) => {
       alert(`Error: ${response.error.message}`);
       return;
     }
-    addTrailbucks({ userId: data.id, amount: donationAmount });
+    addTrailbucks({ userId: data?.id, amount: donationAmount });
     setReady(true);
     Alert.alert(
       "Your payment was successful",
@@ -173,7 +179,7 @@ export const WalletRefill = ({ navigation }) => {
       // Update UI to prompt user to retry payment (and possibly another payment method)
       return;
     }
-    addTrailbucks({ userId: data.id, amount: donationAmount });
+    addTrailbucks({ userId: data?.id, amount: donationAmount });
     setReady(true);
     Alert.alert("Success", "The payment was confirmed successfully.");
   };
@@ -182,13 +188,17 @@ export const WalletRefill = ({ navigation }) => {
     setReady(false);
     const { error, paymentOption } = await presentPaymentSheet({
       confirmPayment: false,
+      amount: donationAmount,
     });
     if (error) {
       setReady(true);
       alert(`Error: ${error.message}`);
       return;
     }
-    addTrailbucks({ userId: data.id, amount: donationAmount });
+    addTrailbucks({
+      userId: data?.id,
+      amount: String(normalizeCurrency().amountPlusFee),
+    });
     setReady(false);
     Alert.alert(
       "Your payment was successful",
@@ -252,6 +262,8 @@ export const WalletRefill = ({ navigation }) => {
         },
       });
 
+      console.log("RESPONSE WITH PAYMENT INTENT: ", response.data);
+
       const { paymentIntent } = response.data;
 
       setPaymentIntent(paymentIntent.client_secret);
@@ -293,6 +305,10 @@ export const WalletRefill = ({ navigation }) => {
     handleCustomAmountClick();
   };
 
+  const handleCloseInfoIcon = () => {
+    setShowInfoIcon(false);
+  };
+
   /* ----> USE EFFECTS <---- */
 
   useEffect(() => {
@@ -316,6 +332,11 @@ export const WalletRefill = ({ navigation }) => {
       textInputRef.current.value = amount.customAmount || 0;
     }
   }, [amount.customAmount]);
+
+  if (error) {
+    console.log("******* THERE WAS AN ERROR MAKING A PAYMENT *********");
+    console.error(error.detail);
+  }
 
   return (
     <MainLayout styleProp={defaults.background}>
@@ -347,9 +368,11 @@ export const WalletRefill = ({ navigation }) => {
                 paddingRight: 4,
               }}
             >
-              "Plus 3% service charge"
+              "Plus ~3% service charge"
             </Text>
-            <FontAwesomeIcon size={16} color="gray" icon={faInfoCircle} />
+            <Pressable onPress={() => setShowInfoIcon(true)}>
+              <FontAwesomeIcon size={16} color="gray" icon={faInfoCircle} />
+            </Pressable>
           </View>
           <View style={styles.donationTabs}>
             <Pressable
@@ -464,6 +487,23 @@ export const WalletRefill = ({ navigation }) => {
           </View>
         </View>
       </View>
+      {showInfoIcon && (
+        <BottomSheetModalComponent handleClose={handleCloseInfoIcon}>
+          <View style={{ alignItems: "center", paddingHorizontal: 10 }}>
+            <View style={{ paddingHorizontal: 4 }}>
+              <Text style={{ paddingBottom: 10 }}>
+                You will be charged 2.9% plus 30 cents each time you load money
+                onto your Trailbucks card.
+              </Text>
+              <Text>
+                Preloading money or "Trailbucks" on your virtual card will
+                ensure Trail Organizations recieve more of your donation and you
+                will pay less fees per donation.
+              </Text>
+            </View>
+          </View>
+        </BottomSheetModalComponent>
+      )}
     </MainLayout>
   );
 };

@@ -1,6 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
-  "include": ["index.js", "src/**/*", "android/webviews"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 

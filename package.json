@@ -68,8 +68,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.19.6",
     "react-redux": "^8.0.5",
-    "supercluster": "^7.1.5",
-    "ts-migrate": "^0.1.35"
+    "supercluster": "^7.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

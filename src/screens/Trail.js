@@ -26,17 +26,10 @@ export const Trail = ({ route }) => {
 
   const { trailId } = route.params;
 
-  console.log(trailId)
-
   const [transactionId, setTransactionId] = useState(null);
 
   const { navigate } = useNavigation();
 
-  const {
-    data: userData,
-    isLoading: isUserLoading,
-    error: userError,
-  } = useGetUserQuery();
 
   const { data, isLoading, error } = useGetTrailQuery(trailId);
 
@@ -45,12 +38,12 @@ export const Trail = ({ route }) => {
   const handleSubmitDollarDonation = async () => {
     try {
       const { data } = await donate({
-        userId: userData.id,
         // amount must be converted
         // to pennies for Stripe
         amount: 99,
         trailId,
       }).unwrap();
+      console.log("UNWRAPPED DATA: ", data)
       const { transactionId } = data;
       setTransactionId(transactionId);
     } catch (error) {
@@ -155,8 +148,6 @@ export const Trail = ({ route }) => {
           color="white"
           onPress={handleSubmitDollarDonation}
         />
-      </View>
-      <View style={{ alignItems: "center" }}>
         <SecondaryButton
           text="Custom Amount"
           color="white"

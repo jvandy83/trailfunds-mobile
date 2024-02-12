@@ -34,11 +34,6 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 import axios from "axios";
 
-interface SelectInput {
-    customAmount: number | string;
-    selectAmount: number | string;
-}
-
 const preselectedInputs = {
   5: 0,
   10: 0,
@@ -70,7 +65,7 @@ export const WalletRefill = ({ navigation }) => {
 
   const [initPaymentSheetStarted, setInitPaymentSheetStarted] = useState(false);
 
-  const [showCustomAmountInput, setShowCustomAmountInput] = useState<boolean>(false);
+  const [showCustomAmountInput, setShowCustomAmountInput] = useState(false);
 
   const [preselectedInputAmount, setPreselectedAmount] = useState({
     5: 5,
@@ -79,7 +74,7 @@ export const WalletRefill = ({ navigation }) => {
     other: "",
   });
 
-  const [amount, setSelectedAmount] = useState<SelectInput>({
+  const [amount, setSelectedAmount] = useState({
     customAmount: 0,
     selectAmount: 5,
   });
@@ -88,7 +83,7 @@ export const WalletRefill = ({ navigation }) => {
 
   /* ----> REDUX HOOKS <---- */
 
-  const [addTrailbucks, {}] = useAddTrailbucksMutation();
+  const [addTrailbucks, { isLoading, isUpdating }] = useAddTrailbucksMutation();
 
   const {
     data,
@@ -111,12 +106,10 @@ export const WalletRefill = ({ navigation }) => {
   // 		folder since it's being used
   // 		in Donation screen
   const normalizeCurrency = () => {
-    let currency;
-    if (typeof amount.customAmount === 'string' && typeof amount.selectAmount === 'number') {
-      currency = parseFloat(amount.customAmount) > amount.selectAmount
+    const currency =
+      parseFloat(amount.customAmount) > amount.selectAmount
         ? parseFloat(amount.customAmount)
         : amount.selectAmount;
-    }
     const { parsedForUI, convertToPennies, amountPlusFee } =
       formatCurrency(currency);
     return { parsedForUI, convertToPennies, amountPlusFee };
@@ -130,9 +123,9 @@ export const WalletRefill = ({ navigation }) => {
           {
             amount: String(normalizeCurrency().amountPlusFee),
             paymentType: PlatformPay.PaymentType.Immediate,
-            label: ""
           },
         ],
+        testEnv: true,
         merchantCountryCode: "US",
         currencyCode: "USD",
       },
@@ -253,7 +246,9 @@ export const WalletRefill = ({ navigation }) => {
         googlePay: true, // If implementing googlePay
         applePay: true, // If implementing applePay
         merchantCountryCode: "US", // Countrycode of the merchant
+        returnURL: "https://localhost:5000/return-url",
         // testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
+        primaryButtonLabel: `$${String(normalizeCurrency().amountPlusFee)}`
       });
     } catch (error) {
       console.error(error.data);
@@ -446,7 +441,7 @@ export const WalletRefill = ({ navigation }) => {
               </View>
             </Pressable>
             <Pressable
-              onPress={() => handlePreselectedAmountClick("other")}
+              onPress={() => handlePreselectedAmountClick()}
               style={{
                 ...styles.donationTab,
                 backgroundColor:
@@ -505,7 +500,7 @@ export const WalletRefill = ({ navigation }) => {
         <BottomSheetModalComponent handleClose={handleCloseInfoIcon}>
           <View style={{ alignItems: "center", paddingHorizontal: 10 }}>
             <View style={{ paddingHorizontal: 4 }}>
-              <View className="pb-4"><Text className="pb-2">
+              <Text className="pb-2">
                 You will be charged{" "}
                 <Text className="font-bold">2.9% plus 30 cents</Text> each time
                 you load money onto your Trailbucks card. For example, if you
@@ -513,18 +508,11 @@ export const WalletRefill = ({ navigation }) => {
                 on your virtual card, you will actually pay{" "}
                 <Text className="font-bold">$5.45</Text>. Once money is loaded
                 on your Trailbucks card, you will only pay the platform fee associated with building and maintaining Trailfunds, which is 10%.
-              </Text></View>
+              </Text>
               <Text className="pb-2">
                 Preloading money or "Trailbucks" on your virtual card will
                 ensure Trail Organizations recieve more of your donation and you
                 will pay less fees per donation.
-              </Text>
-              <Text>
-                When you select{" "}
-                <Text className="font-bold">'Pay with card'</Text>, the exact
-                transaction fee amount will not be displayed during checkout.
-                Please check your transaction history in your profile to see
-                exact charges.
               </Text>
             </View>
           </View>

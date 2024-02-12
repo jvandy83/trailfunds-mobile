@@ -111,7 +111,7 @@ export function SecondaryButton({
   onPress,
   color = "white",
   backgroundColor = "#1C2126",
-  disabled,
+  disabled = false,
 }) {
   return (
     <TouchableOpacity onPress={onPress} disabled={disabled}>

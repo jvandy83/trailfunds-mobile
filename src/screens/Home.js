@@ -85,7 +85,7 @@ export const Home = () => {
   ] = useCreateUserMutation();
 
   const fetchOrCreateUser = () => {
-    if (!userData) {
+    if (!userData && !error && !isLoading) {
       console.log("CREATING NEW USER");
       createUser({
         email: user.email,

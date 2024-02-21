@@ -1,4 +1,4 @@
-import { colors } from "@theme";
+import { colors } from "@/theme";
 import Snackbar, { SnackBarOptions } from "react-native-snackbar";
 
 type Severity = "success" | "error" | "info" | "warning";

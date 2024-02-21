@@ -9,12 +9,12 @@ import {
   useDonateMutation,
 } from "../services/api";
 
-import { CustomInputModal } from "../components/modal/CustomInputModal";
+import { CustomInputModal } from "@components/modal/CustomInputModal";
 
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
 
 import { SecondaryButton } from "../reduxStore/styles/frontendStyles";
-import { formatCurrency } from "../hooks/utils/currencyFormatter";
+import { formatCurrency } from "@hooks/utils/currencyFormatter";
 
 const preselectedInputs = {
   5: 0,
@@ -83,16 +83,15 @@ export const Donate = ({ route }) => {
       amount.customAmount > 0 ? amount.customAmount : amount.selectAmount;
     try {
       const { data } = await donate({
-        userId: userData.id,
         amount: normalizeCurrency(donationAmount).convertToPennies,
         trailId,
-        idToken,
       }).unwrap();
       const { transactionId, message } = data;
       setErrorMessage(message);
       setTransactionId(transactionId);
     } catch (error) {
-      console.error(error.detail);
+      console.log("There was an error making a donation!!!")
+      console.error(error);
     }
   };
 

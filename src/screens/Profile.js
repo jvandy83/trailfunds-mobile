@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import profile from "../reduxStore/styles/profileStyles";
 
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
 
 import {
   PrimaryButton,
@@ -68,7 +68,7 @@ export const Profile = () => {
             text="Payment Info"
             color="white"
             onPress={() =>
-              Alert.alert("This button takes you to payment information")
+              navigate("PaymentInfo")
             }
           />
 

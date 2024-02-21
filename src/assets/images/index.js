@@ -1,5 +1,4 @@
 import mountains from "./mountains.jpeg";
-import logo from "./TrailFundsLogo.svg";
 import logoBlack from "./TrailFundsLogo.png";
 import googleIcon from "./googleIcon.png";
 import facebookIcon from "./facebookIcon.png";
@@ -11,7 +10,6 @@ import trailfundsLogo from "./TrailFundsLogo.png";
 
 export {
   mountains,
-  logo,
   googleIcon,
   facebookIcon,
   appleIcon,

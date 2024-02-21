@@ -4,10 +4,10 @@ import { TouchableOpacity, Text, View, Animated, FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 // components
-import { NearButton } from "../../components/buttons/NearButton";
-import { SearchButton } from "../../components/buttons/SearchButton";
-import { LikeButton } from "../../components/buttons/LikeButton";
-import { AnimatedButtonBackground } from "../../components/layout/AnimatedButtonBackground";
+import { NearButton } from "@components/buttons/NearButton";
+import { SearchButton } from "@components/buttons/SearchButton";
+import { LikeButton } from "@components/buttons/LikeButton";
+import { AnimatedButtonBackground } from "@components/layout/AnimatedButtonBackground";
 
 import { mapStyles } from "../../reduxStore/styles/mapStyles";
 import { defaults } from "../../reduxStore/styles/frontendStyles";

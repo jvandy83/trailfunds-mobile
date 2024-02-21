@@ -53,24 +53,6 @@ export const TrailDataBottomSheet = ({
 
   const { navigate } = useNavigation();
 
-  const searchTrails = async (query) => {
-    setLoadingTrails(true);
-    try {
-      const res = await axios.get(
-        `${baseUrl}/trails/search-trails?query=${query}`
-      );
-      setQueryData(res.data);
-      setLoadingTrails(false);
-    } catch (error) {
-      setLoadingTrails(false);
-      console.error(error);
-    }
-  };
-
-  const handleSearchQuery = (query) => {
-    searchTrails(query);
-  };
-
   const handleSheetChanges = useCallback((index) => {
     // this keeps modal from closing all the way
     // and leaving the screen

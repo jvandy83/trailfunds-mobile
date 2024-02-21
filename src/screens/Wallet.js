@@ -21,7 +21,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
 
 import uuid from "react-native-uuid";
 
@@ -205,7 +205,7 @@ export const Wallet = ({ navigation, route }) => {
                     marginBottom: 20,
                   }}
                 >
-                  Transactions
+                  Donations
                 </Text>
               </View>
               <View>{transactionData?.map(renderItem)}</View>

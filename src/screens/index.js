@@ -9,6 +9,7 @@ import { Trail } from "./Trail";
 import { Donate } from "./Donate";
 import { PaymentSuccess } from "./PaymentSuccess";
 import { Subscription } from "./Subscription";
+import { PaymentInfo } from "./PaymentInfo";
 import { Map } from "./map/Map";
 
 export {
@@ -24,4 +25,5 @@ export {
   Donate,
   PaymentSuccess,
   Subscription,
+  PaymentInfo
 };

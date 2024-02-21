@@ -3,7 +3,9 @@ import { Text, View, StyleSheet, Pressable, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAddSubscriptionMutation } from "../services/api";
 import { SecondaryButton } from "../reduxStore/styles/frontendStyles";
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
+
+import * as Linking from "expo-linking";
 
 import { useStripe } from "@stripe/stripe-react-native";
 
@@ -16,6 +18,10 @@ const SUBSCRIPTION_PLAN = {
 export const Subscription = ({ route }) => {
   const { trailId } = route.params;
 
+  const url = Linking.useURL();
+
+  console.log("***URL***: ", url);
+
   const [ready, setReady] = useState(true);
 
   const { presentPaymentSheet, initPaymentSheet } = useStripe();
@@ -24,15 +30,17 @@ export const Subscription = ({ route }) => {
 
   const [addSubscription, { isSuccess }] = useAddSubscriptionMutation();
 
-  const initializePaymentSheet = async (paymentIntent) => {
+  const initializePaymentSheet = async (clientSecret, ephemeralKey) => {
     try {
       const { error, paymentOption } = await initPaymentSheet({
-        paymentIntentClientSecret: paymentIntent,
+        paymentIntentClientSecret: clientSecret,
+        customerEphemeralKeySecret: ephemeralKey,
         merchantDisplayName: "Trailfunds",
         style: "alwaysDark", // If darkMode
         googlePay: true, // If implementing googlePay
         applePay: true, // If implementing applePay
         merchantCountryCode: "US", // Countrycode of the merchant
+        returnURL: "trailfunds://",
         // testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
       });
     } catch (error) {
@@ -40,10 +48,12 @@ export const Subscription = ({ route }) => {
     }
   };
 
-  const handleMakeSubscriptionPayment = async (productId) => {
+  const handleMakeSubscriptionPayment = async (product) => {
     try {
-      const { data } = await addSubscription(productId);
-      await initializePaymentSheet(data.clientSecret);
+      const { data } = await addSubscription({ product, trailId });
+      console.log("**** PAYLOAD FROM ADD SUBSCRIPTION ****: ", data);
+      const { ephemeralKey, clientSecret } = data;
+      await initializePaymentSheet(clientSecret, ephemeralKey);
     } catch (error) {
       console.error(error);
     }

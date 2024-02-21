@@ -19,9 +19,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/08397746-9845-4f6a-8f8b-575a44ae3772"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "buildNumber": "2",
       "supportsTablet": true,
@@ -30,10 +28,7 @@
         "policy": "sdkVersion"
       },
       "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification",
-          "location"
-        ],
+        "UIBackgroundModes": ["remote-notifications", "location"],
         "NSCameraUsageDescription": "This app uses the camera to collect trail data."
       }
     },
@@ -70,7 +65,8 @@
           "domain": "dev-skndked4vwbnmsmn.us.auth0.com"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ],
     "extra": {
       "eas": {

@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 
 import {
-  useGetUserQuery,
-  useCreateUserMutation,
+  useGetMeQuery,
   useGetRadiusPushNotificationQuery,
 } from "../services/api";
 
@@ -22,27 +21,30 @@ import { registerForPushNotificationsAsync } from "../assets/api/pushNotificatio
 
 import { fetchPushToken } from "../assets/api/pushNotifications/usePushToken";
 
-import { sec } from "../hooks/useToken.js";
+import { sec } from "@hooks/useToken.js";
 
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
 
 import { setLocation } from "../reduxStore/features/location/locationSlice";
 
 import { useNavigation } from "@react-navigation/native";
 
-import dashboard from "../reduxStore/styles/dashboardStyles";
 import {
   defaults,
   PrimaryButton,
 } from "../reduxStore/styles/frontendStyles.js";
 
-import { trailfundsLogo } from "../assets/images";
+import { Icon } from "@components/icons";
+
+import { ModalEmailVerification, NewUserFormModal } from "@components/modal";
+
+import axios from "axios";
 
 const NOTIFICATION_TASK_NAME = "BACKGROUND-NOTIFICATION-TASK";
 const LOCATION_TASK_NAME = "BACKGROUND-LOCATION-TASK";
 
 export const Home = () => {
-  const { user, getCredentials } = useAuth0();
+  const { user, getCredentials, clearCredentials } = useAuth0();
 
   sec.setAccessToken(getCredentials);
 
@@ -54,6 +56,14 @@ export const Home = () => {
   const { location } = useSelector((state) => state.location);
 
   const dispatch = useDispatch();
+
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  const [showEmailVerificationModal, setShowEmailVerificationModal] =
+    useState(true);
+
+  const [showNewUserForm, setShowNewUserForm] = useState(true);
+  const [userLoaded, setUserLoaded] = useState(false);
 
   const {
     data: notificationData,
@@ -71,29 +81,36 @@ export const Home = () => {
     }
   );
 
-  const {
-    data: userData,
-    error,
-    isLoading,
-  } = useGetUserQuery(user.sub.split("|")[1], {
-    skip: !user.sub,
-  });
+  console.log(userLoaded);
 
-  const [
-    createUser,
-    { isSuccess, isLoading: isCreateUserLoading, isUninitialized },
-  ] = useCreateUserMutation();
+  const { data: userData, error, isLoading } = useGetMeQuery();
 
-  const fetchOrCreateUser = () => {
-    if (!userData && !error && !isLoading) {
-      console.log("CREATING NEW USER");
-      createUser({
-        email: user.email,
-        auth0UserId: user.sub.split("|")[1],
-      });
+  console.log("USER DATA: ", userData);
+
+  const fetchOrCreateUser = async () => {
+    const { data, message } = userData;
+    data && setShowNewUserForm(false);
+  };
+
+  const handleCheckEmailVerified = async () => {
+    try {
+      console.log("INSIDE HANDLE CHECK EMAIL VERIFIED");
+      const { accessToken } = await getCredentials();
+      const { data } = await axios.get(
+        `https://${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API}/users/${user?.sub}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API_KEY}`,
+          },
+        }
+      );
+      console.log("DATA FROM HANDLE EMAIL VERIFICATION: ", data);
+      const { email_verified } = data;
+      setEmailVerified(email_verified);
+    } catch (error) {
+      console.error(error);
     }
-  }
-
+  };
   TaskManager.defineTask(
     NOTIFICATION_TASK_NAME,
     ({ data, error, executionInfo }) => {
@@ -202,8 +219,15 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    fetchOrCreateUser()
+    (async () => {
+      await handleCheckEmailVerified();
+      await fetchOrCreateUser();
+    })();
   }, []);
+
+  useEffect(() => {
+    emailVerified && setShowEmailVerificationModal(!emailVerified);
+  }, [emailVerified]);
 
   if (isLoading) {
     return (
@@ -212,19 +236,42 @@ export const Home = () => {
       </View>
     );
   }
+
   if (error) {
-    console.error(error);
+    console.log("AN ERROR OCCURRED RETRIEVING A USER");
+    console.error(JSON.stringify(error.data));
   }
 
   Notifications.registerTaskAsync(NOTIFICATION_TASK_NAME);
 
   return (
     <View>
+      {showEmailVerificationModal && (
+        <ModalEmailVerification
+          title="Have you verified your email?"
+          isVisible={showEmailVerificationModal}
+          setIsModalVisible={setShowEmailVerificationModal}
+          emailVerified={emailVerified}
+          handleCheckEmailVerified={handleCheckEmailVerified}
+        />
+      )}
+      {!showEmailVerificationModal && showNewUserForm && !userData?.data && (
+        <NewUserFormModal
+          title="Please enter your first and last name."
+          isVisible={showNewUserForm}
+          setIsModalVisible={setShowNewUserForm}
+          setUserLoaded={setUserLoaded}
+        />
+      )}
       <MainLayout styleProp={defaults.background}>
-        <View style={dashboard.welcomeContainer}>
-          <Text style={dashboard.trailFunds}>Trail Funds</Text>
-          <Image source={trailfundsLogo} style={dashboard.logo} />
-          <Text style={dashboard.welcomeMessage}>Welcome!</Text>
+        <View className="items-center justify-center pb-8">
+          <Text className="font-primary-600 text-6xl py-4">Trail Funds</Text>
+          <Icon icon="trailfundsLogo" size={100} />
+          {userData?.data ? (
+            <Text className="text-3xl pt-6">{`Welcome ${userData?.data.firstName}!`}</Text>
+          ) : (
+            <Text className="text-3xl pt-6">{`Welcome!`}</Text>
+          )}
         </View>
         <PrimaryButton
           text="View Profile"

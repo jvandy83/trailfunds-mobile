@@ -92,11 +92,11 @@ export function PrimaryButton({ text, onPress, color, disabled }) {
         <Text
           style={StyleSheet.create({
             color: textColor,
-            fontWeight: "bold",
             textTransform: "uppercase",
             fontSize: 16,
             textAlign: "center",
           })}
+           className="font-primary-500"
         >
           {" "}
           {text}

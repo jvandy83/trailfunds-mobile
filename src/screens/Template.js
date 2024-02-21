@@ -1,7 +1,7 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
 import { PrimaryButton } from "../reduxStore/styles/frontendStyles";
 
 export const Template = ({ navigation }) => {

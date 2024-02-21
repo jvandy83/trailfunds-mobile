@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, ScrollView } from "react-native";
-import { MainLayout } from "../components/layout/MainLayout";
+import { MainLayout } from "@components/layout/MainLayout";
 
 export const About = () => {
   return (

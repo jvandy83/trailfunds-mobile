@@ -30,7 +30,6 @@ export const Trail = ({ route }) => {
 
   const { navigate } = useNavigation();
 
-
   const { data, isLoading, error } = useGetTrailQuery(trailId);
 
   const [donate, { isSuccess }] = useDonateMutation();
@@ -43,11 +42,11 @@ export const Trail = ({ route }) => {
         amount: 99,
         trailId,
       }).unwrap();
-      console.log("UNWRAPPED DATA: ", data)
+      console.log("UNWRAPPED DATA: ", data);
       const { transactionId } = data;
       setTransactionId(transactionId);
     } catch (error) {
-      console.error(error);
+      console.error(JSON.stringify(error));
     }
   };
 
@@ -79,8 +78,8 @@ export const Trail = ({ route }) => {
   }
 
   const initialLocation = {
-    latitude: data.trail.latitude,
-    longitude: data.trail.longitude,
+    latitude: data?.trail.latitude,
+    longitude: data?.trail.longitude,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   };
@@ -117,10 +116,10 @@ export const Trail = ({ route }) => {
           >
             <Marker
               coordinate={{
-                latitude: data.trail.latitude,
-                longitude: data.trail.longitude,
+                latitude: data?.trail.latitude,
+                longitude: data?.trail.longitude,
               }}
-              title={data.trail.name}
+              title={data?.trail.name}
             />
           </MapView>
         </View>
@@ -135,7 +134,7 @@ export const Trail = ({ route }) => {
             textAlign: "center",
           }}
         >
-          {data.trail.name}
+          {data?.trail.name}
         </Text>
         <Text>
           <Text style={{ fontWeight: "bold", fontSize: 16 }}>Trail Org:</Text>
@@ -151,13 +150,13 @@ export const Trail = ({ route }) => {
         <SecondaryButton
           text="Custom Amount"
           color="white"
-          onPress={() => navigate("Donate", { trailId: data.trail.id })}
+          onPress={() => navigate("Donate", { trailId: data?.trail.id })}
         />
         <SecondaryButton
           text="Create Subscription"
           color="black"
           backgroundColor="#D2B48C"
-          onPress={() => navigate("Subscription", { trailId: data.trail.id })}
+          onPress={() => navigate("Subscription", { trailId: data?.trail.id })}
         />
         <SecondaryButton
           text="Go Back"

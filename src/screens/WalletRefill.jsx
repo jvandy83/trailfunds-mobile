@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable, Alert, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Alert,
+  Platform,
+} from "react-native";
 
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 
@@ -10,7 +17,7 @@ import {
   PlatformPay,
 } from "@stripe/stripe-react-native";
 
-import { useAddTrailbucksMutation, useGetUserQuery } from "../services/api";
+import { useAddTrailbucksMutation, useGetMeQuery } from "../services/api";
 
 import { useAuth0 } from "react-native-auth0";
 
@@ -89,7 +96,7 @@ export const WalletRefill = ({ navigation }) => {
     data,
     isLoading: isUserLoading,
     error,
-  } = useGetUserQuery(user.sub, { skip: !useIsFocused() });
+  } = useGetMeQuery({}, { skip: !useIsFocused() });
 
   /* ----> REFS <---- */
   const textInputRef = useRef(null);
@@ -130,6 +137,8 @@ export const WalletRefill = ({ navigation }) => {
         currencyCode: "USD",
       },
     });
+
+    console.log("RESPONSE FROM CONFIRM PLATFORM PAYMENT: ", response);
 
     if (response.error) {
       setReady(true);
@@ -237,18 +246,19 @@ export const WalletRefill = ({ navigation }) => {
     }
   };
 
-  const initializePaymentSheet = async (paymentIntent) => {
+  const initializePaymentSheet = async (paymentIntent, ephemeralKey) => {
     try {
       const { error, paymentOption } = await initPaymentSheet({
         paymentIntentClientSecret: paymentIntent,
+        customerEphemeralKeySecret: ephemeralKey,
         merchantDisplayName: "Trailfunds",
         style: "alwaysDark", // If darkMode
         googlePay: true, // If implementing googlePay
         applePay: true, // If implementing applePay
         merchantCountryCode: "US", // Countrycode of the merchant
-        returnURL: "https://localhost:5000/return-url",
+        returnURL: "trailfunds://",
         // testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
-        primaryButtonLabel: `$${String(normalizeCurrency().amountPlusFee)}`
+        primaryButtonLabel: `$${String(normalizeCurrency().amountPlusFee)}`,
       });
     } catch (error) {
       console.error(error.data);
@@ -269,9 +279,9 @@ export const WalletRefill = ({ navigation }) => {
 
       console.log("RESPONSE WITH PAYMENT INTENT: ", response.data);
 
-      const { paymentIntent } = response.data;
+      const { clientSecret, ephemeralKey } = response.data;
 
-      setPaymentIntent(paymentIntent.client_secret);
+      setPaymentIntent(clientSecret);
       console.log(
         "DONATION AMOUNT IN HANDLE INITIATE PAYMENT INTENT: ",
         donationAmount
@@ -279,7 +289,7 @@ export const WalletRefill = ({ navigation }) => {
       setDonationAmount(donationAmount);
 
       try {
-        await initializePaymentSheet(paymentIntent.client_secret);
+        await initializePaymentSheet(clientSecret, ephemeralKey);
       } catch (error) {
         console.error(error);
       }
@@ -344,7 +354,7 @@ export const WalletRefill = ({ navigation }) => {
 
   if (error) {
     console.log("******* THERE WAS AN ERROR MAKING A PAYMENT *********");
-    console.error(error.detail);
+    console.error(error.data);
   }
 
   return (
@@ -479,6 +489,7 @@ export const WalletRefill = ({ navigation }) => {
                 Platform.OS === "ios" ? buyWithApplePay : buyWithGooglePay
               }
               disabled={!ready}
+              appearance="whiteOutline"
               style={styles.payButton}
             />
             <PrimaryButton
@@ -507,7 +518,9 @@ export const WalletRefill = ({ navigation }) => {
                 load <Text className="font-bold">$5.00</Text> on your Traibucks
                 on your virtual card, you will actually pay{" "}
                 <Text className="font-bold">$5.45</Text>. Once money is loaded
-                on your Trailbucks card, you will only pay the platform fee associated with building and maintaining Trailfunds, which is 10%.
+                on your Trailbucks card, you will only pay the platform fee
+                associated with building and maintaining Trailfunds, which is
+                10%.
               </Text>
               <Text className="pb-2">
                 Preloading money or "Trailbucks" on your virtual card will

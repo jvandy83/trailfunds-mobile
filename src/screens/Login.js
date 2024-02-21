@@ -4,7 +4,7 @@ import { useAuth0 } from "react-native-auth0";
 
 import { Svg, Path, G } from "react-native-svg";
 
-import { HideKeyboard } from "../components/hideKeyboard";
+import { HideKeyboard } from "@components/hideKeyboard";
 
 import { PrimaryButton } from "../reduxStore/styles/frontendStyles";
 

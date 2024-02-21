@@ -1,19 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { sec } from "../../hooks/useToken";
+import { sec } from "@hooks/useToken";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
-
-const withAuth = (token) => {
-  return {
-    Authorization: `Bearer ${token}`,
-  };
-};
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: async (headers, _) => {
     const { idToken } = await sec.getAccessToken()();
+    console.log("****** ID TOKEN ****** : ", idToken);
     if (idToken) {
       headers.set("Authorization", `Bearer ${idToken}`);
     }
@@ -28,23 +23,45 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Trailbucks", "Notifications"],
+  tagTypes: ["Trailbucks", "Notifications", "User"],
   endpoints: (build) => ({
-    me: build.query({
+    getMe: build.query({
       query: () => `users/me`,
+      providesTags: ["User"],
+    }),
+    getUser: build.query({
+      query: (auth0UserId) => `users/${auth0UserId.split("|")[1]}`,
     }),
     createUser: build.mutation({
-      query: (args) => {
-        const { auth0UserId, email } = args;
+      query: (body) => {
+        const { auth0UserId } = body;
+        const parsedAuth0UserId = auth0UserId.split("|")[1];
         return {
           url: `users`,
           method: "POST",
-          body: { auth0_user_id: auth0UserId, email },
+          body: {
+            auth0_user_id: parsedAuth0UserId,
+            email: body.email,
+            first_name: body.firstName,
+            last_name: body.lastName,
+          },
         };
       },
+      invalidatesTags: ["User"],
     }),
-    getUser: build.query({
-      query: (auth0UserId) => `users/${auth0UserId}`,
+    updateUser: build.mutation({
+      query: (body) => {
+        return {
+          url: `users`,
+          method: "POST",
+          body: {
+            auth0_user_id: body.auth0UserId,
+            email: body.email,
+            first_name: body.firstName,
+            last_name: body.lastName,
+          },
+        };
+      },
     }),
     getTrailsNearMe: build.query({
       query: (arg) => {
@@ -126,20 +143,19 @@ export const api = createApi({
       invalidatesTags: [{ type: "Notifications" }],
     }),
     addSubscription: build.mutation({
-      query: (productId) => {
+      query: (body) => {
         return {
-          url: `create-checkout-session`,
+          url: `create-subscription`,
           method: "POST",
-          body: { productId },
+          body,
         };
       },
     }),
     createPortalSession: build.mutation({
-      query: (sessionId) => {
+      query: (arg = null) => {
         return {
           url: `create-portal-session`,
           method: "POST",
-          body: { sessionId },
         };
       },
     }),
@@ -147,6 +163,7 @@ export const api = createApi({
 });
 
 export const {
+  useGetMeQuery,
   useGetUserQuery,
   useGetTrailsNearMeQuery,
   useGetTransactionsQuery,
@@ -157,8 +174,8 @@ export const {
   useGetCurrentBalanceQuery,
   useGetDistanceFromMeQuery,
   useCreateUserMutation,
-  useAddSubscriptionMutation,
   useCreatePortalSessionMutation,
+  useAddSubscriptionMutation,
   useAddTrailbucksMutation,
   useDonateMutation,
   useSetNotificationEnabledMutation,

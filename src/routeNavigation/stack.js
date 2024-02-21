@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { faNavicon } from "@fortawesome/free-solid-svg-icons";
 
-import { logoBlack } from "../assets/images";
+import { trailfundsLogo } from "../assets/images";
 
 //pages
 import {
@@ -33,9 +33,10 @@ import {
   Donate,
   PaymentSuccess,
   Subscription,
+  PaymentInfo,
 } from "../screens";
 
-import { CustomDrawerContent } from "../components/drawer/DrawerContent";
+import { CustomDrawerContent } from "@components/drawer/DrawerContent";
 
 const Drawer = createDrawerNavigator();
 
@@ -80,7 +81,10 @@ export const Root = () => {
               >
                 |
               </Text>
-              <Image source={logoBlack} style={{ height: 30, width: 30 }} />
+              <Image
+                source={trailfundsLogo}
+                style={{ height: 30, width: 30 }}
+              />
             </View>
           );
         },
@@ -95,6 +99,7 @@ export const Root = () => {
       <Drawer.Screen name="Help" component={Template} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Success" component={PaymentSuccess} />
+      <Stack.Screen name="PaymentInfo" component={PaymentInfo} />
     </Drawer.Navigator>
   );
 };
@@ -126,6 +131,7 @@ export const StackHome = () => {
             <Stack.Screen name="Donate" component={Donate} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="Subscription" component={Subscription} />
+            <Stack.Screen name="PaymentInfo" component={PaymentInfo} />
           </>
         ) : (
           <>

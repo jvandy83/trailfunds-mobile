@@ -4,11 +4,12 @@ import { sec } from "@hooks/useToken";
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
+console.log(baseUrl);
+
 const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: async (headers, _) => {
     const { idToken } = await sec.getAccessToken()();
-    console.log("****** ID TOKEN ****** : ", idToken);
     if (idToken) {
       headers.set("Authorization", `Bearer ${idToken}`);
     }
@@ -25,6 +26,25 @@ export const api = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Trailbucks", "Notifications", "User"],
   endpoints: (build) => ({
+    resendEmailVerification: build.mutation({
+      query: () => {
+        return {
+          url: `users/resend-verification`,
+          method: "POST",
+        };
+      },
+      providesTags: ["User"],
+    }),
+    verifyEmail: build.mutation({
+      query: (auth0_user_id) => {
+        return {
+          url: `users/email-verification`,
+          method: "POST",
+          body: { auth0_user_id },
+        };
+      },
+      providesTags: ["User"],
+    }),
     getMe: build.query({
       query: () => `users/me`,
       providesTags: ["User"],
@@ -173,6 +193,8 @@ export const {
   useGetTrailQuery,
   useGetCurrentBalanceQuery,
   useGetDistanceFromMeQuery,
+  useResendEmailVerificationMutation,
+  useVerifyEmailMutation,
   useCreateUserMutation,
   useCreatePortalSessionMutation,
   useAddSubscriptionMutation,

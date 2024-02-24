@@ -67,9 +67,7 @@ export const Profile = () => {
             style={profile.textUse}
             text="Payment Info"
             color="white"
-            onPress={() =>
-              navigate("PaymentInfo")
-            }
+            onPress={() => navigate("Payment Info")}
           />
 
           <PrimaryButton

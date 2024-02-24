@@ -99,7 +99,7 @@ export const Root = () => {
       <Drawer.Screen name="Help" component={Template} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Success" component={PaymentSuccess} />
-      <Stack.Screen name="PaymentInfo" component={PaymentInfo} />
+      <Stack.Screen name="Payment Info" component={PaymentInfo} />
     </Drawer.Navigator>
   );
 };
@@ -131,7 +131,7 @@ export const StackHome = () => {
             <Stack.Screen name="Donate" component={Donate} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="Subscription" component={Subscription} />
-            <Stack.Screen name="PaymentInfo" component={PaymentInfo} />
+            <Stack.Screen name="Payment Info" component={PaymentInfo} />
           </>
         ) : (
           <>

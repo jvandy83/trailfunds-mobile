@@ -27,7 +27,6 @@ export default function App() {
     <StripeProvider
       merchantIdentifier={process.env.EXPO_PUBLIC_MERCHANT_IDENTIFIER}
       publishableKey={process.env.EXPO_PUBLIC_STRIPE_API_KEY}
-      // urlScheme="trailfunds://stripe-redirect"
     >
       <Auth0Provider
         domain={process.env.EXPO_PUBLIC_AUTH0_DOMAIN}

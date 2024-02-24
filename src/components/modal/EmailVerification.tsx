@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Text, View } from "react-native";
 
 import { useAuth0 } from "react-native-auth0";
 
-import Modal from "react-native-modal"
+import Modal from "react-native-modal";
+
+import { useResendEmailVerificationMutation } from "@services/api";
 
 import { showToast } from "@utils/toast";
 
@@ -13,7 +15,7 @@ import { PrimaryButton } from "@/reduxStore/styles/frontendStyles";
 
 type ModalEmailVerificationProps = {
   title: string;
-  setIsModalVisible: (arg: boolean) => void;
+  setIsModalVisible: Dispatch<SetStateAction<boolean>>;
   isVisible: boolean;
   emailVerified: boolean;
   handleCheckEmailVerified: () => void;
@@ -28,17 +30,25 @@ export const ModalEmailVerification = ({
 }: ModalEmailVerificationProps) => {
   const { user, getCredentials } = useAuth0();
 
+  const [
+    resendEmailVerfication,
+    {
+      isSuccess,
+      isLoading: resendEmailVerificationLoading,
+      error: resendEmailVerficationError,
+    },
+  ] = useResendEmailVerificationMutation();
+
   const closeModal = () => {
     emailVerified && setIsModalVisible(!isVisible);
   };
 
   const handleResendVerification = async () => {
-
     try {
       const { data } = await axios.post(
         `https://${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API}/jobs/verification-email`,
         {
-          user_id: user?.sub
+          user_id: user?.sub,
         },
         {
           headers: {
@@ -46,14 +56,14 @@ export const ModalEmailVerification = ({
           },
         }
       );
-      console.log("DATA FROM RESEND EMAIL VERIFICATION: ", data)
+      console.log("DATA FROM RESEND EMAIL VERIFICATION: ", data);
       // const { message } = data;
       // showToast({
       //   message,
       //   severity: "success",
       // });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -83,10 +93,18 @@ export const ModalEmailVerification = ({
           </View>
         </View>
         <View className="flex pb-20 w-full items-center">
-            <PrimaryButton text="Continue" onPress={handleCheckEmailVerified} color="white" disabled={undefined} />
-            <PrimaryButton
-              text="Resend verification"
-              onPress={handleResendVerification} color="white" disabled={undefined}/>
+          <PrimaryButton
+            text="Continue"
+            onPress={handleCheckEmailVerified}
+            color="white"
+            disabled={undefined}
+          />
+          <PrimaryButton
+            text="Resend verification"
+            onPress={handleResendVerification}
+            color="white"
+            disabled={undefined}
+          />
         </View>
       </View>
     </Modal>

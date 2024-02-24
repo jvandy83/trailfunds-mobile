@@ -13,7 +13,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
   useStripe,
   usePlatformPay,
-  PlatformPayButton,
   PlatformPay,
 } from "@stripe/stripe-react-native";
 
@@ -21,13 +20,15 @@ import { useAddTrailbucksMutation, useGetMeQuery } from "../services/api";
 
 import { useAuth0 } from "react-native-auth0";
 
-import { formatCurrency } from "../hooks/utils/currencyFormatter";
+import { formatCurrency } from "../utils/currencyFormatter";
 
 import { CustomInputModal } from "../components/modal/CustomInputModal";
 
 import { MainLayout } from "../components/layout/MainLayout";
 
 import { BottomSheetModalComponent } from "../components/bottomSheet/BottomSheetModalComponent";
+
+import { Icon } from "@components/icons";
 
 import {
   PrimaryButton,
@@ -117,9 +118,9 @@ export const WalletRefill = ({ navigation }) => {
       parseFloat(amount.customAmount) > amount.selectAmount
         ? parseFloat(amount.customAmount)
         : amount.selectAmount;
-    const { parsedForUI, convertToPennies, amountPlusFee } =
+    const { parsedForUI, convertToPennies, amountPlusFee, parsedAmount } =
       formatCurrency(currency);
-    return { parsedForUI, convertToPennies, amountPlusFee };
+    return { parsedForUI, convertToPennies, amountPlusFee, parsedAmount };
   };
 
   const buyWithApplePay = async () => {
@@ -128,7 +129,7 @@ export const WalletRefill = ({ navigation }) => {
       applePay: {
         cartItems: [
           {
-            amount: String(normalizeCurrency().amountPlusFee),
+            amount: String(normalizeCurrency().parsedAmount),
             paymentType: PlatformPay.PaymentType.Immediate,
           },
         ],
@@ -138,15 +139,11 @@ export const WalletRefill = ({ navigation }) => {
       },
     });
 
-    console.log("RESPONSE FROM CONFIRM PLATFORM PAYMENT: ", response);
-
     if (response.error) {
       setReady(true);
       alert(`Error: ${response.error.message}`);
       return;
     }
-    console.log("DATA ID: ", data?.id, "AMOUNT: ", amount);
-    console.log("donationAmount: ", typeof donationAmount);
     addTrailbucks({ amount: donationAmount });
     setReady(true);
     Alert.alert(
@@ -201,7 +198,7 @@ export const WalletRefill = ({ navigation }) => {
     setReady(false);
     const { error, paymentOption } = await presentPaymentSheet({
       confirmPayment: false,
-      amount: String(normalizeCurrency().amountPlusFee),
+      amount: String(normalizeCurrency().parsedAmount),
     });
     if (error) {
       setReady(true);
@@ -256,9 +253,8 @@ export const WalletRefill = ({ navigation }) => {
         googlePay: true, // If implementing googlePay
         applePay: true, // If implementing applePay
         merchantCountryCode: "US", // Countrycode of the merchant
-        returnURL: "trailfunds://",
-        // testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
-        primaryButtonLabel: `$${String(normalizeCurrency().amountPlusFee)}`,
+        primaryButtonLabel: `$${String(normalizeCurrency().parsedAmount)}`,
+        returnURL: `${process.env.EXPO_PUBLIC_BASE_URL}/stripe/stripe-redirect`,
       });
     } catch (error) {
       console.error(error.data);
@@ -376,7 +372,9 @@ export const WalletRefill = ({ navigation }) => {
                 textShadowColor: "rgba(0, 0, 0, 0.2)",
                 textShadowRadius: 10,
               }}
-            >{`${normalizeCurrency().parsedForUI}`}</Text>
+            >
+              {normalizeCurrency().parsedForUI}
+            </Text>
           </View>
           <View style={{ flexDirection: "row", paddingVertical: 10 }}>
             <Text
@@ -484,14 +482,24 @@ export const WalletRefill = ({ navigation }) => {
             handlePaymentVerified={setVerifiedPaymentAmount}
           />
           <View style={{ alignItems: "center", marginTop: 30 }}>
-            <PlatformPayButton
+            <Pressable
               onPress={
                 Platform.OS === "ios" ? buyWithApplePay : buyWithGooglePay
               }
-              disabled={!ready}
-              appearance="whiteOutline"
-              style={styles.payButton}
-            />
+              className="py-2"
+            >
+              {Platform.OS === "ios" ? (
+                <View className="bg-black flex-row justify-center items-center bold px-4 py-2 rounded-full w-72">
+                  <Icon icon="appleIcon" size={25} />
+                  <Text className="text-white text-3xl pl-3">Pay</Text>
+                </View>
+              ) : (
+                <View className="bg-black flex-row justify-center items-center bold px-4 py-2 rounded-full w-72">
+                  <Icon icon="googleIcon" size={25} />
+                  <Text className="text-white text-3xl pl-3">Pay</Text>
+                </View>
+              )}
+            </Pressable>
             <PrimaryButton
               onPress={buyWithCard}
               text="Pay with card"
@@ -573,5 +581,46 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 24,
     textAlign: "center",
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  screen: {
+    alignSelf: "stretch",
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  productRow: {
+    paddingVertical: 24,
+    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+    width: "75%",
+  },
+  buyButton: {
+    backgroundColor: "#007DFF",
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 8,
+  },
+  textButton: {
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 8,
+    color: "#007DFF",
+  },
+  selectButton: {
+    borderColor: "#007DFF",
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+  },
+  boldText: {
+    fontSize: 17,
+    fontWeight: "700",
   },
 });

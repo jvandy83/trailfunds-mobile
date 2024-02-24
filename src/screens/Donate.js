@@ -14,7 +14,7 @@ import { CustomInputModal } from "@components/modal/CustomInputModal";
 import { MainLayout } from "@components/layout/MainLayout";
 
 import { SecondaryButton } from "../reduxStore/styles/frontendStyles";
-import { formatCurrency } from "@hooks/utils/currencyFormatter";
+import { formatCurrency } from "@/utils/currencyFormatter";
 
 const preselectedInputs = {
   5: 0,
@@ -90,7 +90,7 @@ export const Donate = ({ route }) => {
       setErrorMessage(message);
       setTransactionId(transactionId);
     } catch (error) {
-      console.log("There was an error making a donation!!!")
+      console.log("There was an error making a donation!!!");
       console.error(error);
     }
   };

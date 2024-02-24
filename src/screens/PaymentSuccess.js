@@ -15,7 +15,7 @@ import { PrimaryButton } from "../reduxStore/styles/frontendStyles";
 
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { formatCurrency } from "../hooks/utils/currencyFormatter";
+import { formatCurrency } from "../utils/currencyFormatter";
 
 export const PaymentSuccess = ({ route }) => {
   const bottomSheetModalRef = useRef(null);

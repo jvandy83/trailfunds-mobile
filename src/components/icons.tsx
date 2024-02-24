@@ -1,12 +1,22 @@
-import * as React from "react"
-import { ComponentType } from "react"
-import { StyleProp, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from "react-native"
-import { SvgProps } from "react-native-svg"
+import * as React from "react";
+import { ComponentType } from "react";
+import {
+  StyleProp,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+  ViewStyle,
+} from "react-native";
+import { SvgProps } from "react-native-svg";
 
-import TrailfundsLogo from "../assets/icons/TrailfundsLogo.svg"
+import TrailfundsLogo from "../assets/icons/TrailfundsLogo.svg";
+import AppleLogo from "../assets/icons/appleIcon.svg";
+import GoogleLogo from "../assets/icons/googleIcon.svg";
 
 export const iconComponents = {
   trailfundsLogo: <TrailfundsLogo />,
+  appleIcon: <AppleLogo />,
+  googleIcon: <GoogleLogo />,
   // home: <HomeIcon />,
   // document: <DocumentIcon />,
   // learn: <LearnIcon />,
@@ -23,39 +33,39 @@ export const iconComponents = {
   // techStarsLogo: <TechStarsLogo />,
   // savvlyLogo: <SavvlyLogo />,
   // profile: <ProfileIcon />,
-}
-export type IconTypes = keyof typeof iconComponents
+};
+export type IconTypes = keyof typeof iconComponents;
 
 interface IconProps extends TouchableOpacityProps {
   /**
    * The name of the icon
    */
-  icon: IconTypes
+  icon: IconTypes;
 
   /**
    * An optional tint color for the icon
    */
-  color?: string
+  color?: string;
 
   /**
    * An optional size for the icon. If not provided, the icon will be sized to the icon's resolution.
    */
-  size?: number
+  size?: number;
 
   /**
    * Style overrides for the icon image
    */
-  style?: SvgProps["style"]
+  style?: SvgProps["style"];
 
   /**
    * Style overrides for the icon container
    */
-  containerStyle?: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>;
 
   /**
    * An optional function to be called when the icon is pressed
    */
-  onPress?: TouchableOpacityProps["onPress"]
+  onPress?: TouchableOpacityProps["onPress"];
 }
 
 /**
@@ -74,20 +84,26 @@ export function Icon(props: IconProps) {
     className,
     containerStyle: $containerStyleOverride,
     ...WrapperProps
-  } = props
+  } = props;
 
-  const isPressable = !!WrapperProps.onPress
-  const Wrapper: ComponentType<TouchableOpacityProps> = WrapperProps?.onPress ? TouchableOpacity : View
+  const isPressable = !!WrapperProps.onPress;
+  const Wrapper: ComponentType<TouchableOpacityProps> = WrapperProps?.onPress
+    ? TouchableOpacity
+    : View;
   // eslint-disable-next-line security/detect-object-injection
   const iconComponent = React.cloneElement(iconComponents[icon], {
     width: size,
     height: size,
     style: [{ color }, $imageStyleOverride],
     className,
-  })
+  });
   return (
-    <Wrapper accessibilityRole={isPressable ? "imagebutton" : undefined} {...WrapperProps} style={$containerStyleOverride}>
+    <Wrapper
+      accessibilityRole={isPressable ? "imagebutton" : undefined}
+      {...WrapperProps}
+      style={$containerStyleOverride}
+    >
       {iconComponent}
     </Wrapper>
-  )
+  );
 }

@@ -40,7 +40,7 @@ export const Subscription = ({ route }) => {
         googlePay: true, // If implementing googlePay
         applePay: true, // If implementing applePay
         merchantCountryCode: "US", // Countrycode of the merchant
-        returnURL: "trailfunds://",
+        returnURL: `${process.env.EXPO_PUBLIC_BASE_URL}/stripe/stripe-redirect`,
         // testEnv: process.env.NODE_ENV === 'test', // Set this flag if it's a test environment
       });
     } catch (error) {

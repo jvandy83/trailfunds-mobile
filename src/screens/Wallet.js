@@ -14,7 +14,7 @@ import {
 
 import { useIsFocused, useFocusEffect } from "@react-navigation/native";
 
-import { formatCurrency } from "../hooks/utils/currencyFormatter";
+import { formatCurrency } from "../utils/currencyFormatter";
 
 import {
   BottomSheetModal,

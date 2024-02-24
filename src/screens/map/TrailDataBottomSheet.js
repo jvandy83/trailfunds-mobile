@@ -32,8 +32,6 @@ import axios from "axios";
 
 import uuid from "react-native-uuid";
 
-const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
-
 export const TrailDataBottomSheet = ({
   data,
   setRadius,
@@ -94,7 +92,7 @@ export const TrailDataBottomSheet = ({
     const delaySearchFn = setTimeout(() => {
       axios
         .get(
-          `https://sharing-genuinely-locust.ngrok-free.app/api/v1/trails/search-trails?query=${searchItem}`
+          `${process.env.EXPO_PUBLIC_BASE_URL}/trails/search-trails?query=${searchItem}`
         )
         .then((res) => {
           setQueryData(res.data);

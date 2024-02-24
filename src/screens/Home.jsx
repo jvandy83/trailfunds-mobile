@@ -5,6 +5,7 @@ import { View, Text } from "react-native";
 import {
   useGetMeQuery,
   useGetRadiusPushNotificationQuery,
+  useVerifyEmailMutation,
 } from "../services/api";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -17,9 +18,9 @@ import * as TaskManager from "expo-task-manager";
 
 import * as Notifications from "expo-notifications";
 
-import { registerForPushNotificationsAsync } from "../assets/api/pushNotifications";
+import { registerForPushNotificationsAsync } from "../pushNotifications";
 
-import { fetchPushToken } from "../assets/api/pushNotifications/usePushToken";
+import { fetchPushToken } from "../pushNotifications/usePushToken";
 
 import { sec } from "@hooks/useToken.js";
 
@@ -38,8 +39,6 @@ import { Icon } from "@components/icons";
 
 import { ModalEmailVerification, NewUserFormModal } from "@components/modal";
 
-import axios from "axios";
-
 const NOTIFICATION_TASK_NAME = "BACKGROUND-NOTIFICATION-TASK";
 const LOCATION_TASK_NAME = "BACKGROUND-LOCATION-TASK";
 
@@ -57,13 +56,18 @@ export const Home = () => {
 
   const dispatch = useDispatch();
 
-  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(true);
 
   const [showEmailVerificationModal, setShowEmailVerificationModal] =
     useState(true);
 
   const [showNewUserForm, setShowNewUserForm] = useState(true);
   const [userLoaded, setUserLoaded] = useState(false);
+
+  const [
+    verifyEmail,
+    { isLoading: verifyEmailLoading, error: verifyEmailError },
+  ] = useVerifyEmailMutation();
 
   const {
     data: notificationData,
@@ -81,36 +85,18 @@ export const Home = () => {
     }
   );
 
-  console.log(userLoaded);
-
   const { data: userData, error, isLoading } = useGetMeQuery();
 
-  console.log("USER DATA: ", userData);
-
   const fetchOrCreateUser = async () => {
-    const { data, message } = userData;
+    const { data, message } = await userData;
     data && setShowNewUserForm(false);
   };
 
   const handleCheckEmailVerified = async () => {
-    try {
-      console.log("INSIDE HANDLE CHECK EMAIL VERIFIED");
-      const { accessToken } = await getCredentials();
-      const { data } = await axios.get(
-        `https://${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API}/users/${user?.sub}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API_KEY}`,
-          },
-        }
-      );
-      console.log("DATA FROM HANDLE EMAIL VERIFICATION: ", data);
-      const { email_verified } = data;
-      setEmailVerified(email_verified);
-    } catch (error) {
-      console.error(error);
-    }
+    const { data } = await verifyEmail(user?.sub);
+    setEmailVerified(data);
   };
+
   TaskManager.defineTask(
     NOTIFICATION_TASK_NAME,
     ({ data, error, executionInfo }) => {
@@ -226,7 +212,7 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    emailVerified && setShowEmailVerificationModal(!emailVerified);
+    setShowEmailVerificationModal(!emailVerified);
   }, [emailVerified]);
 
   if (isLoading) {
@@ -292,51 +278,3 @@ export const Home = () => {
     </View>
   );
 };
-
-/*
-
-***NOTIFICATION PAYLOAD***
-
-{
-	"date": 1683236545.8257608, 
-	"request": {
-		"content": {
-			"attachments": [], 
-			"badge": null, 
-			"body": "this is a test message", 
-			"categoryIdentifier": "", 
-			"data": {}, 
-			"launchImageName": "", 
-			"sound": null, 
-			"subtitle": null, 
-			"summaryArgument": null, 
-			"summaryArgumentCount": 0, 
-			"targetContentIdentifier": null, 
-			"threadIdentifier": "", 
-			"title": null
-		}, 
-		"identifier": "E6D71CC5-3899-4C46-AE9D-5A474CDA8EBD", 
-		"trigger": {
-			"class": "UNPushNotificationTrigger", 
-			"payload": {
-				"aps": {
-					"alert": {
-						"body": "this is a test message", 
-						"launch-image": "", 
-						"subtitle": "", 
-						"title": ""
-					}, 
-					"category": "", 
-					"thread-id": ""
-				}, 
-				"body": {}, 
-				"experienceId": "@vanthedev/TrailFundsApp", 
-				"projectId": "08397746-9845-4f6a-8f8b-575a44ae3772", 
-				"scopeKey": "@vanthedev/TrailFundsApp"
-			}, 
-			"type": "push"
-		}
-	}
-}
-
-*/

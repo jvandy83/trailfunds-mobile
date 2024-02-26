@@ -52,13 +52,8 @@ export const Donate = ({ route }) => {
   const [transactionId, setTransactionId] = useState(null);
 
   const [errorMessage, setErrorMessage] = useState(null);
-  // RTK Query
 
-  const {
-    data: userData,
-    isLoading: isUserLoading,
-    error: userError,
-  } = useGetUserQuery();
+  // RTK Query
 
   const { data, isLoading, error } = useGetTrailQuery(trailId);
 
@@ -70,8 +65,18 @@ export const Donate = ({ route }) => {
   const normalizeCurrency = () => {
     const currency =
       amount.customAmount > 0 ? amount.customAmount : amount.selectAmount;
-    const { parsedForUI, convertToPennies } = formatCurrency(currency);
-    return { parsedForUI, convertToPennies };
+    const {
+      parsedForUI,
+      convertToPennies,
+      convertToPenniesForDonation,
+      parsedForUIDonation,
+    } = formatCurrency(currency);
+    return {
+      parsedForUI,
+      convertToPennies,
+      convertToPenniesForDonation,
+      parsedForUIDonation,
+    };
   };
 
   /* ----> EVENT HANDLERS <---- */
@@ -83,7 +88,7 @@ export const Donate = ({ route }) => {
       amount.customAmount > 0 ? amount.customAmount : amount.selectAmount;
     try {
       const { data } = await donate({
-        amount: normalizeCurrency(donationAmount).convertToPennies,
+        amount: normalizeCurrency(donationAmount).convertToPenniesForDonation,
         trailId,
       }).unwrap();
       const { transactionId, message } = data;
@@ -181,7 +186,7 @@ export const Donate = ({ route }) => {
                 textShadowRadius: 10,
               }}
             >
-              {normalizeCurrency().parsedForUI}
+              {normalizeCurrency().parsedForUIDonation}
             </Text>
           </View>
 
@@ -281,7 +286,7 @@ export const Donate = ({ route }) => {
             <SecondaryButton
               disabled={!!errorMessage}
               onPress={handleSubmitDonation}
-              text={`Donate ${normalizeCurrency().parsedForUI}`}
+              text={`Donate ${normalizeCurrency().parsedForUIDonation}`}
             />
           </View>
           <View>

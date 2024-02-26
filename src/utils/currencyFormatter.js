@@ -5,32 +5,32 @@ const feeFixed = 0.3;
 // (100 + .3) / (1 - .029)
 
 function truncate(number, decimals) {
+  if (number === 0) {
+    return "0.00";
+  }
   const factor = Math.pow(10, decimals);
-  const truncatedNumber = Math.floor(number * factor) / factor;
+  const truncatedNumber = (number * factor) / factor;
   return truncatedNumber.toFixed(2); // Ensure two digits after the decimal point
 }
 
 export const formatCurrency = (amount) => {
-  console.log("AMOUNT: ", amount);
-  let amountPlusFee = amount;
-  if (amount > 0) {
-    amountPlusFee = (amount + feeFixed) / (1 - feePercentage);
-    console.log("AMOUNT PLUS FEE: ", amountPlusFee);
-  }
-  const parsedAmount = truncate(amountPlusFee, 2);
-  console.log("PARSED AMOUNT: ", parsedAmount);
-  let parsedNumber = String(parsedAmount).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  console.log("PARSED NUMBER : ", parsedNumber);
-  if (amount === 0) {
-    parsedNumber = parseFloat(parsedAmount).replace(
-      /(\d)(?=(\d{3})+\.)/g,
-      "$1,"
-    );
-  }
-  const parsedForUI = `$${parsedAmount}`;
+  amountPlusFee = (amount + feeFixed) / (1 - feePercentage);
+
+  const parsedAmountWithFee = truncate(amountPlusFee, 2);
+
+  const parsedAmountWithoutFee = truncate(amount, 2);
+
+  const parsedForUIWithFee = `$${parsedAmountWithFee}`;
+  const parsedForUIWithoutFee = `$${parsedAmountWithoutFee}`;
   const convertToPennies = parseFloat(amountPlusFee) * 100;
+  const convertToPenniesWithoutFee = parseFloat(amount) * 100;
 
-  console.log("PARSED FOR UI: ", parsedForUI);
-
-  return { parsedForUI, convertToPennies, amountPlusFee, parsedAmount };
+  return {
+    parsedForUI: parsedForUIWithFee,
+    convertToPennies,
+    amountPlusFee,
+    parsedAmount: parsedAmountWithFee,
+    convertToPenniesForDonation: convertToPenniesWithoutFee,
+    parsedForUIDonation: parsedForUIWithoutFee,
+  };
 };

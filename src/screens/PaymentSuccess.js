@@ -139,7 +139,9 @@ export const PaymentSuccess = ({ route }) => {
               }}
             >
               <Text style={{ fontWeight: "bold" }}>Donation Amount</Text>
-              <Text>{`${formatCurrency(data?.amount / 100).parsedForUI}`}</Text>
+              <Text>{`${
+                formatCurrency(data?.amount / 100).parsedForUIDonation
+              }`}</Text>
             </View>
             <View
               style={{

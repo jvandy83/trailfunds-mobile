@@ -525,7 +525,7 @@ export const WalletRefill = ({ navigation }) => {
                 you load money onto your Trailbucks card. For example, if you
                 load <Text className="font-bold">$5.00</Text> on your Traibucks
                 on your virtual card, you will actually pay{" "}
-                <Text className="font-bold">$5.45</Text>. Once money is loaded
+                <Text className="font-bold">$5.46</Text>. Once money is loaded
                 on your Trailbucks card, you will only pay the platform fee
                 associated with building and maintaining Trailfunds, which is
                 10%.

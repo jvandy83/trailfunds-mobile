@@ -65,7 +65,7 @@ export const Wallet = ({ navigation, route }) => {
             color: "#59C092",
           }}
         >
-          {`${formatCurrency(item.amount / 100).parsedForUI}`}
+          {`${formatCurrency(item.amount / 100).parsedForUIDonation}`}
         </Text>
       </View>
     );
@@ -135,7 +135,7 @@ export const Wallet = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              {isLoading ? "" : `${formatCurrency(data).parsedForUI}`}
+              {isLoading ? "" : `${formatCurrency(data).parsedForUIDonation}`}
             </Text>
           </View>
 

@@ -1,13 +1,11 @@
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { Text, View, TextInput } from "react-native";
 
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { TextInputField } from "../text-input/TextInputField";
 
-import { useAuth0 } from "react-native-auth0";
-
-import { useCreateUserMutation } from "@/services/api";
+import { useUpdateTrailOrgMutation } from "@/services/api";
 
 import Modal from "react-native-modal";
 
@@ -15,32 +13,41 @@ import { showToast } from "@utils/toast";
 
 import { PrimaryButton } from "@/reduxStore/styles/frontendStyles";
 
-type ModalNewUserProps = {
+type ModalTrailOrgsProps = {
   title: string;
   setIsModalVisible: Dispatch<SetStateAction<boolean>>;
   isVisible: boolean;
-  setUserLoaded: Dispatch<SetStateAction<boolean>>;
 };
 
-type User = {
-  firstName: string;
-  lastName: string;
+interface TrailOrg {
+  name: string;
+  contacts: [];
+  address: {
+    street: string;
+    city: string;
+    zipcode: string;
+  };
+  phoneNumber: string;
   email: string;
-  auth0UserId: string;
-};
+}
 
-export const NewUserFormModal = ({
+export const TrailOrgSourcingModal = ({
   title,
   setIsModalVisible,
   isVisible,
-  setUserLoaded,
-}: ModalNewUserProps) => {
-  const { user } = useAuth0();
+}: ModalTrailOrgsProps) => {
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState({
+    street: "",
+    city: "",
+    zipcode: "",
+  });
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-
-  const [createUser, { isSuccess, isLoading }] = useCreateUserMutation();
+  const [updateTrailOrg, { isSuccess, isLoading }] =
+    useUpdateTrailOrgMutation();
 
   const {
     control,
@@ -50,25 +57,12 @@ export const NewUserFormModal = ({
   } = useForm();
 
   const closeModal = () => {
-    isSuccess && setIsModalVisible(!isVisible);
+    setIsModalVisible(!isVisible);
   };
 
-  const onSubmit = (data: User) => {
-    createUser({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      auth0UserId: user?.sub,
-      email: user.email,
-    })
-      .unwrap()
-      .then((payload) => {
-        setUserLoaded(true);
-        setIsModalVisible(!isVisible);
-      })
-      .catch((error) => {
-        console.log("There was an error creating a user");
-        console.error(error);
-      });
+  const onSubmit = (data: TrailOrg) => {
+    console.log("DATA IN ON SUBMIT FOR TRAIL ORG UPDATE: ", data);
+    updateTrailOrg(data);
   };
 
   return (
@@ -89,22 +83,37 @@ export const NewUserFormModal = ({
           </Text>
           <View>
             <TextInputField
-              fieldName="firstName"
-              label={firstName}
+              fieldName="name"
+              label={name}
               errors={errors}
-              placeholder="First Name"
-              onChangeText={setFirstName}
+              placeholder="Trail Org Name"
+              onChangeText={setName}
               control={control}
               rules={{ required: true }}
             />
             <TextInputField
-              fieldName="lastName"
-              label={lastName}
+              fieldName="phoneNumber"
+              label={phoneNumber}
               errors={errors}
-              placeholder="Last Name"
-              onChangeText={setLastName}
+              placeholder="Trail Org phone #"
+              onChangeText={setPhoneNumber}
               control={control}
-              rules={{ required: true }}
+            />
+            <TextInputField
+              label={contact}
+              fieldName="contact"
+              errors={errors}
+              control={control}
+              placeholder="Person in charge"
+              onChangeText={setContact}
+            />
+            <TextInputField
+              label={email}
+              fieldName="email"
+              errors={errors}
+              control={control}
+              placeholder="Trail Org email"
+              onChangeText={setEmail}
             />
             <View className="items-center">
               <PrimaryButton

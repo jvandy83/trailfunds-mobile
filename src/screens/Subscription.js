@@ -10,9 +10,9 @@ import * as Linking from "expo-linking";
 import { useStripe } from "@stripe/stripe-react-native";
 
 const SUBSCRIPTION_PLAN = {
-  BASIC: "price_1Ocrf0LlNRWolhfPpMAYczdk",
-  WEEKEND_WARRIOR: "price_1OcrZrLlNRWolhfPKldIUPn7",
-  TRAIL_BUILDER: "price_1OcrXTLlNRWolhfPgDv5R0qC",
+  BASIC: "price_1OoBqDLlNRWolhfP3uE3TvtK",
+  WEEKEND_WARRIOR: "price_1OoBrULlNRWolhfPf4Gt8APf",
+  TRAIL_BUILDER: "price_1OoBsiLlNRWolhfP9YUjcUnt",
 };
 
 export const Subscription = ({ route }) => {
@@ -92,6 +92,7 @@ export const Subscription = ({ route }) => {
       >
         <View style={styles.card}>
           <Pressable
+            style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
             onPress={() =>
               handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.BASIC)
             }
@@ -108,6 +109,7 @@ export const Subscription = ({ route }) => {
         </View>
         <View style={styles.card}>
           <Pressable
+            style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
             onPress={() =>
               handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.WEEKEND_WARRIOR)
             }
@@ -125,6 +127,7 @@ export const Subscription = ({ route }) => {
         </View>
         <View style={styles.card}>
           <Pressable
+            style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
             onPress={() =>
               handleMakeSubscriptionPayment(SUBSCRIPTION_PLAN.TRAIL_BUILDER)
             }

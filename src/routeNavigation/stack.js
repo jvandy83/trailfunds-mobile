@@ -109,6 +109,7 @@ const Stack = createNativeStackNavigator();
 
 export const StackHome = () => {
   const { user } = useAuth0();
+  console.log("USER IN STACK HOME: ", user);
 
   return (
     <NavigationContainer fallback={<Text>Loading...</Text>}>

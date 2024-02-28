@@ -87,11 +87,8 @@ export const Home = () => {
 
   const { data: userData, error, isLoading } = useGetMeQuery();
 
-  console.log("USER DATA: ", userData);
-
   const fetchOrCreateUser = async () => {
-    const { data, message } = await userData;
-    data && setShowNewUserForm(false);
+    userData?.data && setShowNewUserForm(false);
   };
 
   const handleCheckEmailVerified = async () => {

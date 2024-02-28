@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,6 +19,12 @@ import {
   SecondaryButton,
 } from "../reduxStore/styles/frontendStyles";
 
+import { TrailOrgSourcingModal } from "@components/modal";
+
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+
 import { mapStyles } from "../reduxStore/styles/mapStyles";
 
 export const Trail = ({ route }) => {
@@ -27,6 +33,7 @@ export const Trail = ({ route }) => {
   const { trailId } = route.params;
 
   const [transactionId, setTransactionId] = useState(null);
+  const [showCrowdSourceModal, setShowCrowdSourceModal] = useState(false);
 
   const { navigate } = useNavigation();
 
@@ -95,6 +102,13 @@ export const Trail = ({ route }) => {
           marginBottom: 20,
         }}
       >
+        {showCrowdSourceModal && (
+          <TrailOrgSourcingModal
+            isVisible={showCrowdSourceModal}
+            setIsModalVisible={setShowCrowdSourceModal}
+            title="Trail Org Info"
+          />
+        )}
         <View style={{ overflow: "hidden" }}>
           <MapView
             provider={MapView.PROVIDER_GOOGLE}
@@ -136,10 +150,24 @@ export const Trail = ({ route }) => {
         >
           {data?.trail.name}
         </Text>
-        <Text>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>Trail Org:</Text>
-          <Text style={{ fontSize: 16 }}> COPMOBA</Text>
-        </Text>
+        <View className="flex-row items-center">
+          <Text className="text-lg pr-2 bold">Trail Org:</Text>
+          {data?.trail?.trail_org?.name ? (
+            <Text className="text-lg"> {data?.trail?.trail_org?.name}</Text>
+          ) : (
+            <View className="flex-row items-center">
+              <Pressable
+                className="bg-blue-500 rounded mr-2"
+                onPress={() => setShowCrowdSourceModal(true)}
+              >
+                <Text className="text-sm text-white px-2 py-1">
+                  Click to add Trail Org
+                </Text>
+              </Pressable>
+              <FontAwesomeIcon size={16} color="black" icon={faInfoCircle} />
+            </View>
+          )}
+        </View>
       </View>
       <View className="items-center">
         <PrimaryButton

@@ -179,6 +179,15 @@ export const api = createApi({
         };
       },
     }),
+    updateTrailOrg: build.mutation({
+      query: (body) => {
+        return {
+          url: `trail-org`,
+          method: "PUT",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -199,6 +208,7 @@ export const {
   useCreatePortalSessionMutation,
   useAddSubscriptionMutation,
   useAddTrailbucksMutation,
+  useUpdateTrailOrgMutation,
   useDonateMutation,
   useSetNotificationEnabledMutation,
 } = api;

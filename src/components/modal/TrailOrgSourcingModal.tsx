@@ -61,7 +61,6 @@ export const TrailOrgSourcingModal = ({
   };
 
   const onSubmit = (data: TrailOrg) => {
-    console.log("DATA IN ON SUBMIT FOR TRAIL ORG UPDATE: ", data);
     updateTrailOrg(data);
   };
 

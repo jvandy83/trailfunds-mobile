@@ -18,6 +18,13 @@
       "channel": "development"
     },
     "development-simulator": {
+      "env": {
+        "EXPO_PUBLIC_BASE_URL": "https://sharing-genuinely-locust.ngrok-free.app/api/v1",
+        "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
+        "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
+        "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi"
+      },
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -26,11 +33,25 @@
       "channel": "development-simulator"
     },
     "preview": {
+      "env": {
+        "EXPO_PUBLIC_BASE_URL": "https://trailfunds.info/api/v1",
+        "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
+        "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
+        "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi"
+      },
       "distribution": "internal",
       "channel": "preview"
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_BASE_URL": "https://trailfunds.info/api/v1",
+        "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
+        "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
+        "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi"
+      }
     }
   }
 }

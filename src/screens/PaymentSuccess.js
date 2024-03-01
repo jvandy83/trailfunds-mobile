@@ -22,13 +22,9 @@ export const PaymentSuccess = ({ route }) => {
 
   const { transactionId } = route.params;
 
-  console.log("TRANSACTION ID IN PAYMENT SUCCESS: ", transactionId);
-
   const { navigate } = useNavigation();
 
   const { data, isLoading, error } = useGetTransactionQuery(transactionId);
-
-  console.log("TRANSACTION DATA INSIDE PAYMENT SUCCESS: ", data);
 
   const handleSheetChanges = useCallback((index) => {
     // this keeps modal from closing all the way
@@ -45,7 +41,6 @@ export const PaymentSuccess = ({ route }) => {
   }
 
   if (error) {
-    console.log("****** THERE WAS AN ERROR ON THE SUCCESS SCREEN ****** ");
     console.error(error);
   }
 
@@ -128,7 +123,7 @@ export const PaymentSuccess = ({ route }) => {
               }}
             >
               <Text style={{ fontWeight: "bold" }}>Trail Org:</Text>
-              <Text>{data?.trail_org.name}</Text>
+              <Text>{data?.trail_org?.name || "n/a"}</Text>
             </View>
             <View
               style={{

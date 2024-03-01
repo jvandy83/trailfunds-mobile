@@ -20,8 +20,6 @@ export const Subscription = ({ route }) => {
 
   const url = Linking.useURL();
 
-  console.log("***URL***: ", url);
-
   const [ready, setReady] = useState(true);
 
   const { presentPaymentSheet, initPaymentSheet } = useStripe();
@@ -51,7 +49,6 @@ export const Subscription = ({ route }) => {
   const handleMakeSubscriptionPayment = async (product) => {
     try {
       const { data } = await addSubscription({ product, trailId });
-      console.log("**** PAYLOAD FROM ADD SUBSCRIPTION ****: ", data);
       const { ephemeralKey, clientSecret } = data;
       await initializePaymentSheet(clientSecret, ephemeralKey);
     } catch (error) {

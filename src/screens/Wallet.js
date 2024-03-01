@@ -55,7 +55,9 @@ export const Wallet = ({ navigation, route }) => {
             >
               {item.trail.name}
             </Text>
-            <Text style={{ fontWeight: "bold" }}>{item.trail_org.name}</Text>
+            <Text style={{ fontWeight: "bold" }}>
+              {item.trail_org?.name || "Trail Org"}
+            </Text>
           </View>
         </View>
         <Text

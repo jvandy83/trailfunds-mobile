@@ -17,12 +17,9 @@ export const PaymentInfo = ({ navigation }) => {
   ] = useCreatePortalSessionMutation();
 
   const handleCreatePortalSession = async () => {
-    console.log("CREATING PORTAL SESSION");
     try {
       const { data }: any = await createPortalSession({ arg: null });
-      console.log("DATA: ", data);
       setUrl(data.url);
-      console.log(data);
     } catch (error: any) {
       console.log(error);
     }

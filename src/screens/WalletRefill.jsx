@@ -273,15 +273,9 @@ export const WalletRefill = ({ navigation }) => {
         },
       });
 
-      console.log("RESPONSE WITH PAYMENT INTENT: ", response.data);
-
       const { clientSecret, ephemeralKey } = response.data;
 
       setPaymentIntent(clientSecret);
-      console.log(
-        "DONATION AMOUNT IN HANDLE INITIATE PAYMENT INTENT: ",
-        donationAmount
-      );
       setDonationAmount(donationAmount);
 
       try {
@@ -349,7 +343,6 @@ export const WalletRefill = ({ navigation }) => {
   }, [amount.customAmount]);
 
   if (error) {
-    console.log("******* THERE WAS AN ERROR MAKING A PAYMENT *********");
     console.error(error.data);
   }
 

@@ -95,7 +95,6 @@ export const Donate = ({ route }) => {
       setErrorMessage(message);
       setTransactionId(transactionId);
     } catch (error) {
-      console.log("There was an error making a donation!!!");
       console.error(error);
     }
   };

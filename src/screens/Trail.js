@@ -49,7 +49,6 @@ export const Trail = ({ route }) => {
         amount: 99,
         trailId,
       }).unwrap();
-      console.log("UNWRAPPED DATA: ", data);
       const { transactionId } = data;
       setTransactionId(transactionId);
     } catch (error) {

@@ -66,7 +66,6 @@ export const NewUserFormModal = ({
         setIsModalVisible(!isVisible);
       })
       .catch((error) => {
-        console.log("There was an error creating a user");
         console.error(error);
       });
   };

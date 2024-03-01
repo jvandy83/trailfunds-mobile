@@ -56,7 +56,6 @@ export const ModalEmailVerification = ({
           },
         }
       );
-      console.log("DATA FROM RESEND EMAIL VERIFICATION: ", data);
       // const { message } = data;
       // showToast({
       //   message,

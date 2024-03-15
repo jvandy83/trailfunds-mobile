@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 
 import {
   useGetMeQuery,
@@ -43,6 +43,7 @@ const NOTIFICATION_TASK_NAME = "BACKGROUND-NOTIFICATION-TASK";
 const LOCATION_TASK_NAME = "BACKGROUND-LOCATION-TASK";
 
 export const Home = () => {
+  const { width, height } = Dimensions.get("window");
   const { user, getCredentials, clearCredentials } = useAuth0();
 
   sec.setAccessToken(getCredentials);
@@ -197,7 +198,6 @@ export const Home = () => {
             // timeInterval: 10000,
             distanceInterval: 20,
           });
-          console.log("Background permission is granted");
         }
       }
     })();
@@ -223,7 +223,6 @@ export const Home = () => {
   }
 
   if (error) {
-    console.log("AN ERROR OCCURRED RETRIEVING A USER");
     console.error(JSON.stringify(error.data));
   }
 

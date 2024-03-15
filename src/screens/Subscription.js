@@ -112,10 +112,10 @@ export const Subscription = ({ route }) => {
             }
           >
             <View>
-              <Text style={{ color: "white", fontWeight: "bold" }}>
+              <Text className="font-primary-600 text-white">
                 Weekend Warrior
               </Text>
-              <Text style={{ color: "white", fontWeight: "bold" }}>
+              <Text className="font-primary-600 text-white">
                 $10.00 / month
               </Text>
             </View>
@@ -130,10 +130,8 @@ export const Subscription = ({ route }) => {
             }
           >
             <View>
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                Trail Builder
-              </Text>
-              <Text style={{ color: "white", fontWeight: "bold" }}>
+              <Text className="font-primary-600 text-white">Trail Builder</Text>
+              <Text className="font-primary-600 text-white">
                 $20.00 / month
               </Text>
             </View>
@@ -158,9 +156,9 @@ const styles = StyleSheet.create({
     border: "none",
     borderWidth: 1,
     borderRadius: 5,
-    width: "80%",
+    width: "90%",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 20,
     marginVertical: 10,
   },
 });

@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         "warning-red": "#c32f27",
         red: "#dd3333",
+        primary: "#59C092",
       },
       fontFamily: {
         "primary-italic": "Poppins-100-italic",

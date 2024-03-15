@@ -122,14 +122,7 @@ export const TrailDataBottomSheet = ({
               paddingHorizontal: 30,
             }}
           >
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "bold",
-                color: "#59C092",
-                paddingBottom: 20,
-              }}
-            >
+            <Text className="text-2xl font-primary-600 pb-5 text-primary">
               Find A Trail
             </Text>
             <TextInput
@@ -164,17 +157,14 @@ export const TrailDataBottomSheet = ({
                   borderBottomWidth: 2,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: "#59C092",
-                  }}
-                >
+                <Text className="font-primary-500 text-primary text-lg">
                   Favorite
                 </Text>
               </Pressable>
               <Pressable>
-                <Text style={{ fontSize: 16 }}>Recent</Text>
+                <Text className="font-primary-500 text-primary text-lg">
+                  Recent
+                </Text>
               </Pressable>
             </View>
             <View
@@ -182,12 +172,13 @@ export const TrailDataBottomSheet = ({
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: 40,
+                marginBottom: 5,
                 height: 60,
                 overflow: "hidden",
               }}
             >
               <Text
+                className="text-2xl font-primary-600 "
                 style={{
                   fontSize: 20,
                   fontWeight: "bold",

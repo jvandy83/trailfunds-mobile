@@ -28,7 +28,7 @@
         "policy": "sdkVersion"
       },
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notifications", "location"],
+        "UIBackgroundModes": ["location"],
         "NSCameraUsageDescription": "This app uses the camera to collect trail data."
       }
     },

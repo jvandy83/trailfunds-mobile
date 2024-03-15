@@ -73,9 +73,7 @@ export const Root = () => {
                 paddingRight: "3%",
               }}
             >
-              <Text style={{ fontSize: 24, fontWeight: 600 }}>
-                {route.name}
-              </Text>
+              <Text className="text-3xl font-primary-600">{route.name}</Text>
               <Text
                 style={{ fontSize: 30, marginBottom: 4, paddingLeft: "2%" }}
               >

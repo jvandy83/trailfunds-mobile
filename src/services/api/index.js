@@ -143,7 +143,7 @@ export const api = createApi({
     }),
 
     donate: build.mutation({
-      query: ({ userId, amount = 1, trailId, idToken }) => {
+      query: ({ userId, amount = 1, trailId }) => {
         return {
           url: `donate`,
           method: "POST",

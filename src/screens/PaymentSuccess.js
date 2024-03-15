@@ -123,7 +123,7 @@ export const PaymentSuccess = ({ route }) => {
               }}
             >
               <Text style={{ fontWeight: "bold" }}>Trail Org:</Text>
-              <Text>{data?.trail_org?.name || "n/a"}</Text>
+              <Text>{data?.trail_org?.name || "Trail Org"}</Text>
             </View>
             <View
               style={{

@@ -46,7 +46,7 @@ export const Trail = ({ route }) => {
       const { data } = await donate({
         // amount must be converted
         // to pennies for Stripe
-        amount: 99,
+        amount: "100",
         trailId,
       }).unwrap();
       const { transactionId } = data;
@@ -170,7 +170,7 @@ export const Trail = ({ route }) => {
       </View>
       <View className="items-center">
         <PrimaryButton
-          text="Donate $0.99"
+          text="Donate $1.00"
           color="white"
           onPress={handleSubmitDollarDonation}
         />

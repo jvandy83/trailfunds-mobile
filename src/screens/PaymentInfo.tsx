@@ -19,7 +19,8 @@ export const PaymentInfo = ({ navigation }) => {
   const handleCreatePortalSession = async () => {
     try {
       const { data }: any = await createPortalSession({ arg: null });
-      setUrl(data.url);
+      const { url } = data.url;
+      setUrl(url);
     } catch (error: any) {
       console.log(error);
     }
@@ -51,14 +52,14 @@ export const PaymentInfo = ({ navigation }) => {
       }}
     >
       <View style={{ alignItems: "center", paddingHorizontal: 30 }}>
-        <Text style={{ textAlign: "center", marginBottom: 40 }}>
+        <Text className="justify-center font-primary-300 text-4xl mb-20">
           Manage your billing and subscriptions.
         </Text>
         <PrimaryButton
           text={"Manage billing"}
           disabled={false}
           onPress={handleCreatePortalSession}
-          color=""
+          color="white"
         />
         <StatusBar style="auto" />
       </View>

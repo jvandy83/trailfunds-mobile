@@ -1,61 +1,77 @@
 {
-	"expo": {
-		"name": "TrailFundsApp",
-		"slug": "TrailFundsApp",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"icon": "./assets/images/tfLogo.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/images/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0,
-			"url": "https://u.expo.dev/08397746-9845-4f6a-8f8b-575a44ae3772"
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.vanthedev.TrailFundsApp",
-			"runtimeVersion": "1.0.0",
-			"infoPlist": {
-				"UIBackgroundModes": ["remote-notification", "location"]
-			}
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF"
-			},
-			"package": "com.vanthedev.TrailFundsApp",
-			"config": {
-				"googleMaps": {
-					"apiKey": "AIzaSyDayzldvDRZlNvxTaKoM4MisQ2J6maMBWs"
-				}
-			},
-			"runtimeVersion": {
-				"policy": "sdkVersion"
-			},
-			"googleServicesFile": "./google-services.json"
-		},
-		"web": {
-			"favicon": "./assets/images/favicon.png"
-		},
-		"plugins": [
-			[
-				"@stripe/stripe-react-native",
-				{
-					"merchantIdentifier": "merchant.com.trailfunds",
-					"enableGooglePay": true
-				}
-			]
-		],
-		"extra": {
-			"eas": {
-				"projectId": "08397746-9845-4f6a-8f8b-575a44ae3772"
-			}
-		}
-	}
+  "expo": {
+    "name": "TrailFundsApp",
+    "slug": "TrailFundsApp",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "scheme": "trailfunds",
+    "icon": "./src/assets/images/tfLogo_1.png",
+    "userInterfaceStyle": "light",
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "splash": {
+      "image": "./src/assets/images/trailfunds_splash_icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/08397746-9845-4f6a-8f8b-575a44ae3772"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "buildNumber": "2",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vanthedev.TrailFundsApp",
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["location"],
+        "NSCameraUsageDescription": "This app uses the camera to collect trail data."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.vanthedev.TrailFundsApp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDayzldvDRZlNvxTaKoM4MisQ2J6maMBWs"
+        }
+      },
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      },
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "favicon": "./src/assets/images/favicon.png"
+    },
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.trailfunds",
+          "enableGooglePay": true
+        }
+      ],
+      [
+        "react-native-auth0",
+        {
+          "domain": "dev-skndked4vwbnmsmn.us.auth0.com"
+        }
+      ],
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "08397746-9845-4f6a-8f8b-575a44ae3772"
+      }
+    }
+  }
 }

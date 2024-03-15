@@ -2,5 +2,9 @@
 	"[python]": {
 		"editor.defaultFormatter": "ms-python.black-formatter"
 	},
-	"python.formatting.provider": "none"
+	"python.formatting.provider": "none",
+	"javascript.preferences.jsxAttributeCompletionStyle": "none",
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }

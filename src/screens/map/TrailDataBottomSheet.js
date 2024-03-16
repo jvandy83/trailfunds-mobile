@@ -34,8 +34,8 @@ import uuid from "react-native-uuid";
 
 export const TrailDataBottomSheet = ({
   data,
-  setRadius,
-  radius,
+  // setRadius,
+  // radius,
   locationData,
 }) => {
   // ref
@@ -47,7 +47,7 @@ export const TrailDataBottomSheet = ({
 
   const [loadingTrails, setLoadingTrails] = useState(false);
 
-  const [selectedRadiusValue, setSelectedRadiusValue] = useState(radius);
+  const [selectedRadiusValue, setSelectedRadiusValue] = useState(5);
 
   const { navigate } = useNavigation();
 
@@ -57,28 +57,26 @@ export const TrailDataBottomSheet = ({
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const renderTrails = useCallback(
-    (trail) => (
-      <TrailLocation
-        locationData={locationData}
-        trail={trail}
-        onPress={() => navigate("Trail", { trailId: trail.id })}
-        key={uuid.v4()}
-      />
-    ),
-    []
-  );
+  // const renderTrails = useCallback(
+  //   (trail) => (
+  //     <TrailLocation
+  //       locationData={locationData}
+  //       trail={trail}
+  //       onPress={() => navigate("Trail", { trailId: trail.id })}
+  //       key={uuid.v4()}
+  //     />
+  //   ),
+  //   []
+  // );
 
   const renderPicker = () => {
     const arr = [];
     let i = 0;
     while (i < 50) {
       i++;
-      arr.push(i);
+      arr.push(<Picker.Item key={uuid.v4()} label={i} value={i} />);
     }
-    return arr.map((num) => (
-      <Picker.Item key={uuid.v4()} label={`${num}`} value={`${num}`} />
-    ));
+    return arr;
   };
 
   const snapPoints = useMemo(() => ["18%", "50%", "75%"], []);
@@ -137,13 +135,13 @@ export const TrailDataBottomSheet = ({
                 borderRadius: 100,
               }}
             />
-            <View>
+            {/* <View>
               {loadingTrails ? (
                 <ActivityIndicator />
               ) : (
                 queryData.trails?.map(renderTrails)
               )}
-            </View>
+            </View> */}
             <View
               style={{
                 flexDirection: "row",
@@ -199,7 +197,7 @@ export const TrailDataBottomSheet = ({
                   selectedValue={selectedRadiusValue}
                   onValueChange={(itemValue, itemIndex) => {
                     setSelectedRadiusValue(itemValue);
-                    setRadius(itemValue);
+                    // setRadius(itemValue);
                   }}
                 >
                   {renderPicker()}
@@ -208,9 +206,9 @@ export const TrailDataBottomSheet = ({
               </View>
             </View>
             <ScrollView style={{ flexGrow: 1 }}>
-              <SafeAreaView>
+              {/* <SafeAreaView>
                 <View>{data.trails.map(renderTrails)}</View>
-              </SafeAreaView>
+              </SafeAreaView> */}
             </ScrollView>
           </View>
         </BottomSheetModal>

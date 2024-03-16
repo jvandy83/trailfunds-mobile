@@ -135,8 +135,8 @@ export const Home = () => {
     }
   );
 
-  // request permission to send notifications
   useEffect(() => {
+    // request permission to send notifications
     (async () => {
       await registerForPushNotificationsAsync();
 

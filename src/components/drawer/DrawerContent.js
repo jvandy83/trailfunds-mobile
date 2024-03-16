@@ -42,7 +42,7 @@ export const CustomDrawerContent = (props) => {
             props.navigation.navigate("Home");
           }}
         >
-          <Text className="font-primary-500 text-lg">Home</Text>
+          <Text className="font-primary-400 text-lg">Home</Text>
         </Pressable>
         <Pressable
           style={styles.contentItem}
@@ -51,7 +51,7 @@ export const CustomDrawerContent = (props) => {
             props.navigation.navigate("Wallet");
           }}
         >
-          <Text className="font-primary-500 text-lg">Wallet</Text>
+          <Text className="font-primary-400 text-lg">Wallet</Text>
         </Pressable>
         <Pressable
           style={styles.contentItem}
@@ -60,7 +60,7 @@ export const CustomDrawerContent = (props) => {
             props.navigation.navigate("Map");
           }}
         >
-          <Text className="font-primary-500 text-lg">Map</Text>
+          <Text className="font-primary-400 text-lg">Map</Text>
         </Pressable>
         <Pressable
           style={styles.contentItem}
@@ -69,7 +69,7 @@ export const CustomDrawerContent = (props) => {
             props.navigation.navigate("About");
           }}
         >
-          <Text className="font-primary-500 text-lg">About Trail Funds</Text>
+          <Text className="font-primary-400 text-lg">About Trail Funds</Text>
         </Pressable>
         <Pressable
           style={styles.contentItem}
@@ -78,7 +78,7 @@ export const CustomDrawerContent = (props) => {
             props.navigation.navigate("Help");
           }}
         >
-          <Text className="font-primary-500 text-lg">Help</Text>
+          <Text className="font-primary-400 text-lg">Help</Text>
         </Pressable>
       </View>
       <View style={styles.footer}>

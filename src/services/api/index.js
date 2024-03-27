@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { sec } from "@hooks/useToken";
 
+console.log(process.env.NODE_ENV);
+
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 console.log(baseUrl);

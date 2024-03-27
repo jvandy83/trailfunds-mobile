@@ -28,7 +28,7 @@ import {
   Wallet,
   WalletRefill,
   Login,
-  Map,
+  MainMap,
   Trail,
   Donate,
   PaymentSuccess,
@@ -92,7 +92,7 @@ export const Root = () => {
       <Drawer.Screen name="Wallet" component={Wallet} />
       <Stack.Screen name="Trail" component={Trail} />
       <Drawer.Screen name="Add Funds" component={WalletRefill} />
-      <Drawer.Screen name="Map" component={Map} />
+      <Drawer.Screen name="Map" component={MainMap} />
       <Drawer.Screen name="About" component={About} />
       <Drawer.Screen name="Help" component={Template} />
       <Drawer.Screen name="Profile" component={Profile} />

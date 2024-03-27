@@ -30,22 +30,13 @@ export const ModalEmailVerification = ({
 }: ModalEmailVerificationProps) => {
   const { user, getCredentials } = useAuth0();
 
-  const [
-    resendEmailVerfication,
-    {
-      isSuccess,
-      isLoading: resendEmailVerificationLoading,
-      error: resendEmailVerficationError,
-    },
-  ] = useResendEmailVerificationMutation();
-
   const closeModal = () => {
     emailVerified && setIsModalVisible(!isVisible);
   };
 
   const handleResendVerification = async () => {
     try {
-      const { data } = await axios.post(
+      await axios.post(
         `https://${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API}/jobs/verification-email`,
         {
           user_id: user?.sub,

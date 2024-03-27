@@ -4,6 +4,8 @@ import "react-native-gesture-handler";
 
 import { Auth0Provider } from "react-native-auth0";
 
+import * as Sentry from "@sentry/react-native";
+
 import "expo-dev-client";
 
 import "../global.css";
@@ -21,7 +23,17 @@ import { FontFamily } from "./theme";
 
 import { useFonts } from "expo-font";
 
-export default function App() {
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  environment: process.env.NODE_ENV,
+  tracesSampleRate: 1.0,
+});
+
+// Sentry.captureException(new Error("First error"));
+
+function App() {
   const [fontsLoaded] = useFonts(FontFamily.fontsConfig);
   return (
     <StripeProvider
@@ -39,3 +51,5 @@ export default function App() {
     </StripeProvider>
   );
 }
+
+export default Sentry.wrap(App);

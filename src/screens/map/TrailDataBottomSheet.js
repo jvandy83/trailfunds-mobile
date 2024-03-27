@@ -17,9 +17,15 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import { useGetTrailsNearMeQuery } from "../../services/api";
+
 import { useNavigation } from "@react-navigation/native";
 
-import { Picker } from "@react-native-picker/picker";
+import { useSelector } from "react-redux";
+
+import { PickerComponent } from "@components/picker/PickerComponent";
+
+import uuid from "react-native-uuid";
 
 import {
   BottomSheetModal,
@@ -30,15 +36,14 @@ import { TrailLocation } from "./TrailLocation";
 
 import axios from "axios";
 
-import uuid from "react-native-uuid";
+import { Trail } from "../Trail";
 
 export const TrailDataBottomSheet = ({
-  data,
-  // setRadius,
-  // radius,
-  locationData,
+  selectedRadiusValue,
+  onRadiusChange,
 }) => {
-  // ref
+  const { location } = useSelector((state) => state.location);
+
   const bottomSheetModalRef = useRef(null);
 
   const [queryData, setQueryData] = useState([]);
@@ -47,9 +52,13 @@ export const TrailDataBottomSheet = ({
 
   const [loadingTrails, setLoadingTrails] = useState(false);
 
-  const [selectedRadiusValue, setSelectedRadiusValue] = useState(5);
-
   const { navigate } = useNavigation();
+
+  const { data, error, isLoading } = useGetTrailsNearMeQuery({
+    lat: location.latitude,
+    lon: location.longitude,
+    radius: selectedRadiusValue,
+  });
 
   const handleSheetChanges = useCallback((index) => {
     // this keeps modal from closing all the way
@@ -57,27 +66,14 @@ export const TrailDataBottomSheet = ({
     bottomSheetModalRef.current?.present();
   }, []);
 
-  // const renderTrails = useCallback(
-  //   (trail) => (
-  //     <TrailLocation
-  //       locationData={locationData}
-  //       trail={trail}
-  //       onPress={() => navigate("Trail", { trailId: trail.id })}
-  //       key={uuid.v4()}
-  //     />
-  //   ),
-  //   []
-  // );
-
-  const renderPicker = () => {
-    const arr = [];
-    let i = 0;
-    while (i < 50) {
-      i++;
-      arr.push(<Picker.Item key={uuid.v4()} label={i} value={i} />);
-    }
-    return arr;
-  };
+  const renderTrails = (trail) => (
+    <TrailLocation
+      locationData={location}
+      trail={trail}
+      onPress={() => navigate("Trail", { trailId: trail.id })}
+      key={uuid.v4()}
+    />
+  );
 
   const snapPoints = useMemo(() => ["18%", "50%", "75%"], []);
 
@@ -135,13 +131,13 @@ export const TrailDataBottomSheet = ({
                 borderRadius: 100,
               }}
             />
-            {/* <View>
+            <View>
               {loadingTrails ? (
                 <ActivityIndicator />
               ) : (
                 queryData.trails?.map(renderTrails)
               )}
-            </View> */}
+            </View>
             <View
               style={{
                 flexDirection: "row",
@@ -192,23 +188,17 @@ export const TrailDataBottomSheet = ({
                   alignItems: "center",
                 }}
               >
-                <Picker
-                  style={{ width: "50%" }}
+                <PickerComponent
                   selectedValue={selectedRadiusValue}
-                  onValueChange={(itemValue, itemIndex) => {
-                    setSelectedRadiusValue(itemValue);
-                    // setRadius(itemValue);
-                  }}
-                >
-                  {renderPicker()}
-                </Picker>
+                  onValueChange={onRadiusChange}
+                />
                 <Text style={{ fontSize: 16 }}>mi</Text>
               </View>
             </View>
             <ScrollView style={{ flexGrow: 1 }}>
-              {/* <SafeAreaView>
-                <View>{data.trails.map(renderTrails)}</View>
-              </SafeAreaView> */}
+              <SafeAreaView>
+                <View>{data?.trails.map(renderTrails)}</View>
+              </SafeAreaView>
             </ScrollView>
           </View>
         </BottomSheetModal>
@@ -221,5 +211,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 24,
     justifyContent: "center",
+    zIndex: 1000,
   },
 });

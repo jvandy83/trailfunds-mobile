@@ -21,14 +21,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "2",
       "supportsTablet": true,
       "bundleIdentifier": "com.vanthedev.TrailFundsApp",
       "runtimeVersion": {
         "policy": "sdkVersion"
       },
       "infoPlist": {
-        "UIBackgroundModes": ["location"],
+        "UIBackgroundModes": ["location", "remote-notification"],
         "NSCameraUsageDescription": "This app uses the camera to collect trail data."
       }
     },
@@ -63,6 +62,15 @@
         "react-native-auth0",
         {
           "domain": "dev-skndked4vwbnmsmn.us.auth0.com"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
+          "project": "python-wsgi",
+          "organization": "trailfunds"
         }
       ],
       "expo-secure-store",

@@ -142,7 +142,7 @@ export const Trail = ({ route }) => {
           style={{
             fontWeight: "bold",
             fontSize: 30,
-            paddingVertical: 20,
+            paddingBottom: 10,
             color: "#59C092",
             textAlign: "center",
           }}
@@ -186,7 +186,7 @@ export const Trail = ({ route }) => {
           onPress={() => navigate("Subscription", { trailId: data?.trail.id })}
         />
         <SecondaryButton
-          text="Go Back"
+          text="Back to map"
           color="black"
           backgroundColor="transparent"
           onPress={() => navigate("Map")}

@@ -11,8 +11,6 @@ import { Marker, Callout } from "react-native-maps";
 
 import { useSelector } from "react-redux";
 
-import { TrailDataBottomSheet } from "./TrailDataBottomSheet";
-
 import { useGetTrailsNearMeQuery } from "../../services/api";
 
 import uuid from "react-native-uuid";
@@ -32,21 +30,19 @@ const INITIAL_REGION = {
   longitudeDelta: 0.1,
 };
 
-const INITIAL_RADIUS = "5";
-
-export const Map = () => {
-  const [radius, setRadius] = useState(INITIAL_RADIUS);
-
+export const Map = ({ selectedRadiusValue }) => {
   const mapRef = useRef(null);
 
   const { location } = useSelector((state) => state.location);
+
+  // console.log("LOCATION: ", location);
 
   const navigation = useNavigation();
 
   const { data, error, isLoading } = useGetTrailsNearMeQuery({
     lat: location.latitude,
     lon: location.longitude,
-    radius,
+    radius: selectedRadiusValue,
   });
 
   const handleCalloutPress = (id) => {
@@ -70,7 +66,7 @@ export const Map = () => {
         </Callout>
       </Marker>
     ),
-    []
+    [selectedRadiusValue]
   );
 
   useEffect(() => {
@@ -108,33 +104,29 @@ export const Map = () => {
   }
 
   return (
-    <View style={{ position: "relative" }}>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        ref={mapRef}
-        style={mapStyles.map}
-        showsUserLocation={true}
-        // onRegionChangeComplete={setLocation}
-        initialRegion={location || INITIAL_REGION}
-        loadingEnabled={true}
-        loadingIndicatorColor="#666666"
-        loadingBackgroundColor="#eeeeee"
-        moveOnMarkerPress={false}
-        showsCompass={true}
-        showsPointsOfInterest={false}
-        customMapStyle={[
-          { featureType: "poi", stylers: [{ visibility: "off" }] },
-          { featureType: "transit", stylers: [{ visibility: "off" }] },
-        ]}
-      >
-        {data.trails.map(renderMarker)}
-      </MapView>
-      <TrailDataBottomSheet
-        radius={radius}
-        data={data}
-        setRadius={setRadius}
-        locationData={location}
-      />
-    </View>
+    <>
+      <View>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          ref={mapRef}
+          style={mapStyles.map}
+          showsUserLocation={true}
+          // onRegionChangeComplete={setLocation}
+          initialRegion={location || INITIAL_REGION}
+          loadingEnabled={true}
+          loadingIndicatorColor="#666666"
+          loadingBackgroundColor="#eeeeee"
+          moveOnMarkerPress={false}
+          showsCompass={true}
+          showsPointsOfInterest={false}
+          customMapStyle={[
+            { featureType: "poi", stylers: [{ visibility: "off" }] },
+            { featureType: "transit", stylers: [{ visibility: "off" }] },
+          ]}
+        >
+          {data.trails.map(renderMarker)}
+        </MapView>
+      </View>
+    </>
   );
 };

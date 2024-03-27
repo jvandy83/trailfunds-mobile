@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 3.8.1"
+    "version": ">= 3.8.1",
+    "appVersionSource": "remote"
   },
   "submit": {
     "production": {
@@ -13,6 +14,14 @@
   },
   "build": {
     "development": {
+      "env": {
+        "EXPO_PUBLIC_BASE_URL": "https://sharing-genuinely-locust.ngrok-free.app/api/v1",
+        "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
+        "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
+        "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi",
+        "EXPO_PUBLIC_SENTRY_DSN": "https//f9448be8cad4f4d2ee73bef3944bbdb3@o4506717814128640.ingest.us.sentry.io/4506981368987648"
+      },
       "developmentClient": true,
       "distribution": "internal",
       "channel": "development"
@@ -23,7 +32,8 @@
         "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
         "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
         "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
-        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi"
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi",
+        "EXPO_PUBLIC_SENTRY_DSN": "https//f9448be8cad4f4d2ee73bef3944bbdb3@o4506717814128640.ingest.us.sentry.io/4506981368987648"
       },
       "developmentClient": true,
       "distribution": "internal",
@@ -38,19 +48,25 @@
         "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
         "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
         "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
-        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi"
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi",
+        "NODE_ENV": "production",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://f9448be8cad4f4d2ee73bef3944bbdb3@o4506717814128640.ingest.us.sentry.io/4506981368987648",
+        "SENTRY_AUTH_TOKEN": "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"
       },
       "distribution": "internal",
       "channel": "preview"
     },
     "production": {
+      "autoIncrement": true,
       "channel": "production",
       "env": {
         "EXPO_PUBLIC_BASE_URL": "https://trailfunds.info/api/v1",
         "EXPO_PUBLIC_AUTH0_DOMAIN": "dev-skndked4vwbnmsmn.us.auth0.com",
         "EXPO_PUBLIC_AUTH0_CLIENT_ID": "eEM0SHipbdfyW0JnnIULvqN5MZjgBGHz",
         "EXPO_PUBLIC_MERCHANT_IDENTIFIER": "merchant.com.trailfunds",
-        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi"
+        "EXPO_PUBLIC_STRIPE_API_KEY": "pk_test_6lirKvgneglhHRWZKJLFrCub00czNZvHDi",
+        "NODE_ENV": "production",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://f9448be8cad4f4d2ee73bef3944bbdb3@o4506717814128640.ingest.us.sentry.io/4506981368987648"
       }
     }
   }

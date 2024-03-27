@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/react-native";
+
 import { useEffect, useState, useRef } from "react";
 
 import { View, Text, Dimensions } from "react-native";
@@ -93,7 +95,21 @@ export const Home = () => {
   };
 
   const handleCheckEmailVerified = async () => {
-    const { data } = await verifyEmail(user?.sub);
+    const response = await verifyEmail(user?.sub);
+    console.log(response.data);
+    // Once a user enters the app
+    // after using Auth0 to sign up
+    // a user will exist
+    // but their email will not be verified
+    const { message, data } = response.data;
+    // Just in case user info gets cached on
+    // device in test flight after installing new build
+    // but they were removed from db
+    // make sure and log the user out so app
+    // doesn't hang
+    if (message?.includes("The user does not exist")) {
+      await clearCredentials();
+    }
     setEmailVerified(data);
   };
 
@@ -159,6 +175,7 @@ export const Home = () => {
           // i.e "Dismiss notification for 24hrs, 1 week..."
           // const notificationTime = Date.now(response.notification.date);
           // setNotification(notification.request.content.data.id);
+          console.log("READY TO NAVIGATE TO TRAIL ID: ", trailId);
 
           navigation.navigate("Trail", { trailId });
         });
@@ -177,6 +194,7 @@ export const Home = () => {
       const { status: foregroundStatus } =
         await Location.requestForegroundPermissionsAsync();
       if (foregroundStatus === "granted") {
+        console.log("FOREGROUND STATUS IS GRANTED");
         const { coords } = await Location.getCurrentPositionAsync();
         const userRegion = {
           latitude: coords.latitude,
@@ -186,17 +204,15 @@ export const Home = () => {
         };
         dispatch(setLocation(userRegion));
         await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-          accuracy: Location.Accuracy.Balanced,
-          // timeInterval: 10000,
           distanceInterval: 20,
+          activityType: Location.LocationActivityType.Fitness,
         });
         const { status: backgroundStatus } =
           await Location.requestBackgroundPermissionsAsync();
         if (backgroundStatus === "granted") {
           await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-            accuracy: Location.Accuracy.Balanced,
-            // timeInterval: 10000,
             distanceInterval: 20,
+            activityType: Location.LocationActivityType.Fitness,
           });
         }
       }
@@ -227,6 +243,16 @@ export const Home = () => {
   }
 
   Notifications.registerTaskAsync(NOTIFICATION_TASK_NAME);
+
+  console.log("**** PUSH NOTIFICATION DATA *****: ", notificationData);
+  console.log("**** PUSH TOKEN *****: ", fetchPushToken());
+
+  Sentry.captureMessage(
+    "**** PUSH NOTIFICATION DATA *****: ",
+    notificationData
+  );
+
+  Sentry.captureMessage("**** PUSH TOKEN *****: ", fetchPushToken());
 
   return (
     <View>

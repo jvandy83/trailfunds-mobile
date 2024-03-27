@@ -55,6 +55,7 @@ const currentAmounts = {
 };
 
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+console.log("BASE_URL: ", baseUrl);
 
 export const WalletRefill = ({ navigation }) => {
   const { navigate } = useNavigation();

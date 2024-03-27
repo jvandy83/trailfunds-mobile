@@ -10,7 +10,7 @@ import { Donate } from "./Donate";
 import { PaymentSuccess } from "./PaymentSuccess";
 import { Subscription } from "./Subscription";
 import { PaymentInfo } from "./PaymentInfo";
-import { Map } from "./map/Map";
+import { MainMap } from "./map/MainMap";
 
 export {
   Home,
@@ -21,9 +21,9 @@ export {
   Template,
   About,
   Trail,
-  Map,
+  MainMap,
   Donate,
   PaymentSuccess,
   Subscription,
-  PaymentInfo
+  PaymentInfo,
 };

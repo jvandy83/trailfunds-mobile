@@ -1,54 +1,56 @@
-import { Platform } from 'react-native';
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+import { Platform } from "react-native";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
-import { setPushToken } from './usePushToken';
+import { setPushToken } from "./usePushToken";
 
 Notifications.setNotificationHandler({
-	handleNotification: async () => ({
-		shouldShowAlert: true,
-		shouldPlaySound: false,
-		shouldSetBadge: false,
-	}),
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
 });
 
 export const registerForPushNotificationsAsync = async () => {
-	let token;
+  let token;
 
-	if (Device.isDevice) {
-		const { status: existingStatus } =
-			await Notifications.getPermissionsAsync();
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
 
-		let finalStatus = existingStatus;
+    let finalStatus = existingStatus;
 
-		if (existingStatus !== 'granted') {
-			const { status } = await Notifications.requestPermissionsAsync();
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
 
-			finalStatus = status;
-		}
+      finalStatus = status;
+    }
 
-		if (finalStatus !== 'granted') {
-			alert('Failed to get push token for push notification!');
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
 
-			return;
-		}
+      return;
+    }
 
-		token = (await Notifications.getExpoPushTokenAsync()).data;
-	} else {
-		alert('Must use physical device for Push Notifications');
-	}
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
 
-	if (Platform.OS === 'android') {
-		Notifications.setNotificationChannelAsync('default', {
-			name: 'default',
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
 
-			importance: Notifications.AndroidImportance.MAX,
+      importance: Notifications.AndroidImportance.MAX,
 
-			vibrationPattern: [0, 250, 250, 250],
+      vibrationPattern: [0, 250, 250, 250],
 
-			lightColor: '#FF231F7C',
-		});
-	}
+      lightColor: "#FF231F7C",
+    });
+  }
 
-	setPushToken(token);
+  console.log("TOKEN: ", token);
+
+  setPushToken(token);
 };

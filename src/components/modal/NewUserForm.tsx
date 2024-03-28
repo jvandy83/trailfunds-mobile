@@ -35,7 +35,7 @@ export const NewUserFormModal = ({
   isVisible,
   setUserLoaded,
 }: ModalNewUserProps) => {
-  const { user } = useAuth0();
+  const { user, clearCredentials } = useAuth0();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -51,6 +51,11 @@ export const NewUserFormModal = ({
 
   const closeModal = () => {
     isSuccess && setIsModalVisible(!isVisible);
+  };
+
+  const handleClearCredentials = async () => {
+    setIsModalVisible(false);
+    await clearCredentials();
   };
 
   const onSubmit = (data: User) => {
@@ -109,6 +114,14 @@ export const NewUserFormModal = ({
               <PrimaryButton
                 text="Submit"
                 onPress={handleSubmit(onSubmit)}
+                color="white"
+                disabled={false}
+              />
+            </View>
+            <View className="items-center">
+              <PrimaryButton
+                text="Go back to start"
+                onPress={handleClearCredentials}
                 color="white"
                 disabled={false}
               />

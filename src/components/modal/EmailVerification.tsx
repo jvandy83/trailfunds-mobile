@@ -28,33 +28,24 @@ export const ModalEmailVerification = ({
   emailVerified,
   handleCheckEmailVerified,
 }: ModalEmailVerificationProps) => {
-  const { user, getCredentials } = useAuth0();
+  const { user, clearCredentials, getCredentials } = useAuth0();
+
+  const [
+    resendEmailVerification,
+    { isLoading: verifyEmailLoading, error: verifyEmailError },
+  ] = useResendEmailVerificationMutation();
 
   const closeModal = () => {
     emailVerified && setIsModalVisible(!isVisible);
   };
 
+  const handleClearCredentials = async () => {
+    setIsModalVisible(false);
+    await clearCredentials();
+  };
+
   const handleResendVerification = async () => {
-    try {
-      await axios.post(
-        `https://${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API}/jobs/verification-email`,
-        {
-          user_id: user?.sub,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_AUTH0_MANAGEMENT_API_KEY}`,
-          },
-        }
-      );
-      // const { message } = data;
-      // showToast({
-      //   message,
-      //   severity: "success",
-      // });
-    } catch (error) {
-      console.error(error);
-    }
+    await resendEmailVerification(user?.sub);
   };
 
   return (
@@ -92,6 +83,12 @@ export const ModalEmailVerification = ({
           <PrimaryButton
             text="Resend verification"
             onPress={handleResendVerification}
+            color="white"
+            disabled={undefined}
+          />
+          <PrimaryButton
+            text="Back to start"
+            onPress={handleClearCredentials}
             color="white"
             disabled={undefined}
           />

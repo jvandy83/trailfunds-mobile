@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 
@@ -11,6 +12,8 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+const projectId = Constants.expoConfig.extra.eas.projectId;
 
 export const registerForPushNotificationsAsync = async () => {
   let token;
@@ -33,7 +36,7 @@ export const registerForPushNotificationsAsync = async () => {
       return;
     }
 
-    token = (await Notifications.getExpoPushTokenAsync()).data;
+    token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
   } else {
     alert("Must use physical device for Push Notifications");
   }
@@ -49,8 +52,6 @@ export const registerForPushNotificationsAsync = async () => {
       lightColor: "#FF231F7C",
     });
   }
-
-  console.log("TOKEN: ", token);
 
   setPushToken(token);
 };

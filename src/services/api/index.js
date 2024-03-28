@@ -2,8 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { sec } from "@hooks/useToken";
 
-console.log(process.env.NODE_ENV);
-
 const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 console.log(baseUrl);
@@ -29,10 +27,11 @@ export const api = createApi({
   tagTypes: ["Trailbucks", "Notifications", "User"],
   endpoints: (build) => ({
     resendEmailVerification: build.mutation({
-      query: () => {
+      query: (auth0_user_id) => {
         return {
           url: `users/resend-verification`,
           method: "POST",
+          body: { auth0_user_id },
         };
       },
       providesTags: ["User"],

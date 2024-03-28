@@ -1,4 +1,4 @@
-import React, {SetStateAction, Dispatch, RefObject} from "react";
+import React, { SetStateAction, Dispatch, RefObject } from "react";
 
 import {
   StyleSheet,
@@ -23,7 +23,12 @@ interface IProps {
 
 export const CustomInputModal = React.forwardRef(
   (
-    { showModal, setShowModal, onSelectedAmount, handlePaymentVerified }: IProps,
+    {
+      showModal,
+      setShowModal,
+      onSelectedAmount,
+      handlePaymentVerified,
+    }: IProps,
     ref: RefObject<TextInput>
   ) => {
     const handleInitiatePaymentIntent = () => {

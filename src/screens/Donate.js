@@ -88,7 +88,9 @@ export const Donate = ({ route }) => {
       amount.customAmount > 0 ? amount.customAmount : amount.selectAmount;
     try {
       const { data } = await donate({
-        amount: normalizeCurrency(donationAmount).convertToPenniesForDonation,
+        amount: String(
+          normalizeCurrency(donationAmount).convertToPenniesForDonation
+        ),
         trailId,
       }).unwrap();
       const { transactionId, message } = data;

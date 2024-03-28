@@ -17,7 +17,7 @@ function ErrorMessage({ fieldName, errors }) {
 export function TextInputField(props: TextInputFieldProps) {
   const {
     text,
-    inputMode = "none",
+    inputMode = "text",
     fieldName,
     control,
     errors,

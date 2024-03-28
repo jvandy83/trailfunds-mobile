@@ -35,8 +35,6 @@ export const Map = ({ selectedRadiusValue }) => {
 
   const { location } = useSelector((state) => state.location);
 
-  // console.log("LOCATION: ", location);
-
   const navigation = useNavigation();
 
   const { data, error, isLoading } = useGetTrailsNearMeQuery({

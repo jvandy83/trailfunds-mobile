@@ -91,12 +91,13 @@ export const Home = () => {
   const { data: userData, error, isLoading } = useGetMeQuery();
 
   const fetchOrCreateUser = async () => {
-    userData?.data && setShowNewUserForm(false);
+    const { message, data } = userData;
+
+    data && setShowNewUserForm(false);
   };
 
   const handleCheckEmailVerified = async () => {
     const response = await verifyEmail(user?.sub);
-    console.log(response.data);
     // Once a user enters the app
     // after using Auth0 to sign up
     // a user will exist
@@ -109,6 +110,7 @@ export const Home = () => {
     // doesn't hang
     if (message?.includes("The user does not exist")) {
       await clearCredentials();
+      return;
     }
     setEmailVerified(data);
   };
@@ -175,8 +177,6 @@ export const Home = () => {
           // i.e "Dismiss notification for 24hrs, 1 week..."
           // const notificationTime = Date.now(response.notification.date);
           // setNotification(notification.request.content.data.id);
-          console.log("READY TO NAVIGATE TO TRAIL ID: ", trailId);
-
           navigation.navigate("Trail", { trailId });
         });
 
@@ -194,7 +194,6 @@ export const Home = () => {
       const { status: foregroundStatus } =
         await Location.requestForegroundPermissionsAsync();
       if (foregroundStatus === "granted") {
-        console.log("FOREGROUND STATUS IS GRANTED");
         const { coords } = await Location.getCurrentPositionAsync();
         const userRegion = {
           latitude: coords.latitude,
@@ -243,16 +242,6 @@ export const Home = () => {
   }
 
   Notifications.registerTaskAsync(NOTIFICATION_TASK_NAME);
-
-  console.log("**** PUSH NOTIFICATION DATA *****: ", notificationData);
-  console.log("**** PUSH TOKEN *****: ", fetchPushToken());
-
-  Sentry.captureMessage(
-    "**** PUSH NOTIFICATION DATA *****: ",
-    notificationData
-  );
-
-  Sentry.captureMessage("**** PUSH TOKEN *****: ", fetchPushToken());
 
   return (
     <View>
